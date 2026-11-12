@@ -127,7 +127,6 @@ function shrink(img, longest, limit) {
   }
   return null; // still too big (very unusual)
 }
-};
 
 
 /* ---------- A gentle per-phone daily limit ---------- */
