@@ -387,6 +387,7 @@ main { padding: 4px 0 8px; }
   -webkit-overflow-scrolling: touch;
 }
 .map-box img { display: block; width: 100%; max-width: none; height: auto; }
+.map-inner { max-width: none; }
 
 .places { list-style: none; margin: 0; padding: 0; }
 .places li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
@@ -578,3 +579,77 @@ main { padding: 4px 0 8px; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+
+/* ---------- Map: live now, field markers and "Where am I?" ---------- */
+.live-card h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.live-card .test-time { font: 600 0.8125rem var(--font); color: var(--muted); }
+.live-empty { margin: 0; color: var(--muted); }
+.live-list { list-style: none; margin: 0; padding: 0; }
+.live-list li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.live-list li:last-child { border-bottom: 0; }
+.live-list li > div { flex: 1; }
+.live-list b { display: block; font-size: 1.0625rem; }
+.live-list span { color: var(--muted); font-size: 0.875rem; }
+.live-next { margin: 10px 0 0; font-size: 0.9375rem; }
+.btn.small { width: auto; margin: 0; padding: 8px 12px; font-size: 0.875rem; flex: none; }
+.link-btn { border: 0; background: none; padding: 0; color: var(--green); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+
+.locate-btn {
+  border: 0; border-radius: 10px; height: 40px; padding: 0 14px;
+  background: #2a6fb0; color: #fff; font: 700 0.9375rem var(--font); cursor: pointer;
+}
+.locate-btn[aria-pressed="true"] { background: #1d5590; }
+.locate-btn:focus-visible, .field-marker:focus-visible, .link-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* The picture and its markers zoom together */
+.map-inner { position: relative; width: 100%; }
+.map-markers { position: absolute; inset: 0; }
+
+.field-marker {
+  position: absolute; transform: translate(calc(-100% - 2px), -50%); /* sits just left of the field name */
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2px solid #fff; background: var(--green); color: #fff;
+  font: 700 0.9375rem var(--font); display: grid; place-items: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,.35); cursor: pointer; padding: 0;
+}
+.field-marker.quiet { background: #8a8270; }
+.field-marker.soon { background: #e08a00; }
+.field-marker.live { background: #c8202a; }
+.field-marker.live::before {
+  content: ""; position: absolute; inset: -8px; border-radius: 50%;
+  border: 3px solid #c8202a; animation: live-pulse 1.6s ease-out infinite;
+}
+.field-marker .badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: #c8202a; color: #fff; border-radius: 6px; padding: 0 5px;
+  font-size: 0.625rem; letter-spacing: .5px; line-height: 1.5;
+}
+@keyframes live-pulse { from { transform: scale(.8); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+
+/* Calm mode: softer colours and no pulsing ring */
+html.calm .field-marker.live { background: #a5524f; }
+html.calm .field-marker.live .badge { background: #a5524f; }
+html.calm .field-marker.soon { background: #b98a3e; }
+html.calm .field-marker.live::before { animation: none; opacity: .6; border-color: #a5524f; }
+
+/* The blue "you are here" dot */
+.me-dot { position: absolute; width: 0; height: 0; pointer-events: none; }
+.me-dot[hidden] { display: none; }
+.me-accuracy {
+  position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+  border-radius: 50%; background: rgba(42,111,176,.18); border: 1px solid rgba(42,111,176,.5);
+  aspect-ratio: 1;
+}
+.me-centre {
+  position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%;
+  background: #2a6fb0; border: 3px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.25), 0 1px 4px rgba(0,0,0,.4);
+}
+.map-message { margin: -6px 16px 14px; padding: 8px 12px; border-radius: 10px; background: #e3eefa; color: #1d4f80; font-size: 0.9375rem; }
+.field-list { list-style: none; margin: 0; padding: 0; }
+.field-list li { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.field-list li:last-child { border-bottom: 0; }
+.field-list li.done { color: var(--muted); text-decoration: line-through; }
+.field-list .time { font-weight: 700; color: var(--green); margin-right: 4px; }
+.map-tools .locate-btn { width: auto; height: 40px; font-size: 0.9375rem; border: 0; color: #fff; background: #2a6fb0; }
+.map-tools .locate-btn[aria-pressed="true"] { background: #1d5590; }

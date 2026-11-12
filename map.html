@@ -11,11 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
   <!-- Easy-read font: the browser only downloads it if the Easy-read option is on -->
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=fallback" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=3">
-  <script src="js/translations.js?v=3"></script>
-  <script src="js/language.js?v=3"></script>
-  <script src="js/comfort.js?v=3"></script>
-  <script src="js/first-visit.js?v=3"></script>
+  <link rel="stylesheet" href="css/style.css?v=4">
+  <script src="js/translations.js?v=4"></script>
+  <script src="js/language.js?v=4"></script>
+  <script src="js/comfort.js?v=4"></script>
+  <script src="js/first-visit.js?v=4"></script>
 </head>
 <body>
 <div class="app">
@@ -37,15 +37,25 @@
     <p class="page-intro"><span data-i18n="map_intro"></span> <span data-i18n="map_labels_note"></span></p>
 
     <!-- Zoom buttons: app.js makes them work -->
+    <!-- LIVE NOW: what's happening at this moment (filled in by app.js) -->
+    <section class="card live-card" id="live-now" aria-live="polite"></section>
+
     <div class="map-tools">
+      <button type="button" class="locate-btn" id="locate-btn" data-i18n="locate_btn"></button>
       <span id="zoom-level">100%</span>
       <button type="button" id="zoom-out" data-i18n-attr="aria-label:zoom_out">−</button>
       <button type="button" id="zoom-in" data-i18n-attr="aria-label:zoom_in">+</button>
     </div>
 
     <div class="map-box" id="map-box">
-      <img id="site-map" src="images/site-map.svg" width="895" height="1316" alt="" data-i18n-attr="alt:map_alt">
+      <div class="map-inner" id="map-inner">
+        <img id="site-map" src="images/site-map.svg" width="895" height="1316" alt="" data-i18n-attr="alt:map_alt">
+        <div class="map-markers" id="map-markers"></div>
+        <div class="me-dot" id="me-dot" hidden><span class="me-accuracy" id="me-accuracy"></span><span class="me-centre"></span></div>
+      </div>
     </div>
+    <p class="map-message" id="map-message" aria-live="polite" hidden></p>
+    <section class="card field-info" id="field-info" aria-live="polite" hidden></section>
 
     <section class="card">
       <h2 data-i18n="places_h"></h2>
@@ -75,6 +85,7 @@
     </ul>
   </nav>
 </div>
-<script src="js/app.js?v=3"></script>
+<script src="js/programme.js?v=4"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>
