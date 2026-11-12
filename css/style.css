@@ -22,10 +22,58 @@
   --red: #b3261e;        /* emergency / lost child */
   --live: #19a34a;       /* "on now" in the timetable */
   --amber: #e08a00;      /* "starting soon" */
+  --edge: #857c69;       /* outlines of buttons and switches (3:1 contrast) */
+  --focus: #1a5fb4;      /* keyboard focus outline */
+  --alert-bg: #fff4c2;   /* pale yellow: draft notes, placeholders */
+  --alert-soft: #fffbe6; /* paler yellow: the safety tick-box row */
 
   --font: "Barlow", system-ui, sans-serif;
   --head: "Barlow Condensed", "Barlow", sans-serif;
 }
+
+/* ---------- 1b. Comfort settings ----------
+   comfort.js puts these classes on the <html> element, straight
+   away in the <head>, so the page is drawn the right way first
+   time with no flicker. */
+
+/* Calm visuals – softer, muted colours, like the prototype's calm mode.
+   Bright red and yellow are swapped for gentle versions. */
+html.calm {
+  --red: #8a4a46;
+  --amber: #b98a3e;
+  --live: #4f8a5f;
+  --yellow: #e8d48a;
+  --grass: #93a77a;
+  --alert-bg: #f3eedb;
+  --alert-soft: #f7f3e6;
+}
+/* …and nothing moves */
+html.calm *, html.calm *::before, html.calm *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html.calm .map-box img,
+html.calm .places .dot { filter: saturate(0.55) brightness(1.05); }
+html.calm .pill.live { background: #e3ece5; color: #34553c; }
+html.calm .pill.soon { background: #f3ecdc; color: #63502a; }
+
+/* Larger text – every text size in this file is in "rem", which is
+   a share of this one root size. Raise it and all text grows
+   together, while widths stay the same so it still fits a phone. */
+html { font-size: 100%; }              /* Normal: 16px */
+html.text-large { font-size: 112.5%; } /* Large: 18px */
+html.text-xl { font-size: 125%; }      /* Extra large: 20px */
+
+/* Easy-read font – Atkinson Hyperlegible, with more space between
+   letters, words and lines (like the prototype's easy-read). */
+html.easy-read {
+  --font: "Atkinson Hyperlegible", Verdana, sans-serif;
+  --head: "Atkinson Hyperlegible", Verdana, sans-serif;
+}
+html.easy-read body { letter-spacing: 0.03em; word-spacing: 0.08em; line-height: 1.7; }
+html.easy-read h1, html.easy-read h2, html.easy-read h3 { letter-spacing: 0.01em; line-height: 1.3; }
+html.easy-read .header-date { letter-spacing: 0.02em; }
 
 /* ---------- 2. Basics ---------- */
 * { box-sizing: border-box; }
@@ -35,9 +83,11 @@ html, body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font);
-  font-size: 16px;
   line-height: 1.45;
 }
+
+/* Buttons don't pick up the page font unless told to */
+button, input { font-family: inherit; }
 
 h1, h2, h3 { font-family: var(--head); line-height: 1.1; }
 
@@ -52,7 +102,7 @@ img { max-width: 100%; }
 }
 
 /* A clear outline when someone moves around with the keyboard */
-:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
 /* The whole app sits in a phone-width column, centred on bigger screens.
    The bottom padding stops the fixed nav bar covering the last bit of content. */
@@ -61,7 +111,7 @@ img { max-width: 100%; }
   margin: 0 auto;
   min-height: 100vh;
   background: var(--paper);
-  padding-bottom: 88px;
+  padding-bottom: 6rem; /* grows with the text size, like the nav bar */
 }
 
 /* ---------- 3. Header (logo + date) ---------- */
@@ -73,25 +123,43 @@ img { max-width: 100%; }
   top: 0;
   z-index: 20;
 }
-.header-row { display: flex; align-items: center; gap: 12px; }
+.header-row { display: flex; align-items: center; gap: 10px; }
 .header-logo { height: 58px; width: auto; display: block; }
 .header-date {
-  font: 700 13px/1.25 var(--head);
+  font: 700 0.8125rem/1.25 var(--head);
   color: var(--green);
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
 .header-date span { color: var(--brown); }
 
-/* Small language switch on the right of the header */
+/* Comfort button and language switch, stacked on the right of the header */
+.header-buttons {
+  margin-left: auto;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+}
+.comfort-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--green);
+  color: var(--cream);
+  font: 700 0.8125rem var(--font);
+  cursor: pointer;
+  white-space: nowrap;
+}
+/* Turns blue (like the prototype) when any comfort setting is on */
+.comfort-btn.is-on { background: #2a6fb0; color: #fff; }
+
+/* Small language switch */
 .lang-switch {
   margin-left: auto;
-  border: 1px solid var(--line);
+  border: 1px solid var(--edge);
   background: #fff;
   color: var(--green);
   border-radius: 8px;
   padding: 6px 10px;
-  font: 700 13px var(--font);
+  font: 700 0.8125rem var(--font);
   cursor: pointer;
   white-space: nowrap;
 }
@@ -100,9 +168,9 @@ img { max-width: 100%; }
 .draft-note {
   margin: 0;
   padding: 6px 16px;
-  background: #fff4c2;
+  background: var(--alert-bg);
   color: var(--brown);
-  font-size: 12.5px;
+  font-size: 0.7812rem;
   border-bottom: 1px solid var(--line);
 }
 .draft-note span { color: var(--muted); }
@@ -112,7 +180,7 @@ img { max-width: 100%; }
 main { padding: 4px 0 8px; }
 
 .page-title {
-  font-size: 28px;
+  font-size: 1.75rem;
   margin: 14px 16px 4px;
   color: var(--ink);
 }
@@ -126,13 +194,13 @@ main { padding: 4px 0 8px; }
   padding: 14px;
   margin: 0 16px 14px;
 }
-.card h2 { margin: 0 0 8px; font-size: 22px; color: var(--green); }
+.card h2 { margin: 0 0 8px; font-size: 1.375rem; color: var(--green); }
 .card p { margin: 0 0 8px; }
 .card p:last-child { margin-bottom: 0; }
 
 /* Small pale information box */
 .note {
-  font-size: 13.5px;
+  font-size: 0.8438rem;
   color: var(--muted);
   background: var(--light);
   border-radius: 8px;
@@ -143,7 +211,7 @@ main { padding: 4px 0 8px; }
 /* Text still waiting for the organisers to confirm.
    Search the HTML for "placeholder" to find every one. */
 .placeholder {
-  background: #fff4c2;
+  background: var(--alert-bg);
   border-bottom: 2px dashed var(--amber);
   padding: 0 3px;
   border-radius: 3px;
@@ -157,7 +225,7 @@ main { padding: 4px 0 8px; }
   border-radius: 10px;
   background: var(--green);
   color: #fff;
-  font: 700 15px var(--font);
+  font: 700 0.9375rem var(--font);
   padding: 13px;
   margin-top: 10px;
   text-align: center;
@@ -179,9 +247,10 @@ main { padding: 4px 0 8px; }
   gap: 14px;
 }
 .countdown b {
-  font: 800 46px/1 var(--head);
+  font: 800 2.875rem/1 var(--head);
   color: var(--yellow);
   min-width: 2ch;
+  flex: none; /* never squash the number into the words beside it */
   text-align: center;
 }
 
@@ -194,7 +263,7 @@ main { padding: 4px 0 8px; }
   border-radius: 12px;
   background: var(--light);
   display: grid; place-items: center;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 .expect b { display: block; }
 
@@ -214,9 +283,9 @@ main { padding: 4px 0 8px; }
   text-decoration: none;
   color: var(--ink);
 }
-.tile .icon { font-size: 26px; display: block; }
-.tile b { display: block; font: 700 19px var(--head); color: var(--green); margin-top: 4px; }
-.tile small { color: var(--muted); font-size: 13px; }
+.tile .icon { font-size: 1.625rem; display: block; }
+.tile b { display: block; font: 700 1.1875rem var(--head); color: var(--green); margin-top: 4px; }
+.tile small { color: var(--muted); font-size: 0.8125rem; }
 
 /* Simple two-column "label: value" facts list */
 .facts { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
@@ -228,37 +297,40 @@ main { padding: 4px 0 8px; }
   background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .slot { display: flex; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
 .slot:last-child { border-bottom: 0; }
-.slot .time { min-width: 58px; font: 700 20px var(--head); color: var(--green); }
+.slot .time { min-width: 58px; font: 700 1.25rem var(--head); color: var(--green); }
 .slot .what { flex: 1; }
 .slot .title { font-weight: 700; }
-.slot .where { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+.slot .where { font-size: 0.8438rem; color: var(--muted); margin-top: 2px; }
 .slot.key { background: var(--light); }
 
 /* Status labels added by app.js on the day itself */
 .pill {
   display: inline-block;
-  font-size: 11px; font-weight: 700;
+  font-size: 0.6875rem; font-weight: 700;
   padding: 2px 8px; border-radius: 6px;
   text-transform: uppercase; letter-spacing: 0.3px;
   margin-left: 6px; vertical-align: 2px;
 }
 .pill.live { background: #dcf5e3; color: #11713a; }
 .pill.soon { background: #fff0d6; color: #8a5300; }
-.slot.done { opacity: 0.5; }
+/* Finished items are greyed with the muted colour (not see-through),
+   so the text still passes the contrast check */
+.slot.done, .slot.done .time { color: var(--muted); }
 .slot.is-live { box-shadow: inset 4px 0 0 var(--live); }
 
 /* ---------- 7. Safety ---------- */
 /* Numbered rules with yellow number circles */
 .rules { counter-reset: rule; padding: 0; margin: 0; list-style: none; }
-.rules li { position: relative; padding: 10px 0 10px 42px; border-bottom: 1px solid var(--line); }
+.rules li { position: relative; padding: 10px 0 10px 2.4em; border-bottom: 1px solid var(--line); }
 .rules li:last-child { border-bottom: 0; }
 .rules li::before {
   counter-increment: rule;
   content: counter(rule);
   position: absolute; left: 0; top: 8px;
-  width: 30px; height: 30px; border-radius: 50%;
+  width: 1.875em; height: 1.875em; border-radius: 50%; /* "em" so the circle grows with the text */
   background: var(--yellow);
-  font: 800 16px var(--head);
+  color: var(--ink);
+  font: 800 1rem var(--head);
   display: grid; place-items: center;
 }
 
@@ -269,12 +341,12 @@ main { padding: 4px 0 8px; }
 
 /* ---------- 8. Site map ---------- */
 .map-tools { display: flex; gap: 8px; align-items: center; padding: 0 16px 10px; }
-.map-tools span { color: var(--muted); font-size: 13px; margin-right: auto; }
+.map-tools span { color: var(--muted); font-size: 0.8125rem; margin-right: auto; }
 .map-tools button {
   width: 40px; height: 40px;
-  border-radius: 10px; border: 1px solid var(--line);
+  border-radius: 10px; border: 1px solid var(--edge);
   background: #fff; color: var(--green);
-  font: 700 22px var(--font); cursor: pointer;
+  font: 700 1.375rem var(--font); cursor: pointer;
 }
 /* The map sits in a scrollable box so you can zoom in and drag around */
 .map-box {
@@ -293,7 +365,7 @@ main { padding: 4px 0 8px; }
 .places li:last-child { border-bottom: 0; }
 .places .dot {
   flex: none; width: 32px; height: 32px; border-radius: 50%;
-  display: grid; place-items: center; font-size: 16px; color: #fff;
+  display: grid; place-items: center; font-size: 1rem; color: #fff;
 }
 
 /* ---------- 9. Bottom navigation ---------- */
@@ -315,11 +387,11 @@ main { padding: 4px 0 8px; }
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   padding: 8px 2px 12px;
   color: var(--muted);
-  font-size: 11.5px; font-weight: 600;
+  font-size: 0.7188rem; font-weight: 600;
   text-decoration: none;
   text-align: center;
 }
-.bottom-nav .icon { font-size: 21px; line-height: 1.1; }
+.bottom-nav .icon { font-size: 1.3125rem; line-height: 1.1; }
 /* The page you are on is shown in green (set with aria-current="page") */
 .bottom-nav a[aria-current="page"] { color: var(--green); }
 .bottom-nav a[aria-current="page"] .label { border-bottom: 2px solid var(--green); }
@@ -343,10 +415,10 @@ main { padding: 4px 0 8px; }
 }
 .welcome-box { width: 100%; max-width: 360px; text-align: center; }
 .welcome-box img { width: 80%; height: auto; }
-.welcome-box h1 { font-size: 34px; color: var(--green); margin: 12px 0 6px; }
-.welcome-box p { margin: 0 0 18px; font-size: 17px; }
+.welcome-box h1 { font-size: 2.125rem; color: var(--green); margin: 12px 0 6px; }
+.welcome-box p { margin: 0 0 18px; font-size: 1.0625rem; }
 .welcome-box p span[lang="en"] { color: var(--muted); }
-.welcome-box .btn { font-size: 19px; padding: 16px; margin-top: 12px; }
+.welcome-box .btn { font-size: 1.1875rem; padding: 16px; margin-top: 12px; }
 
 /* ---------- 11. Safety rules pop-up ----------
    Built to be read outdoors in bright light: big text, black on
@@ -364,50 +436,114 @@ main { padding: 4px 0 8px; }
   max-width: 560px;
   margin: 0 auto;
   padding: 12px 16px calc(28px + env(safe-area-inset-bottom));
-  font-size: 19px;
+  font-size: 1.1875rem;
   line-height: 1.5;
 }
 .safety-top { display: flex; align-items: center; }
-.safety-icon { font-size: 34px; }
-.safety-box .lang-switch { font-size: 15px; padding: 8px 12px; border: 2px solid #111; color: #111; }
+.safety-icon { font-size: 2.125rem; }
+.safety-box .lang-switch { font-size: 0.9375rem; padding: 8px 12px; border: 2px solid #111; color: #111; }
 .safety-box .draft-note { margin: 10px 0 0; border-radius: 8px; }
-.safety-box h1 { font-size: 36px; color: #111; margin: 10px 0 6px; outline: none; }
+.safety-box h1 { font-size: 2.25rem; color: #111; margin: 10px 0 6px; outline: none; }
 .safety-intro { margin: 0 0 8px; font-weight: 600; }
 .safety-changed {
   margin: 0 0 10px; padding: 10px 12px;
-  background: #fff4c2; border: 2px solid #111; border-radius: 10px;
+  background: var(--alert-bg); border: 2px solid #111; border-radius: 10px;
   font-weight: 700;
 }
-.safety-box .rules li { padding: 12px 0 12px 48px; border-bottom: 2px solid #ddd; }
-.safety-box .rules li::before { width: 36px; height: 36px; font-size: 19px; top: 10px; color: #111; border: 2px solid #111; }
-.safety-box .note { font-size: 15px; color: #333; }
+.safety-box .rules li { padding: 12px 0 12px 2.55em; border-bottom: 2px solid #ddd; }
+.safety-box .rules li::before { width: 1.9em; height: 1.9em; font-size: 1.1875rem; top: 10px; color: #111; border: 2px solid #111; }
+.safety-box .note { font-size: 0.9375rem; color: #333; }
 
 /* The tick box row – the whole row is tappable */
 .accept-row {
   display: flex; gap: 14px; align-items: center;
   margin: 20px 0 0; padding: 14px;
   border: 3px solid #111; border-radius: 12px;
-  background: #fffbe6;
+  background: var(--alert-soft);
   font-weight: 700; cursor: pointer;
 }
 .accept-row input { width: 34px; height: 34px; flex: none; margin: 0; accent-color: var(--green); cursor: pointer; }
 
-.accept-btn { font-size: 20px; padding: 18px; margin-top: 14px; }
+.accept-btn { font-size: 1.25rem; padding: 18px; margin-top: 14px; }
 /* Before the box is ticked the button is greyed out and does nothing */
 .accept-btn:disabled {
   background: #e4e4e4; color: #444;
   border: 2px dashed #666;
   cursor: not-allowed;
 }
-.accept-hint { margin: 8px 0 0; text-align: center; font-size: 16px; color: #333; }
+.accept-hint { margin: 8px 0 0; text-align: center; font-size: 1rem; color: #333; }
 
 /* The safety rules on the Safety page – a little larger for outdoors */
-.rules li { font-size: 17.5px; }
+.rules li { font-size: 1.0938rem; }
 .accepted-note { margin: 10px 0 0; font-weight: 700; color: var(--green); }
 .accepted-note:empty { display: none; }
 
-/* ---------- 12. Footer ---------- */
-.site-footer { font-size: 12px; color: var(--muted); text-align: center; padding: 4px 16px 12px; }
+/* ---------- 12. Pop-up panels (Comfort settings and the one-off offer) ---------- */
+/* Dark see-through layer behind a panel; tapping it closes the panel */
+.scrim { position: fixed; inset: 0; z-index: 90; background: rgba(10, 20, 10, 0.5); }
+
+/* The panel slides up from the bottom, like the prototype */
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 91;
+  max-width: 560px; max-height: 88vh; overflow-y: auto;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+  padding: 16px 18px calc(24px + env(safe-area-inset-bottom));
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.2);
+  animation: sheet-up 0.25s ease-out;
+}
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+.sheet h2 { font-size: 1.5625rem; margin: 0 0 4px; padding-right: 52px; outline: none; }
+.sheet-intro { margin: 0 0 4px; color: var(--muted); font-size: 0.9375rem; }
+.sheet-close {
+  position: absolute; right: 14px; top: 12px;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--edge); background: var(--light); color: var(--ink);
+  font-size: 1.5rem; line-height: 1; cursor: pointer;
+}
+
+/* One option = title, one-line explanation, control */
+.option { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.option:last-of-type { border-bottom: 0; }
+.option-row { display: flex; align-items: center; gap: 12px; }
+.option-text { flex: 1; }
+.option-text b { display: block; font-size: 1.0625rem; }
+.option-text small { display: block; color: var(--muted); font-size: 0.875rem; line-height: 1.4; }
+.motion-note { margin: 8px 0 0; font-size: 0.875rem; color: var(--green); font-weight: 600; }
+
+/* On/off switch (a button with role="switch") */
+.switch {
+  flex: none; position: relative;
+  width: 56px; height: 32px; border-radius: 999px;
+  border: 0; background: var(--edge); cursor: pointer;
+}
+.switch::after {
+  content: ""; position: absolute; top: 4px; left: 4px;
+  width: 24px; height: 24px; border-radius: 50%; background: #fff;
+  transition: left 0.15s;
+}
+.switch[aria-checked="true"] { background: var(--green); }
+.switch[aria-checked="true"]::after { left: 28px; }
+
+/* Normal / Large / Extra large – real radio buttons, styled as big boxes */
+.size-choice { display: flex; gap: 8px; margin-top: 10px; }
+.size-choice label { flex: 1; position: relative; }
+.size-choice input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.size-choice span {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 6px 4px;
+  border: 2px solid var(--edge); border-radius: 10px;
+  background: #fff; color: var(--ink);
+  font-weight: 700; text-align: center; line-height: 1.15;
+}
+.size-choice label:nth-child(2) span { font-size: 1.125rem; }
+.size-choice label:nth-child(3) span { font-size: 1.25rem; }
+.size-choice input:checked + span { background: var(--green); border-color: var(--green); color: #fff; }
+.size-choice input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* ---------- 13. Footer ---------- */
+.site-footer { font-size: 0.75rem; color: var(--muted); text-align: center; padding: 4px 16px 12px; }
 
 /* Respect people who've asked their device for less motion */
 @media (prefers-reduced-motion: reduce) {

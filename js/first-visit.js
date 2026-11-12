@@ -1,5 +1,6 @@
 /* =========================================================
    First-visit steps: language → safety rules → the app
+                      (→ a one-off offer of Comfort settings)
    ---------------------------------------------------------
    Every page loads this file (in the <head>), so it works
    even if someone opens a direct link to the map or the
@@ -11,6 +12,8 @@
    2. Rules not accepted yet,   → show the safety rules pop-up
       or the rules have changed?
    3. Both done?                → show the page.
+   4. Then, once only           → offer the Comfort settings
+                                   (comfort.js)
 
    The acceptance is remembered on the device, together with
    the rules' version number (SAFETY_RULES_VERSION in
@@ -146,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.documentElement.classList.remove("gated");
     if (app) app.inert = false;
     fillSafetyBits(); // so the Safety page shows "✓ You have accepted…"
+    offerComfortSettings(); // only appears once per device
   }
 
   function safetyStep() {
@@ -153,7 +157,10 @@ document.addEventListener("DOMContentLoaded", function () {
     else showSafetyScreen(showTheApp);
   }
 
-  if (hasChosenLanguage() && hasAcceptedRules()) return; // nothing to do
+  if (hasChosenLanguage() && hasAcceptedRules()) {
+    offerComfortSettings(); // e.g. people who accepted before this was added
+    return;
+  }
 
   if (app) app.inert = true; // nothing behind the pop-ups can be tapped or tabbed to
 

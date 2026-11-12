@@ -25,6 +25,7 @@ see are exactly what the browser gets. The look matches the design prototype in
 | `js/translations.js` | **Every word on the site, in English and Welsh side by side.** Edit wording here. |
 | `js/language.js` | Remembers the visitor's language, shows the first-visit welcome screen, fills each page with the right words, and runs the header language switch. |
 | `js/first-visit.js` | Runs the first-visit steps in order on every page – language choice, then the safety rules pop-up, then the app – and remembers that the rules were accepted. |
+| `js/comfort.js` | The 🌿 Comfort settings: remembers the visitor's choices, applies them before the page is drawn, builds the settings panel and the one-off offer after the safety rules. |
 | `css/style.css` | How everything looks: colours, fonts, cards, the header and the bottom nav. Shared by every page. |
 | `js/app.js` | The small interactive bits: the "days to go" countdown, "Live now" labels on the timetable on the day, and the map zoom buttons. |
 | `images/logo.png` | The Silage Day logo. |
@@ -81,6 +82,27 @@ number**. To change the rules:
 
 Everyone will then be asked to accept the new rules on their next visit. The
 Safety page shows the same rules (built from the same entries) at any time.
+
+## Comfort settings (🌿 Comfort / Cysur)
+
+A button in the header on every page opens three options, saved on the device:
+
+- **Calm visuals** – softer, muted colours; no animations or flashing; no bright
+  red or yellow. (Like the prototype's calm mode.)
+- **Larger text** – Normal, Large or Extra large. Every text size in
+  `css/style.css` is in `rem` (a share of one root size), so they all grow
+  together while the layout keeps fitting the phone.
+- **Easy-read font** – Atkinson Hyperlegible with extra spacing between
+  letters, words and lines.
+
+The settings are applied in the `<head>` (as classes on `<html>`: `calm`,
+`text-large`, `text-xl`, `easy-read`) so there's no flicker. If the phone is
+set to "reduce motion", animations are switched off automatically. After the
+safety rules, visitors are offered the settings once.
+
+Accessibility was checked with the axe tool (WCAG 2.2 A/AA) on every page, in
+both languages, with the settings off and all on: no failures. If you add new
+colours, keep normal text at a contrast of at least 4.5:1.
 
 ## Things still to confirm
 
