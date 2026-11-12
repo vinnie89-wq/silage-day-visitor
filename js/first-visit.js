@@ -19,9 +19,39 @@
    the rules' version number (SAFETY_RULES_VERSION in
    translations.js). Raise that number and everyone is asked
    again.
+
+   ON THE EVENT DAY (EVENT_DAY below) the rules are asked for
+   EVERY time the app is freshly opened – an acceptance from
+   before the day doesn't count, and an acceptance on the day
+   only lasts until the browser tab is closed.
+   To test this before the day, add ?eventday=1 to the address,
+   e.g. index.html?eventday=1 (and ?eventday=0 to switch it off).
    ========================================================= */
 
 const SAFETY_STORAGE_KEY = "silageday-safety-accepted";
+const SAFETY_SESSION_KEY = "silageday-safety-today"; // only lasts until the tab is closed
+const EVENT_DAY = "2027-09-11"; // the show date – year-month-day
+
+// Is today the event day (on the visitor's phone clock)?
+function isEventDay() {
+  try {
+    const test = new URLSearchParams(location.search).get("eventday");
+    if (test === "1") sessionStorage.setItem("silageday-test-eventday", "1");
+    if (test === "0") sessionStorage.removeItem("silageday-test-eventday");
+    if (sessionStorage.getItem("silageday-test-eventday") === "1") return true;
+  } catch (e) { /* ignore */ }
+  const now = new Date();
+  const today = now.getFullYear() + "-" +
+    String(now.getMonth() + 1).padStart(2, "0") + "-" +
+    String(now.getDate()).padStart(2, "0");
+  return today === EVENT_DAY;
+}
+
+// Has the visitor accepted since opening the app today?
+function acceptedThisVisit() {
+  try { return sessionStorage.getItem(SAFETY_SESSION_KEY) === String(SAFETY_RULES_VERSION); }
+  catch (e) { return false; }
+}
 
 // Which version of the rules did this device accept? (null = never)
 function loadAcceptedVersion() {
@@ -36,12 +66,14 @@ function loadAcceptedVersion() {
 let acceptedVersion = loadAcceptedVersion();
 
 function hasAcceptedRules() {
-  return acceptedVersion === SAFETY_RULES_VERSION;
+  if (acceptedVersion !== SAFETY_RULES_VERSION) return false;
+  return isEventDay() ? acceptedThisVisit() : true;
 }
 
 function saveAcceptance() {
   acceptedVersion = SAFETY_RULES_VERSION;
   try { localStorage.setItem(SAFETY_STORAGE_KEY, String(SAFETY_RULES_VERSION)); } catch (e) { /* not saved – they'll be asked again next time */ }
+  try { sessionStorage.setItem(SAFETY_SESSION_KEY, String(SAFETY_RULES_VERSION)); } catch (e) { /* ignore */ }
 }
 
 // If either step is still to do, hide the page straight away –
@@ -80,7 +112,9 @@ document.addEventListener("languagechange", fillSafetyBits);
 
 /* ---------- The safety rules pop-up ---------- */
 function showSafetyScreen(whenDone) {
-  const rulesChanged = acceptedVersion !== null; // accepted an older version before
+  const eventDay = isEventDay();
+  // Accepted an older version of the rules before (not just "it's the day")
+  const rulesChanged = acceptedVersion !== null && acceptedVersion !== SAFETY_RULES_VERSION;
 
   const screen = document.createElement("div");
   screen.className = "safety-screen";
@@ -98,7 +132,8 @@ function showSafetyScreen(whenDone) {
       '</div>' +
       '<p class="draft-note" data-i18n="draft_note"></p>' +
       '<h1 id="safety-screen-title" tabindex="-1" data-i18n="safety_h"></h1>' +
-      (rulesChanged ? '<p class="safety-changed" data-i18n="safety_updated"></p>' : '') +
+      (eventDay ? '<p class="safety-changed" data-i18n="safety_today"></p>'
+                : rulesChanged ? '<p class="safety-changed" data-i18n="safety_updated"></p>' : '') +
       '<p class="safety-intro" data-i18n="safety_intro"></p>' +
       '<ol class="rules" data-rules-list></ol>' +
       '<p class="note" data-i18n="disclaimer"></p>' +
