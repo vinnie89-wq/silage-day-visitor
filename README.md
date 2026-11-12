@@ -120,6 +120,6 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=2` on the end (e.g. `js/app.js?v=2`).
-When you change a CSS or JS file, bump that number on every page (to `?v=3`, etc.)
+Each page links to them with `?v=3` on the end (e.g. `js/app.js?v=3`).
+When you change a CSS or JS file, bump that number on every page (to `?v=4`, etc.)
 so visitors get the new version straight away instead of an old saved copy.

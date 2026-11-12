@@ -200,6 +200,8 @@ const TRANSLATIONS = {
   safety_check:    { en: "I have read and will follow the safety rules",
                      cy: "Rwyf wedi darllen a byddaf yn dilyn y rheolau diogelwch" },
   safety_accept:   { en: "Accept and continue", cy: "Derbyn a pharhau" },
+  safety_today:    { en: "It's Silage Day! Please read and accept the safety rules each time you open the app today.",
+                     cy: "Mae'n Ddiwrnod Silwair! Darllenwch a derbyniwch y rheolau diogelwch bob tro y byddwch yn agor yr ap heddiw." },
   safety_hint:     { en: "Tick the box above to continue.", cy: "Ticiwch y blwch uchod i barhau." },
   safety_updated:  { en: "The safety rules have changed. Please read and accept them again.",
                      cy: "Mae'r rheolau diogelwch wedi newid. Darllenwch a derbyniwch nhw eto." },
