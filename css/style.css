@@ -1,0 +1,308 @@
+/* =========================================================
+   Pembrokeshire Silage Day – visitor app styles
+   One stylesheet shared by every page.
+   ========================================================= */
+
+/* ---------- 1. Colours and fonts ----------
+   These "custom properties" (variables) hold the colours and
+   fonts in one place. Change a value here and it changes
+   everywhere it is used. They match the design prototype. */
+:root {
+  --green: #2c4a1c;      /* dark farm green – headings, buttons */
+  --green2: #3f6b25;     /* mid green */
+  --grass: #7fa83a;      /* bright grass green – small accents */
+  --light: #f1edd8;      /* pale straw – notes, soft buttons */
+  --paper: #fbf8ee;      /* page background */
+  --cream: #f6efcf;      /* header background */
+  --brown: #3a2614;      /* header underline, dark text accents */
+  --ink: #2a1e12;        /* main text colour */
+  --muted: #6b6250;      /* quieter text */
+  --line: #e2dcc4;       /* thin borders */
+  --yellow: #f5c518;     /* highlights, rule numbers */
+  --red: #b3261e;        /* emergency / lost child */
+  --live: #19a34a;       /* "on now" in the timetable */
+  --amber: #e08a00;      /* "starting soon" */
+
+  --font: "Barlow", system-ui, sans-serif;
+  --head: "Barlow Condensed", "Barlow", sans-serif;
+}
+
+/* ---------- 2. Basics ---------- */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+h1, h2, h3 { font-family: var(--head); line-height: 1.1; }
+
+a { color: var(--green); }
+
+img { max-width: 100%; }
+
+/* Hide things visually but keep them for screen readers */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* A clear outline when someone moves around with the keyboard */
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+/* The whole app sits in a phone-width column, centred on bigger screens.
+   The bottom padding stops the fixed nav bar covering the last bit of content. */
+.app {
+  max-width: 560px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--paper);
+  padding-bottom: 88px;
+}
+
+/* ---------- 3. Header (logo + date) ---------- */
+.site-header {
+  background: var(--cream);
+  border-bottom: 3px solid var(--brown);
+  padding: 8px 16px 10px;
+  position: sticky;      /* stays at the top as you scroll */
+  top: 0;
+  z-index: 20;
+}
+.header-row { display: flex; align-items: center; gap: 12px; }
+.header-logo { height: 58px; width: auto; display: block; }
+.header-date {
+  font: 700 13px/1.25 var(--head);
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.header-date span { color: var(--brown); }
+
+/* ---------- 4. Page content ---------- */
+main { padding: 4px 0 8px; }
+
+.page-title {
+  font-size: 28px;
+  margin: 14px 16px 4px;
+  color: var(--ink);
+}
+.page-intro { margin: 0 16px 14px; color: var(--muted); }
+
+/* White rounded boxes used for most content */
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  margin: 0 16px 14px;
+}
+.card h2 { margin: 0 0 8px; font-size: 22px; color: var(--green); }
+.card p { margin: 0 0 8px; }
+.card p:last-child { margin-bottom: 0; }
+
+/* Small pale information box */
+.note {
+  font-size: 13.5px;
+  color: var(--muted);
+  background: var(--light);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 10px 0 0;
+}
+
+/* Text still waiting for the organisers to confirm.
+   Search the HTML for "placeholder" to find every one. */
+.placeholder {
+  background: #fff4c2;
+  border-bottom: 2px dashed var(--amber);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+
+/* Big tappable buttons (links styled as buttons) */
+.btn {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background: var(--green);
+  color: #fff;
+  font: 700 15px var(--font);
+  padding: 13px;
+  margin-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn.alt { background: var(--light); color: var(--green); }
+.btn.red { background: var(--red); }
+
+/* ---------- 5. Home page ---------- */
+.countdown {
+  margin: 14px 16px;
+  background: var(--green);
+  color: var(--cream);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.countdown b {
+  font: 800 46px/1 var(--head);
+  color: var(--yellow);
+  min-width: 2ch;
+  text-align: center;
+}
+
+/* Icon + heading + text rows ("What to expect") */
+.expect { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.expect:last-child { border-bottom: 0; padding-bottom: 0; }
+.expect .icon {
+  flex: none;
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: var(--light);
+  display: grid; place-items: center;
+  font-size: 22px;
+}
+.expect b { display: block; }
+
+/* Grid of shortcut tiles on the home page */
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 16px 14px;
+}
+.tile {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.tile .icon { font-size: 26px; display: block; }
+.tile b { display: block; font: 700 19px var(--head); color: var(--green); margin-top: 4px; }
+.tile small { color: var(--muted); font-size: 13px; }
+
+/* Simple two-column "label: value" facts list */
+.facts { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.facts dt { font-weight: 700; color: var(--muted); }
+.facts dd { margin: 0; }
+
+/* ---------- 6. Timetable ---------- */
+.timetable { list-style: none; margin: 0 16px 14px; padding: 0;
+  background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.slot { display: flex; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.slot:last-child { border-bottom: 0; }
+.slot .time { min-width: 58px; font: 700 20px var(--head); color: var(--green); }
+.slot .what { flex: 1; }
+.slot .title { font-weight: 700; }
+.slot .where { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+.slot.key { background: var(--light); }
+
+/* Status labels added by app.js on the day itself */
+.pill {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 6px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  margin-left: 6px; vertical-align: 2px;
+}
+.pill.live { background: #dcf5e3; color: #11713a; }
+.pill.soon { background: #fff0d6; color: #8a5300; }
+.slot.done { opacity: 0.5; }
+.slot.is-live { box-shadow: inset 4px 0 0 var(--live); }
+
+/* ---------- 7. Safety ---------- */
+/* Numbered rules with yellow number circles */
+.rules { counter-reset: rule; padding: 0; margin: 0; list-style: none; }
+.rules li { position: relative; padding: 10px 0 10px 42px; border-bottom: 1px solid var(--line); }
+.rules li:last-child { border-bottom: 0; }
+.rules li::before {
+  counter-increment: rule;
+  content: counter(rule);
+  position: absolute; left: 0; top: 8px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--yellow);
+  font: 800 16px var(--head);
+  display: grid; place-items: center;
+}
+
+.alert-card { border: 2px solid var(--red); }
+.alert-card h2 { color: var(--red); }
+.steps { margin: 0; padding-left: 22px; }
+.steps li { padding: 4px 0; }
+
+/* ---------- 8. Site map ---------- */
+.map-tools { display: flex; gap: 8px; align-items: center; padding: 0 16px 10px; }
+.map-tools span { color: var(--muted); font-size: 13px; margin-right: auto; }
+.map-tools button {
+  width: 40px; height: 40px;
+  border-radius: 10px; border: 1px solid var(--line);
+  background: #fff; color: var(--green);
+  font: 700 22px var(--font); cursor: pointer;
+}
+/* The map sits in a scrollable box so you can zoom in and drag around */
+.map-box {
+  margin: 0 16px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f7f5ef;
+  overflow: auto;
+  height: 70vh;
+  -webkit-overflow-scrolling: touch;
+}
+.map-box img { display: block; width: 100%; max-width: none; height: auto; }
+
+.places { list-style: none; margin: 0; padding: 0; }
+.places li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.places li:last-child { border-bottom: 0; }
+.places .dot {
+  flex: none; width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 16px; color: #fff;
+}
+
+/* ---------- 9. Bottom navigation ---------- */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  /* extra space on phones with a "home bar" at the bottom */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.bottom-nav ul {
+  display: flex;
+  max-width: 560px;
+  margin: 0 auto; padding: 0;
+  list-style: none;
+}
+.bottom-nav li { flex: 1; }
+.bottom-nav a {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 8px 2px 12px;
+  color: var(--muted);
+  font-size: 11.5px; font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+}
+.bottom-nav .icon { font-size: 21px; line-height: 1.1; }
+/* The page you are on is shown in green (set with aria-current="page") */
+.bottom-nav a[aria-current="page"] { color: var(--green); }
+.bottom-nav a[aria-current="page"] .label { border-bottom: 2px solid var(--green); }
+
+/* ---------- 10. Footer ---------- */
+.site-footer { font-size: 12px; color: var(--muted); text-align: center; padding: 4px 16px 12px; }
+
+/* Respect people who've asked their device for less motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
