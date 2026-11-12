@@ -1,76 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cy">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Safety – Pembrokeshire Silage Day 2027</title>
+  <title data-i18n="title_safety">Safety – Pembrokeshire Silage Day 2027</title>
   <meta name="theme-color" content="#2c4a1c">
   <link rel="icon" href="images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/translations.js"></script>
+  <script src="js/language.js"></script>
 </head>
 <body>
 <div class="app">
 
   <header class="site-header">
     <div class="header-row">
-      <a href="index.html"><img class="header-logo" src="images/logo.png" alt="Pembrokeshire Silage Day – home" width="116" height="58"></a>
-      <p class="header-date">A Day of Grass!<br><span>Sat 11 Sept 2027<br>10am – 5pm</span></p>
+      <a href="index.html"><img class="header-logo" src="images/logo.png" alt="" data-i18n-attr="alt:logo_alt" width="116" height="58"></a>
+      <p class="header-date" data-i18n="header_date"></p>
+      <button type="button" class="lang-switch" id="lang-switch" data-i18n="switch_text" data-i18n-attr="aria-label:switch_label;lang:switch_lang"></button>
     </div>
   </header>
+  <p class="draft-note" data-i18n="draft_note"></p>
 
   <main>
-    <h1 class="page-title">Safety rules</h1>
-    <p class="page-intro">Working farm machinery is big, fast and loud. Please read these before entering the demonstration fields.</p>
+    <h1 class="page-title" data-i18n="safety_h"></h1>
+    <p class="page-intro" data-i18n="safety_intro"></p>
 
     <section class="card">
       <ol class="rules">
-        <li>Stay behind the rope lines and barriers at every demonstration field.</li>
-        <li>Never approach a working machine. Wait until it has stopped and the operator signals it's safe.</li>
-        <li>Keep children with you and under close supervision at all times.</li>
-        <li>Dogs must be on a short lead and kept away from demonstration fields.</li>
-        <li>Watch for moving vehicles on the lanes between fields. Machinery has right of way.</li>
-        <li>Follow instructions from marshals in hi-vis.</li>
-        <li>No drones may be flown over the site.</li>
-        <li>Wear sturdy footwear. Fields can be uneven and wet.</li>
-        <li>In an emergency, tell any marshal or go to First Aid in Field 5.</li>
+        <li data-i18n="rule_1"></li>
+        <li data-i18n="rule_2"></li>
+        <li data-i18n="rule_3"></li>
+        <li data-i18n="rule_4"></li>
+        <li data-i18n="rule_5"></li>
+        <li data-i18n="rule_6"></li>
+        <li data-i18n="rule_7"></li>
+        <li data-i18n="rule_8"></li>
+        <li data-i18n="rule_9"></li>
       </ol>
-      <p class="note"><span class="placeholder">Draft wording</span> – Visitors attend at their own risk. Agricultural machinery is working on this site. The organisers will replace this with their own disclaimer.</p>
+      <p class="note" data-i18n="disclaimer"></p>
     </section>
 
     <section class="card alert-card" id="lost-child">
-      <h2>🧒 Lost child?</h2>
-      <p>Stay calm – lost children are usually found within minutes.</p>
+      <h2 data-i18n="lost_h"></h2>
+      <p data-i18n="lost_intro"></p>
       <ol class="steps">
-        <li>Tell the nearest marshal or member of staff in hi-vis straight away. They'll radio event control.</li>
-        <li>Go to the lost children point at <strong>First Aid in Field 5</strong>.</li>
-        <li>Keep your phone with you and switched on.</li>
-        <li>Found a child on their own? Stay with them and tell a marshal. Don't leave the site with them.</li>
+        <li data-i18n="lost_1"></li>
+        <li data-i18n="lost_2"></li>
+        <li data-i18n="lost_3"></li>
+        <li data-i18n="lost_4"></li>
       </ol>
       <!-- "tel:" links open the phone's dialler when tapped -->
-      <a class="btn red" href="tel:999">In an emergency call 999</a>
-      <p class="note">Event control number: <span class="placeholder">to be added by the organisers</span></p>
+      <a class="btn red" href="tel:999" data-i18n="call_999"></a>
+      <p class="note" data-i18n="control_note"></p>
     </section>
 
     <section class="card">
-      <h2>Noise and comfort</h2>
-      <p>Harvesters and mowers are very loud. Free ear defenders can be borrowed at the information point by the pay gate.</p>
-      <p>There's a quiet area by Car Park 1, away from the machines, if anyone needs a break.</p>
-      <a class="btn alt" href="map.html">Show these on the site map</a>
+      <h2 data-i18n="noise_h"></h2>
+      <p data-i18n="noise_1"></p>
+      <p data-i18n="noise_2"></p>
+      <a class="btn alt" href="map.html" data-i18n="noise_btn"></a>
     </section>
   </main>
 
-  <footer class="site-footer">Pembrokeshire Silage Day · Saturday 11 September 2027</footer>
+  <footer class="site-footer" data-i18n="footer"></footer>
 
-  <nav class="bottom-nav" aria-label="Main">
+  <nav class="bottom-nav" data-i18n-attr="aria-label:nav_label">
     <ul>
-      <li><a href="index.html"><span class="icon" aria-hidden="true">🏠</span><span class="label">Home</span></a></li>
-      <li><a href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><span class="label">Timetable</span></a></li>
-      <li><a href="safety.html" aria-current="page"><span class="icon" aria-hidden="true">⚠️</span><span class="label">Safety</span></a></li>
-      <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label">Map</span></a></li>
-      <li><a href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><span class="label">Getting here</span></a></li>
+      <li><a href="index.html"><span class="icon" aria-hidden="true">🏠</span><span class="label" data-i18n="nav_home"></span></a></li>
+      <li><a href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><span class="label" data-i18n="nav_timetable"></span></a></li>
+      <li><a href="safety.html" aria-current="page"><span class="icon" aria-hidden="true">⚠️</span><span class="label" data-i18n="nav_safety"></span></a></li>
+      <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label" data-i18n="nav_map"></span></a></li>
+      <li><a href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><span class="label" data-i18n="nav_getting"></span></a></li>
     </ul>
   </nav>
 </div>
