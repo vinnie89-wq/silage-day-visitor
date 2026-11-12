@@ -67,12 +67,12 @@ it (set `draft_note`'s `cy` to `""`) once a fluent Welsh speaker has checked it.
 ## Things still to confirm
 
 Anything waiting for the organisers is wrapped in `<span class="placeholder">…</span>`
-and shows with a yellow highlight. Search the HTML files for `placeholder` to find
-them all: charity name, entry and parking prices, accessible parking, the event
+and shows with a yellow highlight. Search `js/translations.js` for `placeholder` to
+find them all (each one appears in both languages): charity name, entry and parking prices, accessible parking, the event
 control phone number, the safety disclaimer wording, and the provisional timetable.
 
 ## Changing the timetable
 
 Open `timetable.html`. Each demonstration is one `<li class="slot">` block with
 `data-start` and `data-end` times (24-hour clock, e.g. `14:30`). Copy a block to
-add a new one; the "Live now" labels update automatically on the day.
+add a new one, and add its name in both languages to `js/translations.js`; the "Live now" labels update automatically on the day.
