@@ -17,6 +17,14 @@
    Welsh speaker before the event.
    ========================================================= */
 
+/* ---------- Safety rules version ----------
+   If you change the safety rules below (rule_1, rule_2 …), add 1 to
+   this number. Everyone – including people who accepted before –
+   will then be asked to read and accept the new rules again.
+   Rules are numbered rule_1, rule_2, rule_3 … with no gaps; to add
+   a rule, add the next number (e.g. rule_10) in both languages. */
+const SAFETY_RULES_VERSION = 1;
+
 const TRANSLATIONS = {
 
   /* ---------- Welcome screen (shown once, in both languages) ---------- */
@@ -154,6 +162,15 @@ const TRANSLATIONS = {
                      cy: "Mewn argyfwng, dywedwch wrth unrhyw stiward neu ewch i'r Cymorth Cyntaf yng Nghae 5." },
   disclaimer:      { en: "<span class=\"placeholder\">Draft wording</span> – Visitors attend at their own risk. Agricultural machinery is working on this site. The organisers will replace this with their own disclaimer.",
                      cy: "<span class=\"placeholder\">Geiriad drafft</span> – Mae ymwelwyr yn mynychu ar eu menter eu hunain. Mae peiriannau amaethyddol yn gweithio ar y safle. Bydd y trefnwyr yn rhoi eu hymwadiad eu hunain yn ei le." },
+  // The safety pop-up shown before using the app
+  safety_check:    { en: "I have read and will follow the safety rules",
+                     cy: "Rwyf wedi darllen a byddaf yn dilyn y rheolau diogelwch" },
+  safety_accept:   { en: "Accept and continue", cy: "Derbyn a pharhau" },
+  safety_hint:     { en: "Tick the box above to continue.", cy: "Ticiwch y blwch uchod i barhau." },
+  safety_updated:  { en: "The safety rules have changed. Please read and accept them again.",
+                     cy: "Mae'r rheolau diogelwch wedi newid. Darllenwch a derbyniwch nhw eto." },
+  safety_accepted: { en: "✓ You have accepted these rules on this device.",
+                     cy: "✓ Rydych wedi derbyn y rheolau hyn ar y ddyfais hon." },
   lost_h:          { en: "🧒 Lost child?", cy: "🧒 Plentyn ar goll?" },
   lost_intro:      { en: "Stay calm – lost children are usually found within minutes.",
                      cy: "Peidiwch â chynhyrfu – fel arfer mae plant coll yn cael eu darganfod o fewn munudau." },
