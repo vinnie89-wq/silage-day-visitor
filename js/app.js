@@ -13,25 +13,26 @@ const SHOW_DAY = new Date(2027, 8, 11);
 const daysLeftEl = document.getElementById("days-left");
 const countdownTextEl = document.getElementById("countdown-text");
 
-if (daysLeftEl && countdownTextEl) {
+function updateCountdown() {
   // Compare calendar days only (ignore the time of day)
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const msPerDay = 24 * 60 * 60 * 1000;
   const days = Math.round((SHOW_DAY - today) / msPerDay);
 
+  // t("key") comes from language.js and gives the words in the chosen language
   if (days > 1) {
     daysLeftEl.textContent = days;
-    // (the text already says "days to go until Saturday 11 September 2027")
+    countdownTextEl.innerHTML = t("countdown_days");
   } else if (days === 1) {
     daysLeftEl.textContent = "1";
-    countdownTextEl.innerHTML = "day to go – see you<br><strong>tomorrow!</strong>";
+    countdownTextEl.innerHTML = t("countdown_one");
   } else if (days === 0) {
     daysLeftEl.textContent = "🚜";
-    countdownTextEl.innerHTML = "<strong>It's Silage Day!</strong><br>Gates open at 10am";
+    countdownTextEl.innerHTML = t("countdown_today");
   } else {
     daysLeftEl.textContent = "🌾";
-    countdownTextEl.innerHTML = "<strong>Thank you for coming!</strong><br>See you next year";
+    countdownTextEl.innerHTML = t("countdown_after");
   }
 }
 
@@ -70,10 +71,10 @@ function updateTimetable() {
       row.classList.add("done");
     } else if (nowMins >= start) {
       row.classList.add("is-live");
-      label = "Live now";
+      label = t("pill_live");
       kind = "live";
     } else if (start - nowMins <= 30) {
-      label = "Starts in " + (start - nowMins) + " min";
+      label = t("pill_soon", { n: start - nowMins });
       kind = "soon";
     }
 
@@ -87,9 +88,18 @@ function updateTimetable() {
 }
 
 if (timetableEl) {
-  updateTimetable();
   setInterval(updateTimetable, 60 * 1000); // check again every minute
 }
+
+
+/* ---------- Redo the language-dependent bits ----------
+   language.js sends a "languagechange" message when the page
+   is first filled in, and again whenever the visitor switches
+   language. Each time, we redo the countdown and timetable labels. */
+document.addEventListener("languagechange", function () {
+  if (daysLeftEl && countdownTextEl) updateCountdown();
+  if (timetableEl) updateTimetable();
+});
 
 
 /* ---------- 3. Map zoom buttons (map page) ----------

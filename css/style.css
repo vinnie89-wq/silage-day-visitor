@@ -83,6 +83,31 @@ img { max-width: 100%; }
 }
 .header-date span { color: var(--brown); }
 
+/* Small language switch on the right of the header */
+.lang-switch {
+  margin-left: auto;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--green);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: 700 13px var(--font);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* "Draft translation" note – only has words in Welsh, so it hides itself in English */
+.draft-note {
+  margin: 0;
+  padding: 6px 16px;
+  background: #fff4c2;
+  color: var(--brown);
+  font-size: 12.5px;
+  border-bottom: 1px solid var(--line);
+}
+.draft-note span { color: var(--muted); }
+.draft-note:empty { display: none; }
+
 /* ---------- 4. Page content ---------- */
 main { padding: 4px 0 8px; }
 
@@ -299,7 +324,29 @@ main { padding: 4px 0 8px; }
 .bottom-nav a[aria-current="page"] { color: var(--green); }
 .bottom-nav a[aria-current="page"] .label { border-bottom: 2px solid var(--green); }
 
-/* ---------- 10. Footer ---------- */
+/* ---------- 10. Welcome / language choice screen ---------- */
+/* Until a language is chosen, hide the page itself so the
+   welcome screen really is the first thing a visitor sees. */
+.needs-language .app { visibility: hidden; }
+
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--cream);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+.welcome-box { width: 100%; max-width: 360px; text-align: center; }
+.welcome-box img { width: 80%; height: auto; }
+.welcome-box h1 { font-size: 34px; color: var(--green); margin: 12px 0 6px; }
+.welcome-box p { margin: 0 0 18px; font-size: 17px; }
+.welcome-box p span[lang="en"] { color: var(--muted); }
+.welcome-box .btn { font-size: 19px; padding: 16px; margin-top: 12px; }
+
+/* ---------- 11. Footer ---------- */
 .site-footer { font-size: 12px; color: var(--muted); text-align: center; padding: 4px 16px 12px; }
 
 /* Respect people who've asked their device for less motion */

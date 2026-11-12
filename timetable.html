@@ -1,88 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cy">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Timetable – Pembrokeshire Silage Day 2027</title>
+  <title data-i18n="title_timetable">Timetable – Pembrokeshire Silage Day 2027</title>
   <meta name="theme-color" content="#2c4a1c">
   <link rel="icon" href="images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/translations.js"></script>
+  <script src="js/language.js"></script>
 </head>
 <body>
 <div class="app">
 
   <header class="site-header">
     <div class="header-row">
-      <a href="index.html"><img class="header-logo" src="images/logo.png" alt="Pembrokeshire Silage Day – home" width="116" height="58"></a>
-      <p class="header-date">A Day of Grass!<br><span>Sat 11 Sept 2027<br>10am – 5pm</span></p>
+      <a href="index.html"><img class="header-logo" src="images/logo.png" alt="" data-i18n-attr="alt:logo_alt" width="116" height="58"></a>
+      <p class="header-date" data-i18n="header_date"></p>
+      <button type="button" class="lang-switch" id="lang-switch" data-i18n="switch_text" data-i18n-attr="aria-label:switch_label;lang:switch_lang"></button>
     </div>
   </header>
+  <p class="draft-note" data-i18n="draft_note"></p>
 
   <main>
-    <h1 class="page-title">Timetable</h1>
-    <p class="page-intro">Saturday 11 September 2027. On the day, demonstrations happening now are marked <strong>Live now</strong>.</p>
+    <h1 class="page-title" data-i18n="nav_timetable"></h1>
+    <p class="page-intro" data-i18n="tt_intro"></p>
 
     <div class="card">
-      <p class="note" style="margin:0"><span class="placeholder">Provisional</span> – times and fields will be confirmed closer to the day. Machinery works to the weather, so times can move a little.</p>
+      <p class="note" style="margin:0" data-i18n="tt_note"></p>
     </div>
 
     <!-- Each row has data-start and data-end (24-hour clock).
          app.js reads these on the day to show "Live now" or "Starts soon".
-         To change the timetable, just edit the rows below. -->
+         The words for each row are in js/translations.js. -->
     <ol class="timetable" id="timetable">
       <li class="slot key" data-start="10:00" data-end="10:30">
         <div class="time">10:00</div>
-        <div class="what"><div class="title">Gates open</div><div class="where">Pay gate, by the car parks</div></div>
+        <div class="what"><div class="title" data-i18n="slot_gates"></div><div class="where" data-i18n="slot_gates_w"></div></div>
       </li>
       <li class="slot" data-start="10:30" data-end="11:00">
         <div class="time">10:30</div>
-        <div class="what"><div class="title">Mowing</div><div class="where">Field 6</div></div>
+        <div class="what"><div class="title" data-i18n="slot_mowing"></div><div class="where" data-i18n="field_6"></div></div>
       </li>
       <li class="slot" data-start="11:10" data-end="11:40">
         <div class="time">11:10</div>
-        <div class="what"><div class="title">Tedding</div><div class="where">Field 8</div></div>
+        <div class="what"><div class="title" data-i18n="slot_tedding"></div><div class="where" data-i18n="field_8"></div></div>
       </li>
       <li class="slot" data-start="11:50" data-end="12:20">
         <div class="time">11:50</div>
-        <div class="what"><div class="title">Vintage raking</div><div class="where">Field 11</div></div>
+        <div class="what"><div class="title" data-i18n="slot_vraking"></div><div class="where" data-i18n="field_11"></div></div>
       </li>
       <li class="slot" data-start="13:10" data-end="13:40">
         <div class="time">13:10</div>
-        <div class="what"><div class="title">Vintage harvesting</div><div class="where">Field 11</div></div>
+        <div class="what"><div class="title" data-i18n="slot_vharvest"></div><div class="where" data-i18n="field_11"></div></div>
       </li>
       <li class="slot" data-start="14:30" data-end="15:00">
         <div class="time">14:30</div>
-        <div class="what"><div class="title">Forage harvesting</div><div class="where">Field 9</div></div>
+        <div class="what"><div class="title" data-i18n="slot_forage"></div><div class="where" data-i18n="field_9"></div></div>
       </li>
       <li class="slot" data-start="14:30" data-end="15:00">
         <div class="time">14:30</div>
-        <div class="what"><div class="title">Buckraking the clamp</div><div class="where">Field 10</div></div>
+        <div class="what"><div class="title" data-i18n="slot_buckrake"></div><div class="where" data-i18n="field_10"></div></div>
       </li>
       <li class="slot key" data-start="17:00" data-end="17:30">
         <div class="time">17:00</div>
-        <div class="what"><div class="title">Show closes</div><div class="where">Please drive slowly on the lanes – thank you for coming!</div></div>
+        <div class="what"><div class="title" data-i18n="slot_close"></div><div class="where" data-i18n="slot_close_w"></div></div>
       </li>
     </ol>
 
     <section class="card">
-      <h2>All day</h2>
-      <div class="expect"><div class="icon" aria-hidden="true">🍔</div><div><b>Food, drink and trade stands</b>North side of Field 5, the main show field.</div></div>
-      <div class="expect"><div class="icon" aria-hidden="true">🚜</div><div><b>Machinery on display</b>Have a closer look at the machines in Field 5 between demonstrations.</div></div>
+      <h2 data-i18n="allday_h"></h2>
+      <div class="expect"><div class="icon" aria-hidden="true">🍔</div><div><b data-i18n="allday_food_b"></b><span data-i18n="allday_food"></span></div></div>
+      <div class="expect"><div class="icon" aria-hidden="true">🚜</div><div><b data-i18n="allday_mach_b"></b><span data-i18n="allday_mach"></span></div></div>
     </section>
   </main>
 
-  <footer class="site-footer">Pembrokeshire Silage Day · Saturday 11 September 2027</footer>
+  <footer class="site-footer" data-i18n="footer"></footer>
 
-  <nav class="bottom-nav" aria-label="Main">
+  <nav class="bottom-nav" data-i18n-attr="aria-label:nav_label">
     <ul>
-      <li><a href="index.html"><span class="icon" aria-hidden="true">🏠</span><span class="label">Home</span></a></li>
-      <li><a href="timetable.html" aria-current="page"><span class="icon" aria-hidden="true">🕒</span><span class="label">Timetable</span></a></li>
-      <li><a href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><span class="label">Safety</span></a></li>
-      <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label">Map</span></a></li>
-      <li><a href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><span class="label">Getting here</span></a></li>
+      <li><a href="index.html"><span class="icon" aria-hidden="true">🏠</span><span class="label" data-i18n="nav_home"></span></a></li>
+      <li><a href="timetable.html" aria-current="page"><span class="icon" aria-hidden="true">🕒</span><span class="label" data-i18n="nav_timetable"></span></a></li>
+      <li><a href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><span class="label" data-i18n="nav_safety"></span></a></li>
+      <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label" data-i18n="nav_map"></span></a></li>
+      <li><a href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><span class="label" data-i18n="nav_getting"></span></a></li>
     </ul>
   </nav>
 </div>
