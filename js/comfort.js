@@ -1,10 +1,11 @@
 /* =========================================================
    Comfort settings (🌿 Comfort / Cysur)
    ---------------------------------------------------------
-   Three choices that make the app easier to use:
+   Choices that make the app easier to use (laid out as in the prototype):
      • Calm visuals  – softer colours, nothing moving or flashing
      • Larger text   – Normal, Large or Extra large
-     • Easy-read font – Atkinson Hyperlegible with extra spacing
+     • Easy-read text – Atkinson Hyperlegible with extra spacing
+     • Language       – Cymraeg / English (moved here from the header)
 
    How it works:
    - The choices are saved on the device (localStorage).
@@ -114,7 +115,6 @@ function openComfortPanel() {
   const html =
     '<button type="button" class="sheet-close" data-close data-i18n-attr="aria-label:close"><span aria-hidden="true">×</span></button>' +
     '<h2 id="comfort-title" data-i18n="comfort_h"></h2>' +
-    '<p class="sheet-intro" data-i18n="comfort_intro"></p>' +
 
     // 1. Calm visuals – an on/off switch
     '<div class="option">' +
@@ -125,7 +125,15 @@ function openComfortPanel() {
       (phoneReducesMotion() ? '<p class="motion-note" data-i18n="motion_note"></p>' : '') +
     '</div>' +
 
-    // 2. Larger text – three choices (radio buttons)
+    // 2. Easy-read text – an on/off switch
+    '<div class="option">' +
+      '<div class="option-row">' +
+        '<div class="option-text"><b id="easy-l" data-i18n="easy_l"></b><small id="easy-d" data-i18n="easy_d"></small></div>' +
+        '<button type="button" class="switch" role="switch" id="easy-switch" aria-labelledby="easy-l" aria-describedby="easy-d"></button>' +
+      '</div>' +
+    '</div>' +
+
+    // 3. Text size – three choices (radio buttons)
     '<div class="option" role="radiogroup" aria-labelledby="size-l" aria-describedby="size-d">' +
       '<div class="option-text"><b id="size-l" data-i18n="size_l"></b><small id="size-d" data-i18n="size_d"></small></div>' +
       '<div class="size-choice">' +
@@ -135,15 +143,18 @@ function openComfortPanel() {
       '</div>' +
     '</div>' +
 
-    // 3. Easy-read font – an on/off switch
+    // 4. Language – the same choice as on the welcome screen
     '<div class="option">' +
       '<div class="option-row">' +
-        '<div class="option-text"><b id="easy-l" data-i18n="easy_l"></b><small id="easy-d" data-i18n="easy_d"></small></div>' +
-        '<button type="button" class="switch" role="switch" id="easy-switch" aria-labelledby="easy-l" aria-describedby="easy-d"></button>' +
+        '<div class="option-text"><b id="lang-l" data-i18n="lang_l"></b></div>' +
+        '<div class="lang-chips" role="group" aria-labelledby="lang-l">' +
+          '<button type="button" class="chip" data-lang="cy" lang="cy">Cymraeg</button>' +
+          '<button type="button" class="chip" data-lang="en" lang="en">English</button>' +
+        '</div>' +
       '</div>' +
     '</div>' +
 
-    '<button type="button" class="btn" data-close data-i18n="comfort_done"></button>';
+    '<p class="note sunflower" data-i18n="sunflower"></p>';
 
   // aria-expanded tells screen readers whether the panel is open
   const comfortBtn = document.getElementById("comfort-btn");
@@ -159,6 +170,11 @@ function openComfortPanel() {
     panel.querySelectorAll('input[name="text-size"]').forEach(function (radio) {
       radio.checked = radio.value === comfort.size;
     });
+    panel.querySelectorAll(".lang-chips .chip").forEach(function (chip) {
+      const on = chip.dataset.lang === (currentLang || "cy");
+      chip.classList.toggle("on", on);
+      chip.setAttribute("aria-pressed", String(on));
+    });
   }
   showCurrent();
 
@@ -171,6 +187,9 @@ function openComfortPanel() {
   });
   panel.querySelectorAll('input[name="text-size"]').forEach(function (radio) {
     radio.addEventListener("change", function () { changeComfort("size", radio.value); });
+  });
+  panel.querySelectorAll(".lang-chips .chip").forEach(function (chip) {
+    chip.addEventListener("click", function () { setLanguage(chip.dataset.lang); showCurrent(); });
   });
 }
 

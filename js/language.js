@@ -5,7 +5,8 @@
    2. Shows the "Croeso! Welcome!" screen on the first visit.
    3. Fills every element that has data-i18n="key" with the
       words for that key from translations.js.
-   4. Makes the header switch change language.
+   4. Makes a header switch change language, if a page has one
+      (the language choice now lives in the Comfort panel).
 
    This file is loaded in the <head>, straight after
    translations.js. The order of the first-visit screens

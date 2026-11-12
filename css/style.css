@@ -151,6 +151,34 @@ img { max-width: 100%; }
 /* Turns blue (like the prototype) when any comfort setting is on */
 .comfort-btn.is-on { background: #2a6fb0; color: #fff; }
 
+/* Safety button – white with green text, under the Comfort button (as in the prototype) */
+.safety-btn {
+  border: 1px solid var(--edge);
+  background: #fff;
+  color: var(--green);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: 700 0.8125rem var(--font);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.safety-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* Language chips in the Comfort panel */
+.lang-chips { display: flex; gap: 8px; }
+.chip {
+  border: 1px solid var(--edge);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: 600 0.9375rem var(--font);
+  cursor: pointer;
+}
+.chip.on { background: var(--green); border-color: var(--green); color: #fff; }
+.chip:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.note.sunflower { margin-top: 14px; }
+
 /* Small language switch */
 .lang-switch {
   margin-left: auto;
@@ -495,6 +523,7 @@ main { padding: 4px 0 8px; }
 }
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
 .sheet h2 { font-size: 1.5625rem; margin: 0 0 4px; padding-right: 52px; outline: none; }
+.sheet h2 { padding-right: 52px; }
 .sheet-intro { margin: 0 0 4px; color: var(--muted); font-size: 0.9375rem; }
 .sheet-close {
   position: absolute; right: 14px; top: 12px;
