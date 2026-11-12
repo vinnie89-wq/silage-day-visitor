@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="js/translations.js"></script>
   <script src="js/language.js"></script>
+  <script src="js/first-visit.js"></script>
 </head>
 <body>
 <div class="app">
@@ -30,17 +31,10 @@
     <p class="page-intro" data-i18n="safety_intro"></p>
 
     <section class="card">
-      <ol class="rules">
-        <li data-i18n="rule_1"></li>
-        <li data-i18n="rule_2"></li>
-        <li data-i18n="rule_3"></li>
-        <li data-i18n="rule_4"></li>
-        <li data-i18n="rule_5"></li>
-        <li data-i18n="rule_6"></li>
-        <li data-i18n="rule_7"></li>
-        <li data-i18n="rule_8"></li>
-        <li data-i18n="rule_9"></li>
-      </ol>
+      <!-- The rules themselves are in js/translations.js (rule_1, rule_2 …).
+           first-visit.js puts them in here, the same as in the pop-up. -->
+      <ol class="rules" data-rules-list></ol>
+      <p class="accepted-note" data-accepted-note></p>
       <p class="note" data-i18n="disclaimer"></p>
     </section>
 

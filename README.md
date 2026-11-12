@@ -24,6 +24,7 @@ see are exactly what the browser gets. The look matches the design prototype in
 | `index.html` … `getting-here.html` | One file per page: the words and the structure. Each has the same header (logo and date) and the same bottom navigation bar. |
 | `js/translations.js` | **Every word on the site, in English and Welsh side by side.** Edit wording here. |
 | `js/language.js` | Remembers the visitor's language, shows the first-visit welcome screen, fills each page with the right words, and runs the header language switch. |
+| `js/first-visit.js` | Runs the first-visit steps in order on every page – language choice, then the safety rules pop-up, then the app – and remembers that the rules were accepted. |
 | `css/style.css` | How everything looks: colours, fonts, cards, the header and the bottom nav. Shared by every page. |
 | `js/app.js` | The small interactive bits: the "days to go" countdown, "Live now" labels on the timetable on the day, and the map zoom buttons. |
 | `images/logo.png` | The Silage Day logo. |
@@ -63,6 +64,23 @@ then put `data-i18n="your_key"` on the element in the HTML.
 
 ⚠ The Welsh is a draft. A note at the top of every Welsh page says so – remove
 it (set `draft_note`'s `cy` to `""`) once a fluent Welsh speaker has checked it.
+
+## Safety rules pop-up
+
+After choosing a language, every visitor must tick "I have read and will follow
+the safety rules" and press "Accept and continue" before they can use the app.
+This happens on whichever page they open first, so a direct link to the map or
+timetable still shows the language choice and the rules first.
+
+The acceptance is remembered on the device along with the rules' **version
+number**. To change the rules:
+
+1. Edit `rule_1`, `rule_2` … in `js/translations.js` (both languages). To add a
+   rule, add the next number, e.g. `rule_10` – no gaps.
+2. Add 1 to `SAFETY_RULES_VERSION` at the top of the same file.
+
+Everyone will then be asked to accept the new rules on their next visit. The
+Safety page shows the same rules (built from the same entries) at any time.
 
 ## Things still to confirm
 

@@ -8,8 +8,8 @@
    4. Makes the header switch change language.
 
    This file is loaded in the <head>, straight after
-   translations.js, so it can hide the page before it's
-   drawn if the visitor hasn't chosen a language yet.
+   translations.js. The order of the first-visit screens
+   (language, then safety rules) is run by first-visit.js.
    ========================================================= */
 
 const LANG_STORAGE_KEY = "silageday-language";
@@ -30,13 +30,12 @@ function saveLanguage(lang) {
 }
 
 let currentLang = loadSavedLanguage();
-
-// No choice yet? Mark the page so the CSS keeps it hidden
-// until the welcome screen has been answered.
-if (!currentLang) {
-  document.documentElement.classList.add("needs-language");
-}
 document.documentElement.lang = currentLang || "cy";
+
+// Has the visitor picked a language yet? (first-visit.js asks this)
+function hasChosenLanguage() {
+  return currentLang !== null;
+}
 
 
 /* Look up the words for a key in the current language.
@@ -94,11 +93,10 @@ function setLanguage(lang) {
 
 /* ---------- The welcome screen ----------
    Built here rather than written into every page. It's shown
-   in both languages at once, with Welsh first. */
-function showWelcomeScreen() {
-  const app = document.querySelector(".app");
-  if (app) app.inert = true; // the page behind can't be tapped or tabbed to
-
+   in both languages at once, with Welsh first.
+   "whenDone" is what to do next (first-visit.js passes in
+   "show the safety rules"). */
+function showWelcomeScreen(whenDone) {
   const screen = document.createElement("div");
   screen.className = "welcome-screen";
   screen.setAttribute("role", "dialog");
@@ -117,8 +115,7 @@ function showWelcomeScreen() {
     button.addEventListener("click", function () {
       setLanguage(button.dataset.choose);
       screen.remove();
-      if (app) app.inert = false;
-      document.documentElement.classList.remove("needs-language");
+      whenDone();
     });
   });
 
@@ -138,6 +135,4 @@ document.addEventListener("DOMContentLoaded", function () {
       setLanguage(currentLang === "cy" ? "en" : "cy");
     });
   }
-
-  if (!currentLang) showWelcomeScreen();
 });
