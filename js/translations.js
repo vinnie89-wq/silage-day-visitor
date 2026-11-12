@@ -38,7 +38,8 @@ const TRANSLATIONS = {
                      cy: "Diwrnod o Borfa!<br><span>Sad 11 Medi 2027<br>10yb – 5yh</span>" },
   // The header switch shows the OTHER language, so it's written in that language
   switch_text:     { en: "Cymraeg", cy: "English" },
-  switch_label:    { en: "Newid i'r Gymraeg", cy: "Switch to English" },
+  // Spoken label: starts with the visible word, so voice control ("tap Cymraeg") works
+  switch_label:    { en: "Cymraeg – newid i'r Gymraeg", cy: "English – switch to English" },
   switch_lang:     { en: "cy", cy: "en" },
   draft_note:      { en: "",
                      cy: "Cyfieithiad drafft – i'w wirio gan siaradwr Cymraeg rhugl.<br><span lang=\"en\">Draft translation – to be checked by a fluent Welsh speaker.</span>" },
@@ -50,6 +51,35 @@ const TRANSLATIONS = {
   nav_getting:     { en: "Getting here", cy: "Cyrraedd yma" },
   footer:          { en: "Pembrokeshire Silage Day · Saturday 11 September 2027",
                      cy: "Diwrnod Silwair Sir Benfro · Dydd Sadwrn 11 Medi 2027" },
+
+  /* ---------- Comfort settings (🌿 button in the header) ---------- */
+  // The 🌿 is hidden from screen readers so they just say "Comfort" / "Cysur"
+  comfort_btn:     { en: "<span aria-hidden=\"true\">🌿</span> Comfort", cy: "<span aria-hidden=\"true\">🌿</span> Cysur" },
+  comfort_h:       { en: "Comfort settings", cy: "Gosodiadau cysur" },
+  comfort_intro:   { en: "Your choices are saved on this device and work on every page.",
+                     cy: "Caiff eich dewisiadau eu cadw ar y ddyfais hon ac maen nhw'n gweithio ar bob tudalen." },
+  calm_l:          { en: "Calm visuals", cy: "Golwg tawel" },
+  calm_d:          { en: "Softer, muted colours with no animations, flashing or bright red and yellow alerts.",
+                     cy: "Lliwiau meddalach a thawelach, heb animeiddio, fflachio na rhybuddion coch a melyn llachar." },
+  motion_note:     { en: "Your phone is set to reduce motion, so animations are already off.",
+                     cy: "Mae eich ffôn wedi'i osod i leihau symudiad, felly mae animeiddiadau eisoes i ffwrdd." },
+  size_l:          { en: "Larger text", cy: "Testun mwy" },
+  size_d:          { en: "Make all the words bigger – the page still fits your phone.",
+                     cy: "Gwneud yr holl eiriau'n fwy – mae'r dudalen yn dal i ffitio'ch ffôn." },
+  size_normal:     { en: "Normal", cy: "Arferol" },
+  size_large:      { en: "Large", cy: "Mawr" },
+  size_xl:         { en: "Extra large", cy: "Mawr iawn" },
+  easy_l:          { en: "Easy-read font", cy: "Ffont hawdd ei ddarllen" },
+  easy_d:          { en: "A clearer font (Atkinson Hyperlegible) with more space between letters and lines.",
+                     cy: "Ffont cliriach (Atkinson Hyperlegible) gyda mwy o le rhwng llythrennau a llinellau." },
+  comfort_done:    { en: "Done", cy: "Gorffen" },
+  close:           { en: "Close", cy: "Cau" },
+  // Offered once, after the safety rules
+  offer_h:         { en: "Need a calmer or larger view?", cy: "Angen golwg tawelach neu fwy?" },
+  offer_text:      { en: "You can change this any time with the 🌿 Comfort button at the top of the screen.",
+                     cy: "Gallwch newid hyn unrhyw bryd gyda'r botwm 🌿 Cysur ar frig y sgrin." },
+  offer_yes:       { en: "Change comfort settings", cy: "Newid gosodiadau cysur" },
+  offer_no:        { en: "No thanks", cy: "Dim diolch" },
 
   /* ---------- Home page ---------- */
   title_home:      { en: "Pembrokeshire Silage Day 2027", cy: "Diwrnod Silwair Sir Benfro 2027" },
