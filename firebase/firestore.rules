@@ -1,0 +1,66 @@
+rules_version = '2';
+
+// =========================================================
+// Who can do what with the visitor photos.
+// Paste this into: Firebase console → Firestore Database → Rules,
+// put the organisers' Google email addresses in the list below,
+// then press Publish.
+//
+//   pending/{id} – new photos waiting to be checked (small picture)
+//   full/{id}    – the bigger picture for each photo
+//   gallery/{id} – approved photos everyone can see
+// =========================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ✏️ The organisers who can approve photos (their Google account emails)
+    function isOrganiser() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in [
+          "organiser1@example.com",
+          "organiser2@example.com"
+        ];
+    }
+
+    // Any visitor (signed in anonymously by the app) can ADD a photo,
+    // but can't read, change or delete anyone's – not even their own.
+    function isNewPhoto() {
+      let d = request.resource.data;
+      return request.auth != null
+        && d.keys().hasOnly(["thumb", "w", "h", "uid", "lang", "createdAt"])
+        && d.uid == request.auth.uid
+        && d.thumb is string && d.thumb.size() < 120000
+        && d.thumb.matches("^data:image/jpeg;base64,.*")
+        && d.createdAt == request.time;
+    }
+
+    match /pending/{id} {
+      allow create: if isNewPhoto();
+      allow read, delete: if isOrganiser();
+    }
+
+    match /full/{id} {
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(["image", "uid"])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.image is string
+        && request.resource.data.image.size() < 900000
+        && !exists(/databases/$(database)/documents/full/$(id));
+      // Big pictures can be seen once approved (or by organisers while checking)
+      allow read: if isOrganiser() || exists(/databases/$(database)/documents/gallery/$(id));
+      allow delete: if isOrganiser();
+    }
+
+    match /gallery/{id} {
+      allow read: if true;
+      allow create, update, delete: if isOrganiser();
+    }
+
+    // Everything else is closed
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

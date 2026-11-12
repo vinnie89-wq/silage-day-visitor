@@ -653,3 +653,40 @@ html.calm .field-marker.live::before { animation: none; opacity: .6; border-colo
 .field-list .time { font-weight: 700; color: var(--green); margin-right: 4px; }
 .map-tools .locate-btn { width: auto; height: 40px; font-size: 0.9375rem; border: 0; color: #fff; background: #2a6fb0; }
 .map-tools .locate-btn[aria-pressed="true"] { background: #1d5590; }
+
+
+/* ---------- Photos ---------- */
+.upload-pick {
+  display: block; position: relative; text-align: center; cursor: pointer;
+  border: 2px dashed var(--edge); border-radius: 14px; padding: 18px 12px; background: var(--light);
+}
+.upload-pick .big { display: block; font: 700 1.25rem var(--head); color: var(--green); }
+.upload-pick .small { display: block; font-size: 0.875rem; color: var(--muted); margin-top: 2px; }
+.upload-pick input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.upload-pick:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+.chosen { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; }
+.chosen img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; }
+.chosen p { width: 100%; margin: 4px 0 0; font-size: 0.875rem; color: var(--muted); }
+.upload-card .accept-row { margin-top: 12px; }
+.upload-status { margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; background: #e3eefa; color: #1d4f80; font-size: 0.9375rem; }
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.gallery .thumb { padding: 0; border: 0; background: var(--light); aspect-ratio: 1; border-radius: 6px; overflow: hidden; cursor: pointer; }
+.gallery .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery .thumb:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.gallery-empty { margin: 0; color: var(--muted); }
+#gallery-more { margin-top: 12px; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 60; background: rgba(20,16,10,.92);
+  display: flex; align-items: center; justify-content: center; padding: 56px 12px 24px;
+}
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; }
+.lightbox .sheet-close { position: absolute; top: 12px; right: 12px; }
+.lightbox-loading { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; color: #eee; font-size: 0.875rem; margin: 0; }
+.lightbox-loading[hidden] { display: none; }
+
+/* Organisers' approval page */
+.approve-card img { width: 100%; border-radius: 10px; display: block; }
+.approve-card .small { color: var(--muted); font-size: 0.8125rem; margin: 6px 0; }
+.approve-btns { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.approve-btns .btn { width: auto; flex: 1; margin: 0; }
