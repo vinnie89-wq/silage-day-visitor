@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pembrokeshire Silage Day 2027</title>
+  <meta name="description" content="Visitor guide for Pembrokeshire Silage Day – Saturday 11 September 2027, near Haverfordwest.">
+  <meta name="theme-color" content="#2c4a1c">
+  <link rel="icon" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER: logo and date – the same on every page -->
+  <header class="site-header">
+    <div class="header-row">
+      <a href="index.html"><img class="header-logo" src="images/logo.png" alt="Pembrokeshire Silage Day – home" width="116" height="58"></a>
+      <p class="header-date">A Day of Grass!<br><span>Sat 11 Sept 2027<br>10am – 5pm</span></p>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="visually-hidden">Pembrokeshire Silage Day 2027</h1>
+
+    <!-- Countdown: app.js fills in the number of days -->
+    <div class="countdown" id="countdown">
+      <b id="days-left">–</b>
+      <div id="countdown-text">days to go until<br><strong>Saturday 11 September 2027</strong></div>
+    </div>
+
+    <section class="card">
+      <h2>Welcome</h2>
+      <p>Pembrokeshire Silage Day is a charity day out where you can watch real silage-making machinery at work – mowing, tedding, raking, harvesting and clamping – from modern harvesters to lovingly kept vintage tractors.</p>
+      <p>Raising money for <span class="placeholder">charity name to be confirmed</span>.</p>
+    </section>
+
+    <section class="card">
+      <h2>Key facts</h2>
+      <dl class="facts">
+        <dt>Date</dt><dd>Saturday 11 September 2027</dd>
+        <dt>Open</dt><dd>10am – 5pm</dd>
+        <dt>Where</dt><dd>Slade Hall Farm, near Haverfordwest, SA61 2UX</dd>
+        <dt>Entry</dt><dd><span class="placeholder">Prices to be confirmed</span> – pay at the gate</dd>
+        <dt>Dogs</dt><dd>Welcome on a short lead, kept away from the demonstration fields</dd>
+      </dl>
+    </section>
+
+    <!-- Shortcut tiles to the other pages -->
+    <nav class="tiles" aria-label="Quick links">
+      <a class="tile" href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><b>Timetable</b><small>What's on and when</small></a>
+      <a class="tile" href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><b>Safety</b><small>Please read before you go in</small></a>
+      <a class="tile" href="map.html"><span class="icon" aria-hidden="true">🗺️</span><b>Site map</b><small>Fields, food and toilets</small></a>
+      <a class="tile" href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><b>Getting here</b><small>Directions and parking</small></a>
+    </nav>
+
+    <section class="card">
+      <h2>What to expect</h2>
+      <div class="expect"><div class="icon" aria-hidden="true">🚗</div><div><b>Arriving</b>Follow the signs from the A487 by the Rising Sun Inn. Parking is in Car Park 1 or 2.</div></div>
+      <div class="expect"><div class="icon" aria-hidden="true">🎟️</div><div><b>The pay gate</b>Pay as you come in, by the car parks. Card and cash welcome.</div></div>
+      <div class="expect"><div class="icon" aria-hidden="true">🚜</div><div><b>Big, loud machines</b>Harvesters and mowers are very loud and move quickly. Everyone stays behind the rope lines.</div></div>
+      <div class="expect"><div class="icon" aria-hidden="true">🍔</div><div><b>Food &amp; toilets</b>The food village and toilets (including accessible) are in Field 5, the main show field.</div></div>
+      <div class="expect"><div class="icon" aria-hidden="true">🌿</div><div><b>Need a break?</b>There's a quiet area away from the machines, and free ear defenders to borrow at the information point.</div></div>
+      <div class="expect"><div class="icon" aria-hidden="true">🌻</div><div><b>Here to help</b>Our staff recognise the Hidden Disabilities Sunflower lanyard – just ask if you need anything.</div></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">Pembrokeshire Silage Day · Saturday 11 September 2027</footer>
+
+  <!-- BOTTOM NAVIGATION – the same on every page.
+       aria-current="page" marks the page you're on (it shows in green). -->
+  <nav class="bottom-nav" aria-label="Main">
+    <ul>
+      <li><a href="index.html" aria-current="page"><span class="icon" aria-hidden="true">🏠</span><span class="label">Home</span></a></li>
+      <li><a href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><span class="label">Timetable</span></a></li>
+      <li><a href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><span class="label">Safety</span></a></li>
+      <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label">Map</span></a></li>
+      <li><a href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><span class="label">Getting here</span></a></li>
+    </ul>
+  </nav>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
