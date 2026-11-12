@@ -11,11 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
   <!-- Easy-read font: the browser only downloads it if the Easy-read option is on -->
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=fallback" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=3">
-  <script src="js/translations.js?v=3"></script>
-  <script src="js/language.js?v=3"></script>
-  <script src="js/comfort.js?v=3"></script>
-  <script src="js/first-visit.js?v=3"></script>
+  <link rel="stylesheet" href="css/style.css?v=4">
+  <script src="js/translations.js?v=4"></script>
+  <script src="js/language.js?v=4"></script>
+  <script src="js/comfort.js?v=4"></script>
+  <script src="js/first-visit.js?v=4"></script>
 </head>
 <body>
 <div class="app">
@@ -40,42 +40,11 @@
       <p class="note" style="margin:0" data-i18n="tt_note"></p>
     </div>
 
-    <!-- Each row has data-start and data-end (24-hour clock).
-         app.js reads these on the day to show "Live now" or "Starts soon".
-         The words for each row are in js/translations.js. -->
+    <!-- The rows come from the PROGRAMME list in js/programme.js
+         (times and fields) and js/translations.js (the words).
+         On the day app.js adds "Live now" / "Starts in…" labels. -->
     <ol class="timetable" id="timetable">
-      <li class="slot key" data-start="10:00" data-end="10:30">
-        <div class="time">10:00</div>
-        <div class="what"><div class="title" data-i18n="slot_gates"></div><div class="where" data-i18n="slot_gates_w"></div></div>
-      </li>
-      <li class="slot" data-start="10:30" data-end="11:00">
-        <div class="time">10:30</div>
-        <div class="what"><div class="title" data-i18n="slot_mowing"></div><div class="where" data-i18n="field_6"></div></div>
-      </li>
-      <li class="slot" data-start="11:10" data-end="11:40">
-        <div class="time">11:10</div>
-        <div class="what"><div class="title" data-i18n="slot_tedding"></div><div class="where" data-i18n="field_8"></div></div>
-      </li>
-      <li class="slot" data-start="11:50" data-end="12:20">
-        <div class="time">11:50</div>
-        <div class="what"><div class="title" data-i18n="slot_vraking"></div><div class="where" data-i18n="field_11"></div></div>
-      </li>
-      <li class="slot" data-start="13:10" data-end="13:40">
-        <div class="time">13:10</div>
-        <div class="what"><div class="title" data-i18n="slot_vharvest"></div><div class="where" data-i18n="field_11"></div></div>
-      </li>
-      <li class="slot" data-start="14:30" data-end="15:00">
-        <div class="time">14:30</div>
-        <div class="what"><div class="title" data-i18n="slot_forage"></div><div class="where" data-i18n="field_9"></div></div>
-      </li>
-      <li class="slot" data-start="14:30" data-end="15:00">
-        <div class="time">14:30</div>
-        <div class="what"><div class="title" data-i18n="slot_buckrake"></div><div class="where" data-i18n="field_10"></div></div>
-      </li>
-      <li class="slot key" data-start="17:00" data-end="17:30">
-        <div class="time">17:00</div>
-        <div class="what"><div class="title" data-i18n="slot_close"></div><div class="where" data-i18n="slot_close_w"></div></div>
-      </li>
+      <!-- Filled in from js/programme.js -->
     </ol>
 
     <section class="card">
@@ -97,6 +66,7 @@
     </ul>
   </nav>
 </div>
-<script src="js/app.js?v=3"></script>
+<script src="js/programme.js?v=4"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>
