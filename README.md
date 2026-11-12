@@ -120,6 +120,43 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=4` on the end (e.g. `js/app.js?v=4`).
-When you change a CSS or JS file, bump that number on every page (to `?v=5`, etc.)
+Each page links to them with `?v=5` on the end (e.g. `js/app.js?v=5`).
+When you change a CSS or JS file, bump that number on every page (to `?v=6`, etc.)
 so visitors get the new version straight away instead of an old saved copy.
+
+## Photos – setting up Firebase
+
+Visitor photos are saved in **Firebase** (Google's free online database). Until it's set up,
+the Photos page just says photo sharing is "coming soon". Setting it up takes about 15 minutes:
+
+1. Go to **console.firebase.google.com**, sign in with a Google account and click **Create a project**.
+   Call it e.g. `silage-day`. You can switch Google Analytics **off**.
+2. **Build → Firestore Database → Create database.** Choose the location **europe-west2 (London)**
+   and **Start in production mode**.
+3. **Build → Authentication → Get started.** Under *Sign-in method*, turn on **Anonymous**
+   (for visitors – they never see a sign-in) and **Google** (for organisers approving photos).
+4. Still in Authentication: **Settings → Authorised domains → Add domain** →
+   `vinnie89-wq.github.io`
+5. **⚙ Project settings → Your apps → the `</>` (web) button.** Name it `visitor app`
+   (no need for Firebase Hosting). Copy the values from the `firebaseConfig` it shows into
+   **js/firebase-config.js**. These values aren't secret – it's fine that they're public.
+6. **Firestore Database → Rules.** Paste in everything from **firebase/firestore.rules**,
+   put the organisers' Google email addresses in the list near the top, and click **Publish**.
+
+### Approving photos
+
+Organisers go to **approve.html** on the site (e.g. `…github.io/silage-day-visitor/approve.html`),
+sign in with Google, and press **Approve** or **Reject** on each photo. Nothing appears in the
+app until it's approved. Rejected photos are deleted. The page isn't linked from the visitor app,
+and only the Google accounts in the rules can see or approve anything.
+
+### Good to know
+
+- Photos are shrunk on the visitor's phone before sending (about 1280 pixels across). This also
+  removes hidden details such as where the photo was taken.
+- Each phone can send up to 30 photos a day.
+- Firebase's free plan allows about **50,000 database reads a day**. Each photo shown in the
+  gallery is one read, and the gallery loads 24 at a time – so roughly 2,000 gallery visits a day.
+  If the day is busier than that, the gallery pauses until midnight. To remove the limit, switch the
+  project to the **Blaze (pay as you go)** plan before the event – at this size it would cost
+  pennies, and you can set a budget alert.

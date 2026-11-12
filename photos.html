@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="cy">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="title_photos">Photos – Pembrokeshire Silage Day 2027</title>
+  <meta name="theme-color" content="#2c4a1c">
+  <link rel="icon" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+  <!-- Easy-read font: the browser only downloads it if the Easy-read option is on -->
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=fallback" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=5">
+  <script src="js/translations.js?v=5"></script>
+  <script src="js/language.js?v=5"></script>
+  <script src="js/comfort.js?v=5"></script>
+  <script src="js/first-visit.js?v=5"></script>
+</head>
+<body>
+<div class="app">
+
+  <header class="site-header">
+    <div class="header-row">
+      <a href="index.html"><img class="header-logo" src="images/logo.png" alt="" data-i18n-attr="alt:logo_alt" width="116" height="58"></a>
+      <p class="header-date" data-i18n="header_date"></p>
+      <div class="header-buttons">
+        <button type="button" class="comfort-btn" id="comfort-btn" aria-haspopup="dialog" aria-expanded="false" data-i18n="comfort_btn"></button>
+        <a class="safety-btn" href="safety.html" data-i18n="safety_btn"></a>
+      </div>
+    </div>
+  </header>
+  <p class="draft-note" data-i18n="draft_note"></p>
+
+  <main>
+    <h1 class="page-title" data-i18n="photos_h"></h1>
+    <p class="page-intro" data-i18n="photos_intro"></p>
+
+    <!-- ADD YOUR PHOTOS (filled in and made to work by js/photos.js) -->
+    <section class="card upload-card" id="upload-card">
+      <label class="upload-pick" id="upload-pick">
+        <span class="big" data-i18n="photos_add"></span>
+        <span class="small" data-i18n="photos_add_sub"></span>
+        <input type="file" id="photo-input" accept="image/*" multiple>
+      </label>
+      <div id="chosen" class="chosen" hidden></div>
+      <label class="accept-row">
+        <input type="checkbox" id="photo-consent">
+        <span data-i18n="photos_consent"></span>
+      </label>
+      <button type="button" class="btn" id="photo-send" disabled data-i18n="photos_send"></button>
+      <p class="upload-status" id="upload-status" aria-live="polite" hidden></p>
+      <p class="note" data-i18n="photos_checked"></p>
+    </section>
+
+    <!-- THE GALLERY: only photos the organisers have approved -->
+    <section class="card">
+      <h2 data-i18n="photos_gallery_h"></h2>
+      <div class="gallery" id="gallery"></div>
+      <p class="gallery-empty" id="gallery-empty" hidden></p>
+      <button type="button" class="btn alt" id="gallery-more" hidden data-i18n="photos_more"></button>
+    </section>
+
+    <!-- Tap a photo to see it bigger -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" data-i18n-attr="aria-label:photos_viewer" hidden>
+      <button type="button" class="sheet-close" id="lightbox-close" data-i18n-attr="aria-label:close"><span aria-hidden="true">×</span></button>
+      <img id="lightbox-img" alt="">
+      <p class="lightbox-loading" id="lightbox-loading" data-i18n="photos_loading"></p>
+    </div>
+  </main>
+
+  <footer class="site-footer" data-i18n="footer"></footer>
+
+  <nav class="bottom-nav" data-i18n-attr="aria-label:nav_label">
+    <ul>
+      <li><a href="index.html"><span class="icon" aria-hidden="true">🏠</span><span class="label" data-i18n="nav_home"></span></a></li>
+      <li><a href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><span class="label" data-i18n="nav_timetable"></span></a></li>
+      <li><a href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><span class="label" data-i18n="nav_safety"></span></a></li>
+      <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label" data-i18n="nav_map"></span></a></li>
+      <li><a href="photos.html" aria-current="page"><span class="icon" aria-hidden="true">📷</span><span class="label" data-i18n="nav_photos"></span></a></li>
+      <li><a href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><span class="label" data-i18n="nav_getting"></span></a></li>
+    </ul>
+  </nav>
+</div>
+<script src="js/programme.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
+<script src="js/firebase-config.js?v=5"></script>
+<script type="module" src="js/photos.js?v=5"></script>
+</body>
+</html>
