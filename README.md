@@ -116,3 +116,10 @@ control phone number, the safety disclaimer wording, and the provisional timetab
 Open `timetable.html`. Each demonstration is one `<li class="slot">` block with
 `data-start` and `data-end` times (24-hour clock, e.g. `14:30`). Copy a block to
 add a new one, and add its name in both languages to `js/translations.js`; the "Live now" labels update automatically on the day.
+
+## Updating the site
+
+Phones and browsers keep copies of the CSS and JavaScript files to load faster.
+Each page links to them with `?v=2` on the end (e.g. `js/app.js?v=2`).
+When you change a CSS or JS file, bump that number on every page (to `?v=3`, etc.)
+so visitors get the new version straight away instead of an old saved copy.
