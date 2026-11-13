@@ -5,8 +5,7 @@
    runs on the page that needs it.
    ========================================================= */
 
-// The show date. Months in JavaScript count from 0, so 8 = September.
-const SHOW_DAY = new Date(2027, 8, 11);
+// The show date comes from the key facts (js/facts.js → Team hub → Key facts, A1)
 
 
 /* ---------- 1. Countdown (home page) ---------- */
@@ -18,7 +17,7 @@ function updateCountdown() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const msPerDay = 24 * 60 * 60 * 1000;
-  const days = Math.round((SHOW_DAY - today) / msPerDay);
+  const days = Math.round((showDate() - today) / msPerDay);
 
   // t("key") comes from language.js and gives the words in the chosen language
   if (days > 1) {

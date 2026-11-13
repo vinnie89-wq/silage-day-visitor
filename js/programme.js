@@ -25,8 +25,7 @@ const PROGRAMME = [
   { start: "17:00", end: "17:30", title: "slot_close",    where: "slot_close_w", field: null, key: true }
 ];
 
-// The show date – year, month (1–12), day
-const SHOW_DATE = { year: 2027, month: 9, day: 11 };
+// The show date comes from the key facts (js/facts.js, A1)
 
 
 /* ---------- Map positions ----------
@@ -91,9 +90,10 @@ function showDayMinutes() {
   } catch (e) { /* ignore */ }
 
   const now = new Date();
-  const isShowDay = now.getFullYear() === SHOW_DATE.year &&
-                    now.getMonth() + 1 === SHOW_DATE.month &&
-                    now.getDate() === SHOW_DATE.day;
+  const show = showDate();
+  const isShowDay = now.getFullYear() === show.getFullYear() &&
+                    now.getMonth() === show.getMonth() &&
+                    now.getDate() === show.getDate();
   return isShowDay ? now.getHours() * 60 + now.getMinutes() : null;
 }
 

@@ -109,7 +109,7 @@ colours, keep normal text at a contrast of at least 4.5:1.
 
 Anything waiting for the organisers is wrapped in `<span class="placeholder">…</span>`
 and shows with a yellow highlight. Search `js/translations.js` for `placeholder` to
-find them all (each one appears in both languages): charity name, entry and parking prices, accessible parking, the event
+find them all (each one appears in both languages): parking prices, accessible parking, the event
 control phone number, the safety disclaimer wording, and the provisional timetable.
 
 ## Changing the timetable
@@ -247,12 +247,29 @@ photo approval – is a **separate app**: https://github.com/vinnie89-wq/silage-
 (https://vinnie89-wq.github.io/silage-day-team/). This visitor app contains nothing for organisers.
 The Firebase security rules for both apps stay here, in `firebase/firestore.rules`.
 
-## Ticket prices
+## Key facts – one place for the event's details
 
-Set in the **Team hub → Tools → Ticket prices** (saved in Firebase as `config/prices`: `adult`,
-`child`, `show`). While **Show prices to visitors** is off, the app says "prices to be confirmed".
-Once it's on, the home page's Key facts show the prices (`js/prices.js`), and the Tickets page shows the prices and each group's total ("Your group: £15 to pay at the
-gate", and "Left to pay" when part-paid). Under-5s are always free.
+The master copy of every date, time and number is the organisers' **Key assumptions and details**
+register. The visitor app takes the facts it shows from **Team hub → Key facts** (Firebase
+`config/facts`), where each box is labelled with its register ID. So when something changes:
+
+1. change it in the register, as always (its "Used in" column says **APP** for these), then
+2. change the matching box in Team hub → Key facts.
+
+Every page updates by itself – nothing in the code to change. `js/facts.js` holds the starting values
+(used until a phone first hears from Firebase, then kept on the phone for no-signal).
+
+| Register | Fact | Where it shows |
+|---|---|---|
+| A1 | Show date | header, countdown, Key facts, footer, page titles, tickets, safety pop-up on the day, "Live now" |
+| A2 | Opening hours | header, Key facts, Getting here, countdown on the day |
+| A3 | Venue and postcode | Key facts, Tickets, Getting here |
+| A5 | Charities (with links) | home page welcome and Key facts, Raffle |
+| G5 | Entry prices + "show prices" | Key facts, Tickets (group totals) |
+| G6 | Raffle price, strip, draw time, stand, unclaimed weeks | Raffle |
+
+In `js/translations.js` these appear as tokens such as `{dateLong}`, `{opens}`, `{charities}` – leave
+the tokens in place when changing the wording (the list is at the top of `js/facts.js`).
 
 ## Raffle
 
@@ -268,7 +285,7 @@ What visitors get:
 - **Results** as soon as each prize is drawn, and a green **"You've won!"** banner on every page
   if one of their numbers comes up. Winners' names only appear if the winner agreed.
 
-Everything comes from one Firebase document, `config/raffle`, written by the
-**Team hub → Raffle** page (settings, prizes, sales, draw, record). The organisers' own records
+The price, draw time, stand location and unclaimed-prize weeks are key facts (G6, above). The prizes
+and results come from `config/raffle`, written by the **Team hub → Raffle** page (settings, prizes, sales, draw, record). The organisers' own records
 (`rafflePrizes`, `raffleSales`, `raffleCosts`, `raffleDraws`) are organisers-only in
 `firebase/firestore.rules`; draws can't be deleted, only voided.

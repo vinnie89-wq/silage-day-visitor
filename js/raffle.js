@@ -7,14 +7,12 @@
    lets visitors note the numbers on their paper tickets, and
    shows the results.
 
-   Everything comes from ONE Firebase document, config/raffle,
-   which the organisers' Team hub (raffle.html) writes:
+   The price, draw time, where the stand is and how long
+   unclaimed prizes are kept are KEY FACTS (register G6, set in
+   Team hub → Key facts; see js/facts.js), and the charities are
+   A5. The rest comes from config/raffle, which the Team hub's
+   raffle.html writes:
      show            true = visitors see the raffle details
-     price, perStrip £ for a strip of N tickets
-     drawTime        "16:30"
-     whereEn/Cy      where the raffle stand is
-     charityEn/Cy    who the money goes to
-     unclaimedWeeks  how long unclaimed prizes are kept
      prizes   [{ id, name, donor }]
      results  [{ pid, p (prize), c (colour), n (number), name?, claimed }]
    Winners' names are only included when the winner agreed.
@@ -67,21 +65,23 @@
     }
     // Keep anything half-typed when the page redraws
     const keep = ["rf-c", "rf-n", "rf-to"].map((id) => { const el = document.getElementById(id); return el ? el.value : null; });
-    const r = raffle;
-    const price = r.price > 0 ? (r.perStrip > 1 ? t("rf_price", { price: money(r.price), n: r.perStrip }) : t("rf_price_one", { price: money(r.price) })) : "";
-    const where = pick(r, "where"), charity = pick(r, "charity");
+    const r = raffle, f = FACTS;
+    const rp = Number(f.rafflePrice) || 0, strip = Number(f.raffleStrip) || 1;
+    const price = rp > 0 ? (strip > 1 ? t("rf_price", { price: money(rp), n: strip }) : t("rf_price_one", { price: money(rp) })) : "";
+    const where = currentLang === "en" ? (f.raffleWhereEn || f.raffleWhereCy) : (f.raffleWhereCy || f.raffleWhereEn);
+    const drawTime = factTime(f.raffleDraw, currentLang);
     const results = r.results || [];
 
     pageEl.innerHTML =
       // How to enter
       '<section class="card rf-enter">' +
-        (charity ? '<p class="rf-charity">' + t("rf_charity", { charity: esc(charity) }) + '</p>' : '') +
+        ((f.charities || []).length ? '<p class="rf-charity">' + t("rf_charity") + '</p>' : '') +
         '<h2>' + t("rf_buy_h") + '</h2>' +
         '<p>' + t("rf_buy") + '</p>' +
         '<dl class="facts">' +
           (price ? '<dt>' + t("rf_price_l") + '</dt><dd>' + price + '</dd>' : '') +
           (where ? '<dt>' + t("rf_where_l") + '</dt><dd>' + esc(where) + '</dd>' : '') +
-          (r.drawTime ? '<dt>' + t("rf_draw_l") + '</dt><dd>' + t("rf_draw", { time: esc(r.drawTime) }) + '</dd>' : '') +
+          (drawTime ? '<dt>' + t("rf_draw_l") + '</dt><dd>' + t("rf_draw", { time: drawTime }) + '</dd>' : '') +
         '</dl>' +
         '<p class="muted rf-law">' + t("rf_not_app") + '</p>' +
       '</section>' +
@@ -125,7 +125,7 @@
       '</section>' +
 
       (!results.length ? '<section class="card"><h2>' + t("rf_results_h") + '</h2><p>' +
-        (r.drawTime ? t("rf_results_none", { time: esc(r.drawTime) }) : t("rf_results_none_notime")) + '</p></section>' : '');
+        (drawTime ? t("rf_results_none", { time: drawTime }) : t("rf_results_none_notime")) + '</p></section>' : '');
 
     // Remember the colour last used
     const lastC = mine.length ? mine[mine.length - 1].c : "";
@@ -141,7 +141,7 @@
   }
 
   function resultsHtml(results) {
-    const weeks = raffle.unclaimedWeeks;
+    const weeks = Number(FACTS.raffleUnclaimedWeeks) || 0;
     return '<section class="card rf-results"><h2>🎉 ' + t("rf_results_h") + '</h2><ol class="rf-result-list">' +
       results.map((r) => '<li class="' + (isMine(r) ? "mine" : "") + '">' +
         '<span class="rf-ticket">' + swatch(r.c) + esc(ticketLabel(r.c, r.n)) + '</span>' +
@@ -208,9 +208,7 @@
       F.onSnapshot(F.doc(db, "config", "raffle"), (snap) => {
         const d = snap.exists() ? snap.data() : null;
         raffle = d ? {
-          show: !!d.show, price: Number(d.price) || 0, perStrip: Number(d.perStrip) || 1, drawTime: d.drawTime || "",
-          whereEn: d.whereEn || "", whereCy: d.whereCy || "", charityEn: d.charityEn || "", charityCy: d.charityCy || "",
-          unclaimedWeeks: Number(d.unclaimedWeeks) || 0,
+          show: !!d.show,
           prizes: Array.isArray(d.prizes) ? d.prizes : [], results: Array.isArray(d.results) ? d.results : []
         } : null;
         save(CACHE_KEY, raffle);
@@ -220,7 +218,7 @@
   }
 
   render();
-  document.addEventListener("languagechange", render);
+  document.addEventListener("languagechange", render); // also fires when the key facts change
   new MutationObserver(renderBanner).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   if (document.readyState === "complete") setTimeout(listen, 400);
   else window.addEventListener("load", () => setTimeout(listen, 400));
