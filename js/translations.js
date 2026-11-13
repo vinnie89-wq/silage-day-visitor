@@ -205,6 +205,13 @@ const TRANSLATIONS = {
   photos_viewer:   { en: "Photo", cy: "Llun" },
   photos_loading:  { en: "Loading the full-size photo…", cy: "Yn llwytho'r llun maint llawn…" },
 
+  videos_h:        { en: "<span aria-hidden=\"true\">🎬</span> Videos", cy: "<span aria-hidden=\"true\">🎬</span> Fideos" },
+  videos_intro:    { en: "Filmed something great? Post it on Facebook, Instagram or TikTok with our hashtag – we'll add the best to the highlights here.",
+                     cy: "Wedi ffilmio rhywbeth gwych? Postiwch e ar Facebook, Instagram neu TikTok gyda'n hashnod – byddwn yn ychwanegu'r gorau at yr uchafbwyntiau yma." },
+  videos_copy:     { en: "Copy", cy: "Copïo" },
+  videos_copied:   { en: "Copied ✓", cy: "Wedi copïo ✓" },
+  videos_play:     { en: "Play video", cy: "Chwarae'r fideo" },
+
   /* ---------- Map: live now and "Where am I?" ---------- */
   live_h:          { en: "Happening now", cy: "Yn digwydd nawr" },
   live_before_day: { en: "On the day, this shows which demonstrations are running right now – and the fields light up on the map.",
