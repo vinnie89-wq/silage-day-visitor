@@ -257,6 +257,18 @@ const TRANSLATIONS = {
   tk_delete_q:     { en: "Cancel your group's registration and tickets?", cy: "Canslo cofrestriad a thocynnau eich grŵp?" },
   tk_err_delete:   { en: "Sorry, that didn't work. Check your signal and try again.", cy: "Mae'n ddrwg gennym, wnaeth hynny ddim gweithio. Gwiriwch eich signal a rhowch gynnig arall arni." },
 
+  /* ---------- Paid tickets ---------- */
+  tk_paid:         { en: "Paid", cy: "Wedi talu" },
+  tk_paid_stamp:   { en: "PAID", cy: "TALWYD" },
+  tk_all_paid_h:   { en: "All paid", cy: "Wedi talu'n llawn" },
+  tk_all_paid:     { en: "Your whole group has paid. Show any ticket at the gate to go straight in.",
+                     cy: "Mae eich grŵp cyfan wedi talu. Dangoswch unrhyw docyn wrth y gât i fynd yn syth i mewn." },
+  tk_part_paid_h:  { en: "Part paid", cy: "Wedi talu'n rhannol" },
+  tk_paid_for:     { en: "Paid for", cy: "Wedi talu am" },
+  tk_still_to_pay: { en: "Still to pay", cy: "I dalu o hyd" },
+  tk_part_paid_note: { en: "The others can pay when they arrive – just show their ticket at the gate.",
+                     cy: "Gall y lleill dalu pan fyddan nhw'n cyrraedd – dangoswch eu tocyn wrth y gât." },
+
   /* ---------- Sharing tickets ---------- */
   tk_share_one:    { en: "Send this ticket", cy: "Anfon y tocyn hwn" },
   tk_share_one_label: { en: "Send {name}'s ticket to their phone", cy: "Anfon tocyn {name} i'w ffôn" },

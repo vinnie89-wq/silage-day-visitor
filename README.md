@@ -120,8 +120,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=12` on the end (e.g. `js/app.js?v=12`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=13`, then `?v=14`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=13` on the end (e.g. `js/app.js?v=13`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=14`, then `?v=15`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -185,6 +185,13 @@ computer, copies a link. The link holds the group code, name and ticket type aft
 never reaches any server; opening it offers to save the ticket on that phone, under "Tickets sent
 to you". Each person keeps the same ticket number even if the group is changed later, and numbers
 are never reused, so a shared ticket always means the same person.
+
+**Paid tickets:** when someone pays at the gate, the organiser app adds their person number to
+`checkins/{group code}` → `paid` (e.g. `[1, 3]`). Tickets on every phone holding them turn green with a
+PAID stamp straight away, and the lead adult sees "All paid" or "Part paid – still to pay: …". Groups
+can pay all at once or person by person. To try it before the gate app exists: Firebase → Firestore →
+Data → **Start collection** `checkins` → Document ID = a group code → field `paid`, type **array**,
+add numbers (1, 2…).
 
 Still to come: the organisers' gate check-in (in the Expo organiser app) and confirmation emails (these need Firebase's paid
 plan, so for now visitors are told to keep their tickets on their phone or take a screenshot).

@@ -894,3 +894,19 @@ html.calm .pay-card { border-color: var(--line); }
 .incoming { border: 2px solid var(--green); }
 .incoming-list { padding-left: 20px; }
 .incoming .btn.alt { margin-top: 10px; }
+
+
+/* ---------- Paid tickets ---------- */
+.ticket { position: relative; }
+.ticket.is-paid { border-color: #11713a; }
+.ticket.is-paid .ticket-top { background: #dcf5e3; border-bottom-color: #11713a; }
+.ticket-state.paid { color: #11713a; font-size: 1.25rem; }
+.paid-stamp {
+  position: absolute; top: 12px; right: 8px; transform: rotate(-12deg); /* top corner: never over the name or the QR code (the gate still scans it) */
+  padding: 0 10px; border: 3px solid #11713a; border-radius: 8px;
+  color: #11713a; background: rgba(255,255,255,.88);
+  font: 800 1.25rem var(--head); letter-spacing: 2px; pointer-events: none;
+}
+.pay-card.all-paid { border-color: #11713a; background: #dcf5e3; }
+.pay-card.all-paid h2 { color: #11713a; }
+html.calm .paid-stamp { transform: none; }
