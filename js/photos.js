@@ -6,7 +6,8 @@
    2. Each photo is shrunk ON THE PHONE (which also strips out
       hidden data such as the GPS position it was taken at) and
       saved to the Firebase database as "pending".
-   3. An organiser checks it on approve.html. Approved photos
+   3. An organiser checks it in the Team hub app (silage-day-team,
+      photos.html). Approved photos
       are copied to the "gallery", which everyone can see.
       Nothing appears publicly until an organiser approves it.
 

@@ -145,10 +145,10 @@ the Photos page just says photo sharing is "coming soon". Setting it up takes ab
 
 ### Approving photos
 
-Organisers go to **approve.html** on the site (e.g. `…github.io/silage-day-visitor/approve.html`),
-sign in with Google, and press **Approve** or **Reject** on each photo. Nothing appears in the
-app until it's approved. Rejected photos are deleted. The page isn't linked from the visitor app,
-and only the Google accounts in the rules can see or approve anything.
+Organisers approve photos in the **Team hub** app (https://github.com/vinnie89-wq/silage-day-team →
+`photos.html`): sign in with Google, then **Approve** or **Reject** each photo. Nothing appears in
+the visitor app until it's approved. Rejected photos are deleted. Only the Google accounts in the
+rules can see or approve anything.
 
 ### Good to know
 
@@ -213,8 +213,8 @@ Visitors never see it unless they're given a preview link.
 
 ## News and urgent alerts
 
-Posts are kept in Firebase (`news`). Organisers write them on **news-admin.html**
-(e.g. `…/silage-day-visitor/news-admin.html`, sign in with the organiser Google account):
+Posts are kept in Firebase (`news`). Organisers write them in the **Team hub** app
+(https://github.com/vinnie89-wq/silage-day-team → `news.html`, sign in with the organiser Google account):
 headline and text in English and Welsh, **Publish** now or at a scheduled date and time,
 optional **Hide after**, and an **Urgent** tick for on-the-day alerts.
 
@@ -238,3 +238,10 @@ address bar. (A website can't hide the browser's address bar any other way.)
 On iPhone the Home Screen app keeps its own storage, separate from Safari. If someone registered
 in Safari first, the Tickets page in the Home Screen app lets them paste a "Send all the tickets"
 link to bring their tickets across.
+
+## Organiser tools live elsewhere
+
+Everything for organisers – the Team hub dashboard, meetings, actions, documents, news posting and
+photo approval – is a **separate app**: https://github.com/vinnie89-wq/silage-day-team
+(https://vinnie89-wq.github.io/silage-day-team/). This visitor app contains nothing for organisers.
+The Firebase security rules for both apps stay here, in `firebase/firestore.rules`.
