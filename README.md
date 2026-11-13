@@ -121,8 +121,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=17` on the end (e.g. `js/app.js?v=17`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=18`, then `?v=19`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=19` on the end (e.g. `js/app.js?v=19`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=20`, then `?v=21`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -264,7 +264,7 @@ Every page updates by itself – nothing in the code to change. `js/facts.js` ho
 | A1 | Show date | header, countdown, Key facts, footer, page titles, tickets, safety pop-up on the day, "Live now" |
 | A2 | Opening hours | header, Key facts, Getting here, countdown on the day |
 | A3 | Venue and postcode | Key facts, Tickets, Getting here |
-| A5 | Charities (with links) | home page welcome and Key facts, Raffle |
+| A5 | Charities (with links, and optional "in aid of" logos) | home page welcome (logos) and Key facts, Raffle |
 | G5 | Entry prices + "show prices" | Key facts, Tickets (group totals) |
 | G6 | Raffle price, strip, draw time, stand, unclaimed weeks | Raffle |
 

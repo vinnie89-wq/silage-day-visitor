@@ -986,3 +986,9 @@ textarea.input { min-height: 96px; resize: vertical; }
 .raffle-banner a { color: #fff; font-weight: 700; }
 html.calm .raffle-banner { background: #4f6b45; }
 @media (max-width: 380px) { .rf-add-row { grid-template-columns: 1fr 1fr; } .rf-add-row > div:first-child { grid-column: 1 / -1; } }
+
+/* Charity "in aid of" logos – home page welcome card (js/facts.js) */
+.charity-logos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.charity-logos > a, .charity-logos > .charity-logo { flex: 1 1 140px; display: flex; align-items: center; justify-content: center; min-height: 76px; padding: 10px 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--green); font-weight: 700; text-align: center; }
+.charity-logos img { display: block; max-width: 100%; max-height: 60px; object-fit: contain; }
+.charity-logos > a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }

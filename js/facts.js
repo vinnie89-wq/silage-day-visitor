@@ -100,6 +100,27 @@ function factTokens(lang) {
   };
 }
 
+/* The charities' logos on the home page (welcome card).
+   Each charity can have an "in aid of" logo, added in Team hub →
+   Key facts. If none of them has one, the sentence with the names
+   stays as it is. A charity without a logo shows as its name. */
+function renderCharityLogos() {
+  const box = document.getElementById("charity-logos"), line = document.getElementById("charity-line");
+  if (!box) return;
+  const list = (FACTS.charities || []).filter((c) => c && (c.en || c.cy));
+  if (!list.some((c) => c.logo)) { box.hidden = true; box.innerHTML = ""; return; }
+  const lang = typeof currentLang !== "undefined" && currentLang === "en" ? "en" : "cy";
+  if (line) line.textContent = t("welcome_p2_logos");
+  box.innerHTML = list.map((c) => {
+    const name = factEsc(lang === "en" ? (c.en || c.cy) : (c.cy || c.en));
+    const inner = c.logo && /^data:image\/(png|jpeg|webp|svg\+xml);base64,/.test(c.logo)
+      ? '<img src="' + c.logo + '" alt="' + name + '">' : '<span>' + name + '</span>';
+    return c.url && /^https:\/\//.test(c.url) ? '<a href="' + factEsc(c.url) + '" target="_blank" rel="noopener">' + inner + '</a>' : '<span class="charity-logo">' + inner + '</span>';
+  }).join("");
+  box.hidden = false;
+}
+document.addEventListener("languagechange", renderCharityLogos); // also runs after the words are drawn
+
 /* Listen for changes from the Team hub. Starts once the page has
    loaded, so it never slows the page down. When something changes,
    the words are redrawn and a "factschange" event tells the other
