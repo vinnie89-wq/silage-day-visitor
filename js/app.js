@@ -329,3 +329,55 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(function () { /* not supported here – the app still works online */ });
   });
 }
+
+
+/* ---------- 7. Preview mode (for the organising team) ----------
+   Open any page with ?preview=1 on the address to get a slider in
+   the header. Drag it to see the app as it will look at any time
+   on the show day – the map's live markers, "Happening now" and
+   the timetable all update as you drag. Visitors never see this.
+   ?preview=0 (or the ✕ on the bar) switches it off. */
+(function () {
+  let on = false;
+  try {
+    const q = new URLSearchParams(location.search).get("preview");
+    if (q === "1") sessionStorage.setItem("silageday-preview", "1");
+    if (q === "0") { sessionStorage.removeItem("silageday-preview"); sessionStorage.removeItem("silageday-test-time"); }
+    on = sessionStorage.getItem("silageday-preview") === "1";
+  } catch (e) { return; }
+  if (!on) return;
+
+  const START = toMinutes("09:30"), END = toMinutes("17:30");
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+  const bar = document.createElement("div");
+  bar.className = "preview-bar";
+  bar.innerHTML =
+    '<span class="preview-tag">' + t("pv_tag") + '</span>' +
+    '<b class="preview-time" id="pv-time"></b>' +
+    '<label class="visually-hidden" for="pv-slider">' + t("pv_label") + '</label>' +
+    '<input type="range" id="pv-slider" min="' + START + '" max="' + END + '" step="5">' +
+    '<button type="button" class="preview-close" id="pv-close" aria-label="' + t("pv_off") + '">✕</button>';
+  header.appendChild(bar);
+
+  const slider = document.getElementById("pv-slider");
+  const timeEl = document.getElementById("pv-time");
+  const current = showDayMinutes();
+  slider.value = current === null ? toMinutes("10:45") : Math.min(Math.max(current, START), END);
+
+  function apply() {
+    const text = minutesToText(Number(slider.value));
+    timeEl.textContent = text;
+    slider.setAttribute("aria-valuetext", text);
+    try { sessionStorage.setItem("silageday-test-time", text); } catch (e) {}
+    if (typeof updateLiveMap === "function" && document.getElementById("live-now")) updateLiveMap();
+    if (document.getElementById("timetable")) updateTimetable();
+  }
+  slider.addEventListener("input", apply);
+  apply();
+
+  document.getElementById("pv-close").addEventListener("click", function () {
+    try { sessionStorage.removeItem("silageday-preview"); sessionStorage.removeItem("silageday-test-time"); } catch (e) {}
+    location.href = location.pathname;
+  });
+})();
