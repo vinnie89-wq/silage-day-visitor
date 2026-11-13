@@ -13,6 +13,13 @@
 
    The QR code on each ticket holds  PSD27|GROUPCODE|personNumber
    – no names or details, just a reference the gate looks up.
+   Each person keeps the same number even if the group is changed
+   later, so a ticket that's been shared never points at someone else.
+
+   SHARING: the lead adult can send one ticket (or all of them) to
+   someone arriving separately. The link carries just the group code,
+   name and ticket type after a # – which never leaves the phone it's
+   opened on – and the other phone saves the ticket for itself.
 
    Who can see a registration: only the phone that made it, and
    the organisers (see firebase/firestore.rules).
@@ -20,6 +27,7 @@
 
 const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
 const STORE_KEY = "silageday-registration";
+const SHARED_KEY = "silageday-shared-tickets"; // tickets other people have sent to this phone
 const MAX_PEOPLE = 12;
 const TYPES = ["adult", "child", "under5"];
 const CODE_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O or 1/I, easy to read out
@@ -95,6 +103,9 @@ function renderIntro() {
         : '<p class="note">' + t("tk_not_yet") + '</p>') +
     '</section>' +
     gettingHereCard();
+  // Tickets someone else sent to this phone go at the top
+  if (loadShared().length) appEl.insertAdjacentHTML("afterbegin", sharedSection());
+  bindShared();
   const start = document.getElementById("tk-start");
   if (start) start.addEventListener("click", () => {
     draft = { leadName: "", email: "", mobile: "", members: [{ name: "", type: "adult" }], news: false };
@@ -178,10 +189,19 @@ function readGroup() {
   draft.leadName = document.getElementById("tk-lead").value.trim();
   draft.email = document.getElementById("tk-email").value.trim();
   draft.mobile = document.getElementById("tk-mobile").value.trim();
-  draft.members = Array.from(appEl.querySelectorAll(".member-row")).map((row) => ({
+  draft.members = Array.from(appEl.querySelectorAll(".member-row")).map((row, i) => ({
+    n: draft.members[i] && draft.members[i].n,  // keep each person's ticket number
     name: row.querySelector(".member-name").value.trim(),
     type: row.querySelector(".member-type").value
   }));
+}
+
+// Give new people the next unused number; existing people keep theirs.
+// Numbers are never reused (lastN remembers the highest ever given),
+// so a removed person's shared ticket can't end up meaning someone new.
+function numberMembers(members, lastN) {
+  let next = members.reduce((max, m) => Math.max(max, m.n || 0), lastN || 0);
+  return members.map((m) => ({ n: m.n || ++next, name: m.name, type: m.type }));
 }
 
 function checkGroup() {
@@ -249,7 +269,7 @@ async function submit() {
       leadName: draft.leadName,
       email: draft.email,
       mobile: draft.mobile,
-      members: draft.members.map((m, i) => ({ n: i + 1, name: m.name, type: m.type })),
+      members: numberMembers(draft.members, draft.lastN),
       agreed: true,
       childrenAgreed: !!kidsBox,
       signedName: draft.signedName,
@@ -279,6 +299,7 @@ async function submit() {
     saved = {
       code: code, leadName: record.leadName, email: record.email, mobile: record.mobile,
       members: record.members, news: record.news, signedName: record.signedName,
+      lastN: Math.max(draft.lastN || 0, ...record.members.map((m) => m.n)),
       createdAt: record.createdAt
     };
     saveLocal(saved);
@@ -310,32 +331,45 @@ function renderTickets() {
     '<p class="done-note">✓ ' + t("tk_decl_done", { name: esc(saved.signedName || saved.leadName) }) + '</p>' +
     '<section class="card pay-card"><h2>💷 ' + t("tk_pay_h") + '</h2><p>' + t("tk_pay_note") + '</p><p class="muted">' + t("tk_pay_at_gate") + '</p></section>' +
     '<p class="swipe-hint" aria-hidden="true">' + t("tk_swipe") + ' →</p>' +
-    '<div class="ticket-list" role="list">' + saved.members.map(ticketCard).join("") + '</div>' +
+    '<div class="ticket-list" role="list">' + saved.members.map((m) => ticketCard(m, saved.code, true)).join("") + '</div>' +
+    (saved.members.length > 1 ? '<div class="pad-x"><button type="button" class="btn alt" id="tk-share-all">📤 ' + t("tk_share_all") + '</button></div>' : '') +
+    '<p class="share-status" id="tk-share-status" role="status" hidden></p>' +
     '<section class="card"><h2>' + t("tk_keep_h") + '</h2><p>' + t("tk_keep") + '</p></section>' +
     '<div class="pad-x ticket-actions">' +
       '<button type="button" class="btn alt" id="tk-edit">✏️ ' + t("tk_edit") + '</button>' +
       '<button type="button" class="btn alt" id="tk-delete">' + t("tk_delete") + '</button>' +
     '</div>' +
+    sharedSection() +
     gettingHereCard();
+
+  appEl.querySelectorAll("[data-share]").forEach((b) => b.addEventListener("click", () => {
+    const m = saved.members.find((x) => x.n === Number(b.dataset.share));
+    shareTickets([m], t("tk_share_text_one", { name: m.name }));
+  }));
+  const all = document.getElementById("tk-share-all");
+  if (all) all.addEventListener("click", () => shareTickets(saved.members, t("tk_share_text_all")));
+  bindShared();
 
   document.getElementById("tk-edit").addEventListener("click", () => {
     draft = {
       code: saved.code, createdAt: saved.createdAt, leadName: saved.leadName, email: saved.email,
+      lastN: saved.lastN || Math.max(...saved.members.map((m) => m.n)),
       mobile: saved.mobile || "", news: !!saved.news, signedName: "",
-      members: saved.members.map((m) => ({ name: m.name, type: m.type }))
+      members: saved.members.map((m) => ({ n: m.n, name: m.name, type: m.type }))
     };
     step = "group"; render(); focusTop();
   });
   document.getElementById("tk-delete").addEventListener("click", cancelRegistration);
 }
 
-function ticketCard(m) {
+function ticketCard(m, code, canShare) {
   return '<article class="ticket" role="listitem" aria-label="' + esc(t("tk_ticket_for", { name: m.name })) + '">' +
     '<div class="ticket-top"><img src="images/logo.png" alt="" width="96" height="48">' +
       '<p class="ticket-name">' + esc(m.name) + '</p><p class="ticket-type">' + typeLabel(m.type) + '</p></div>' +
-    '<div class="ticket-qr" role="img" aria-label="' + esc(t("tk_qr_label", { n: ticketNumber(saved.code, m.n) })) + '">' + qrSvg(qrText(saved.code, m.n)) + '</div>' +
-    '<p class="ticket-number">' + ticketNumber(saved.code, m.n) + '</p>' +
+    '<div class="ticket-qr" role="img" aria-label="' + esc(t("tk_qr_label", { n: ticketNumber(code, m.n) })) + '">' + qrSvg(qrText(code, m.n)) + '</div>' +
+    '<p class="ticket-number">' + ticketNumber(code, m.n) + '</p>' +
     '<p class="ticket-state">' + (m.type === "under5" ? t("tk_free_entry") : t("tk_pay_gate_short")) + '</p>' +
+    (canShare ? '<button type="button" class="ticket-share" data-share="' + m.n + '" aria-label="' + esc(t("tk_share_one_label", { name: m.name })) + '">📤 ' + t("tk_share_one") + '</button>' : '') +
   '</article>';
 }
 
@@ -356,6 +390,97 @@ async function cancelRegistration() {
   focusTop();
 }
 
+/* ---------- Sharing tickets ---------- */
+function toBase64Url(text) {
+  return btoa(unescape(encodeURIComponent(text))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function fromBase64Url(text) {
+  const b64 = text.replace(/-/g, "+").replace(/_/g, "/");
+  return decodeURIComponent(escape(atob(b64 + "===".slice((b64.length + 3) % 4))));
+}
+
+function shareLink(members) {
+  const payload = { v: 1, c: saved.code, g: saved.leadName, t: members.map((m) => [m.n, m.name, m.type]) };
+  return location.origin + location.pathname.replace(/[^/]*$/, "") + "tickets.html#share=" + toBase64Url(JSON.stringify(payload));
+}
+
+async function shareTickets(members, text) {
+  const url = shareLink(members);
+  const status = document.getElementById("tk-share-status");
+  const say = (key) => { status.textContent = t(key); status.hidden = false; };
+  // Phones: open the share sheet (WhatsApp, Messages, email…)
+  if (navigator.share) {
+    try { await navigator.share({ title: t("tk_share_title"), text: text, url: url }); return; }
+    catch (e) { if (e.name === "AbortError") return; }
+  }
+  // Computers: copy the link instead
+  try { await navigator.clipboard.writeText(text + " " + url); say("tk_share_copied"); }
+  catch (e) { window.prompt(t("tk_share_copy_this"), url); }
+}
+
+function loadShared() {
+  try { return JSON.parse(localStorage.getItem(SHARED_KEY) || "[]"); } catch (e) { return []; }
+}
+function saveShared(list) {
+  try { localStorage.setItem(SHARED_KEY, JSON.stringify(list)); } catch (e) {}
+}
+
+// A link someone sent: #share=…  → offer to save the ticket(s) on this phone
+function readShareLink() {
+  const m = location.hash.match(/^#share=([A-Za-z0-9_-]+)$/);
+  if (!m) return null;
+  try {
+    const p = JSON.parse(fromBase64Url(m[1]));
+    if (p.v !== 1 || !/^[A-Z2-9]{6}$/.test(p.c) || !Array.isArray(p.t)) return null;
+    const tickets = p.t
+      .filter((x) => Array.isArray(x) && Number.isInteger(x[0]) && typeof x[1] === "string" && TYPES.includes(x[2]))
+      .slice(0, MAX_PEOPLE)
+      .map((x) => ({ code: p.c, n: x[0], name: x[1].slice(0, 80), type: x[2], from: String(p.g || "").slice(0, 80) }));
+    return tickets.length ? tickets : null;
+  } catch (e) { return null; }
+}
+
+function showIncoming(tickets) {
+  const own = saved && saved.code === tickets[0].code;
+  appEl.innerHTML =
+    '<section class="card incoming">' +
+      '<h2>📥 ' + t(tickets.length > 1 ? "tk_in_h_many" : "tk_in_h_one", { n: tickets.length }) + '</h2>' +
+      '<p>' + t("tk_in_from", { name: esc(tickets[0].from) }) + '</p>' +
+      '<ul class="incoming-list">' + tickets.map((x) => '<li><b>' + esc(x.name) + '</b> – ' + typeLabel(x.type) + '</li>').join("") + '</ul>' +
+      (own ? '<p class="note">' + t("tk_in_own") + '</p>' : '') +
+      '<button type="button" class="btn" id="tk-in-save">' + t("tk_in_save") + '</button>' +
+      '<button type="button" class="btn alt" id="tk-in-skip">' + t("tk_in_skip") + '</button>' +
+    '</section>';
+  const done = () => { history.replaceState(null, "", location.pathname + location.search); step = saved ? "tickets" : "intro"; render(); focusTop(); };
+  document.getElementById("tk-in-save").addEventListener("click", () => {
+    const list = loadShared().filter((x) => !tickets.some((y) => y.code === x.code && y.n === x.n));
+    saveShared(tickets.concat(list));
+    done();
+  });
+  document.getElementById("tk-in-skip").addEventListener("click", done);
+}
+
+// "Tickets shared with you" – shown on the tickets page and the intro
+function sharedSection() {
+  // Leave out any that are already this phone's own registration
+  const list = loadShared().filter((x) => !(saved && saved.code === x.code));
+  if (!list.length) return "";
+  return '<section class="shared-section">' +
+    '<h2 class="shared-h">📥 ' + t("tk_shared_h") + '</h2>' +
+    '<p class="muted pad-x">' + t("tk_shared_note") + '</p>' +
+    '<div class="ticket-list" role="list">' + list.map((x) => ticketCard(x, x.code, false)).join("") + '</div>' +
+    '<div class="pad-x"><button type="button" class="link-btn" id="tk-shared-clear">' + t("tk_shared_remove") + '</button></div>' +
+  '</section>';
+}
+function bindShared() {
+  const clear = document.getElementById("tk-shared-clear");
+  if (clear) clear.addEventListener("click", () => {
+    if (!confirm(t("tk_shared_remove_q"))) return;
+    saveShared([]);
+    render();
+  });
+}
+
 function focusTop() {
   const h = document.querySelector(".page-title");
   if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
@@ -365,10 +490,18 @@ function focusTop() {
 
 /* ---------- Start ---------- */
 step = saved ? "tickets" : "intro";
-render();
+const incoming = readShareLink();
+if (incoming) showIncoming(incoming); else render();
+
+// A share link opened while the Tickets page is already open
+window.addEventListener("hashchange", () => {
+  const tickets = readShareLink();
+  if (tickets) { showIncoming(tickets); focusTop(); }
+});
 
 // Words change when the visitor switches language (keep what they've typed)
 document.addEventListener("languagechange", () => {
+  if (readShareLink()) return showIncoming(readShareLink());
   if (step === "group") readGroup();
   if (step === "declare") readDeclare();
   render();

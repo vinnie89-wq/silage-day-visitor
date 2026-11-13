@@ -879,3 +879,18 @@ html.calm .pay-card { border-color: var(--line); }
 .preview-close { border: 0; background: none; color: var(--cream); font-size: 1rem; width: 32px; height: 32px; cursor: pointer; border-radius: 8px; }
 .preview-close:focus-visible, #pv-slider:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 @media (min-width: 760px) and (min-height: 501px) { .preview-bar { max-width: 1048px; margin: 8px auto 0; } }
+
+
+/* ---------- Sharing tickets ---------- */
+.ticket-share {
+  display: block; width: calc(100% - 28px); margin: 0 14px 14px; padding: 10px;
+  border: 2px solid var(--edge); border-radius: 10px; background: var(--light);
+  color: var(--green); font: 700 0.9375rem var(--font); cursor: pointer;
+}
+.ticket-share:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.share-status { margin: 0 16px 12px; padding: 8px 12px; border-radius: 10px; background: #e3eefa; color: #1d4f80; }
+.shared-section { margin: 4px 0 8px; }
+.shared-h { margin: 0 16px 4px; font-size: 1.25rem; }
+.incoming { border: 2px solid var(--green); }
+.incoming-list { padding-left: 20px; }
+.incoming .btn.alt { margin-top: 10px; }

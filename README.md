@@ -120,8 +120,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=11` on the end (e.g. `js/app.js?v=11`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=12`, then `?v=13`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=12` on the end (e.g. `js/app.js?v=12`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=13`, then `?v=14`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -179,8 +179,14 @@ see a registration. Visitors can change their group or cancel.
 **When you change the rules in `firebase/firestore.rules`, paste them into Firebase and Publish
 again** – the ticket rules are a new section.
 
-Still to come: the organisers' gate check-in (scan a QR, see the group, take payment, mark them in),
-sharing one person's ticket to their own phone, and confirmation emails (these need Firebase's paid
+**Sharing tickets:** each ticket has a "Send this ticket" button (and "Send all the tickets") for
+people arriving separately. It opens the phone's share sheet (WhatsApp, Messages, email…) or, on a
+computer, copies a link. The link holds the group code, name and ticket type after a `#`, so it
+never reaches any server; opening it offers to save the ticket on that phone, under "Tickets sent
+to you". Each person keeps the same ticket number even if the group is changed later, and numbers
+are never reused, so a shared ticket always means the same person.
+
+Still to come: the organisers' gate check-in (in the Expo organiser app) and confirmation emails (these need Firebase's paid
 plan, so for now visitors are told to keep their tickets on their phone or take a screenshot).
 
 ## Working offline
