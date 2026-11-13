@@ -15,10 +15,10 @@
    ========================================================= */
 
 const FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyCiXqzYexlc87Uj-Gd7BM3iUP44Tg6crQw",
+  authDomain: "silage-day.firebaseapp.com",
+  projectId: "silage-day",
+  storageBucket: "silage-day.firebasestorage.app",
+  messagingSenderId: "247558714606",
+  appId: "1:247558714606:web:15e7a9e54adf0a08ba2fff"
 };
