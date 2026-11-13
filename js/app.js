@@ -352,12 +352,13 @@ if ("serviceWorker" in navigator) {
   if (!header) return;
   const bar = document.createElement("div");
   bar.className = "preview-bar";
+  // data-i18n: the words switch with the rest of the page when the language changes
   bar.innerHTML =
-    '<span class="preview-tag">' + t("pv_tag") + '</span>' +
+    '<span class="preview-tag" data-i18n="pv_tag">' + t("pv_tag") + '</span>' +
     '<b class="preview-time" id="pv-time"></b>' +
-    '<label class="visually-hidden" for="pv-slider">' + t("pv_label") + '</label>' +
+    '<label class="visually-hidden" for="pv-slider" data-i18n="pv_label">' + t("pv_label") + '</label>' +
     '<input type="range" id="pv-slider" min="' + START + '" max="' + END + '" step="5">' +
-    '<button type="button" class="preview-close" id="pv-close" aria-label="' + t("pv_off") + '">✕</button>';
+    '<button type="button" class="preview-close" id="pv-close" data-i18n-attr="aria-label:pv_off" aria-label="' + t("pv_off") + '">✕</button>';
   header.appendChild(bar);
 
   const slider = document.getElementById("pv-slider");
