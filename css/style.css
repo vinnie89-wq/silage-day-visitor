@@ -1016,3 +1016,6 @@ html.calm .raffle-banner { background: #4f6b45; }
 .sp-headline.sp-card { grid-template-columns: 1fr; }
 .sp-headline .sp-card-logo { min-height: 110px; }
 @media (max-width: 380px) { .sp-card { grid-template-columns: 1fr; } }
+/* Home card: field sponsors two to a row under the headline sponsor */
+.sponsors-home .sp-row:not(.sp-row-head) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sponsors-home .sp-row:not(.sp-row-head) .sp-tile { min-height: 84px; }
