@@ -67,6 +67,18 @@
       <button type="button" class="btn alt" id="gallery-more" hidden data-i18n="photos_more"></button>
     </section>
 
+    <!-- VIDEOS: shared on social media, the best picked by organisers (js/videos.js) -->
+    <section class="card videos-card">
+      <h2 data-i18n="videos_h"></h2>
+      <p data-i18n="videos_intro"></p>
+      <div class="hashtag-row">
+        <span class="hashtag" id="hashtag"></span>
+        <button type="button" class="btn alt small" id="hashtag-copy" data-i18n="videos_copy"></button>
+      </div>
+      <div class="social-links" id="social-links" hidden></div>
+      <div class="video-list" id="video-list"></div>
+    </section>
+
     <!-- Tap a photo to see it bigger -->
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" data-i18n-attr="aria-label:photos_viewer" hidden>
       <button type="button" class="sheet-close" id="lightbox-close" data-i18n-attr="aria-label:close"><span aria-hidden="true">×</span></button>
@@ -91,6 +103,7 @@
 <script src="js/programme.js?v=6"></script>
 <script src="js/app.js?v=6"></script>
 <script src="js/firebase-config.js?v=7"></script>
+<script src="js/videos.js?v=7"></script>
 <script type="module" src="js/photos.js?v=6"></script>
 </body>
 </html>

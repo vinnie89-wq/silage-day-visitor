@@ -765,3 +765,28 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   main:has(#map-box) > .card:last-child { grid-column: 2; grid-row: 6; }
   .gallery { grid-template-columns: repeat(5, 1fr); }
 }
+
+
+/* ---------- Videos ---------- */
+.hashtag-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+.hashtag { flex: 1; font: 700 1.375rem var(--head); color: var(--green); background: var(--light); border-radius: 10px; padding: 8px 12px; }
+.social-links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.social-links .chip { text-decoration: none; }
+.video-list { display: grid; gap: 14px; margin-top: 6px; }
+.video-item { margin: 0; }
+.video-item video, .video-item iframe, .video-item .yt-start {
+  display: block; width: 100%; border: 0; border-radius: 10px; background: #000;
+}
+.video-item video { max-height: 70vh; max-height: 70dvh; }
+.video-item iframe, .video-item .yt-start { aspect-ratio: 16 / 9; }
+.video-item .yt-start { position: relative; padding: 0; cursor: pointer; overflow: hidden; }
+.video-item .yt-start img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-item .yt-start .play {
+  position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(0,0,0,.65); color: #fff; font-size: 1.75rem; display: grid; place-items: center;
+}
+.video-item .yt-start:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.video-item figcaption { margin-top: 6px; font-weight: 600; }
+@media (min-width: 760px) and (min-height: 501px) {
+  .video-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
