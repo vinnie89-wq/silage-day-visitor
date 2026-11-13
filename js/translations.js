@@ -110,6 +110,8 @@ const TRANSLATIONS = {
   fact_entry_l:    { en: "Entry", cy: "Mynediad" },
   fact_entry:      { en: "<span class=\"placeholder\">Prices to be confirmed</span> – pay at the gate",
                      cy: "<span class=\"placeholder\">Prisiau i'w cadarnhau</span> – talu wrth y gât" },
+  fact_entry_prices: { en: "Adults {adult}, children (5–15) {child}, under-5s free – pay at the gate (card or cash). <a href=\"tickets.html\">Register free</a> first.",
+                     cy: "Oedolion {adult}, plant (5–15) {child}, plant dan 5 am ddim – talu wrth y gât (cerdyn neu arian parod). <a href=\"tickets.html\">Cofrestrwch am ddim</a> yn gyntaf." },
   fact_dogs_l:     { en: "Dogs", cy: "Cŵn" },
   fact_dogs:       { en: "Welcome on a short lead, kept away from the demonstration fields",
                      cy: "Croeso ar dennyn byr, wedi'u cadw draw o'r caeau arddangos" },
