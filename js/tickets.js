@@ -16,6 +16,12 @@
    Each person keeps the same number even if the group is changed
    later, so a ticket that's been shared never points at someone else.
 
+   PAID: when the gate takes payment, the organiser app adds the
+   person's number to the "paid" list in  checkins/{group code}.
+   This page listens for that and turns the ticket green straight
+   away – on the lead adult's phone and on any phone a ticket was
+   sent to. The last known state is kept on the phone for no-signal.
+
    SHARING: the lead adult can send one ticket (or all of them) to
    someone arriving separately. The link carries just the group code,
    name and ticket type after a # – which never leaves the phone it's
@@ -28,6 +34,7 @@
 const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
 const STORE_KEY = "silageday-registration";
 const SHARED_KEY = "silageday-shared-tickets"; // tickets other people have sent to this phone
+const PAID_KEY = "silageday-paid";              // last known paid list for each group code
 const MAX_PEOPLE = 12;
 const TYPES = ["adult", "child", "under5"];
 const CODE_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O or 1/I, easy to read out
@@ -303,6 +310,7 @@ async function submit() {
       createdAt: record.createdAt
     };
     saveLocal(saved);
+    watchPayments();
     draft = null;
     step = "tickets";
     render();
@@ -329,7 +337,7 @@ function renderTickets() {
       '<p>' + esc(saved.leadName) + ' · ' + t("tk_date") + '</p>' +
     '</section>' +
     '<p class="done-note">✓ ' + t("tk_decl_done", { name: esc(saved.signedName || saved.leadName) }) + '</p>' +
-    '<section class="card pay-card"><h2>💷 ' + t("tk_pay_h") + '</h2><p>' + t("tk_pay_note") + '</p><p class="muted">' + t("tk_pay_at_gate") + '</p></section>' +
+    payCard() +
     '<p class="swipe-hint" aria-hidden="true">' + t("tk_swipe") + ' →</p>' +
     '<div class="ticket-list" role="list">' + saved.members.map((m) => ticketCard(m, saved.code, true)).join("") + '</div>' +
     (saved.members.length > 1 ? '<div class="pad-x"><button type="button" class="btn alt" id="tk-share-all">📤 ' + t("tk_share_all") + '</button></div>' : '') +
@@ -362,13 +370,68 @@ function renderTickets() {
   document.getElementById("tk-delete").addEventListener("click", cancelRegistration);
 }
 
+/* ---------- Paid or not ---------- */
+function loadPaid() {
+  try { return JSON.parse(localStorage.getItem(PAID_KEY) || "{}"); } catch (e) { return {}; }
+}
+function isPaid(code, n) {
+  const list = loadPaid()[code];
+  return Array.isArray(list) && list.includes(n);
+}
+function ticketState(m, code) {
+  if (isPaid(code, m.n)) return '<p class="ticket-state paid">✓ ' + t("tk_paid") + '</p>';
+  return '<p class="ticket-state">' + (m.type === "under5" ? t("tk_free_entry") : t("tk_pay_gate_short")) + '</p>';
+}
+
+// The "Pay at the gate" card on your own tickets: all paid, part paid or none
+function payCard() {
+  const toPay = saved.members.filter((m) => m.type !== "under5");
+  const paid = toPay.filter((m) => isPaid(saved.code, m.n));
+  if (toPay.length && paid.length === toPay.length) {
+    return '<section class="card pay-card all-paid"><h2>✓ ' + t("tk_all_paid_h") + '</h2><p>' + t("tk_all_paid") + '</p></section>';
+  }
+  if (paid.length) {
+    const still = toPay.filter((m) => !isPaid(saved.code, m.n));
+    return '<section class="card pay-card"><h2>💷 ' + t("tk_part_paid_h") + '</h2>' +
+      '<p><b>' + t("tk_paid_for") + ':</b> ' + paid.map((m) => esc(m.name)).join(", ") + '</p>' +
+      '<p><b>' + t("tk_still_to_pay") + ':</b> ' + still.map((m) => esc(m.name)).join(", ") + '</p>' +
+      '<p class="muted">' + t("tk_part_paid_note") + '</p></section>';
+  }
+  return '<section class="card pay-card"><h2>💷 ' + t("tk_pay_h") + '</h2><p>' + t("tk_pay_note") + '</p><p class="muted">' + t("tk_pay_at_gate") + '</p></section>';
+}
+
+// Listen to the gate's paid list for every group with tickets on this phone
+let watching = {};
+function watchPayments() {
+  if (!configured || navigator.onLine === false) return;
+  const codes = new Set();
+  if (saved) codes.add(saved.code);
+  loadShared().forEach((x) => codes.add(x.code));
+  if (!codes.size) return;
+  firebase().then(({ F, db }) => {
+    codes.forEach((code) => {
+      if (watching[code]) return;
+      watching[code] = F.onSnapshot(F.doc(db, "checkins", code), (snap) => {
+        const all = loadPaid();
+        const list = snap.exists() && Array.isArray(snap.data().paid) ? snap.data().paid.filter(Number.isInteger) : [];
+        if (JSON.stringify(all[code] || []) === JSON.stringify(list)) return;
+        all[code] = list;
+        try { localStorage.setItem(PAID_KEY, JSON.stringify(all)); } catch (e) {}
+        if (step === "tickets" || step === "intro") render();
+      }, () => { /* no signal – keep the last known state */ });
+    });
+  }).catch(() => {});
+}
+
 function ticketCard(m, code, canShare) {
-  return '<article class="ticket" role="listitem" aria-label="' + esc(t("tk_ticket_for", { name: m.name })) + '">' +
+  const paid = isPaid(code, m.n);
+  return '<article class="ticket' + (paid ? ' is-paid' : '') + '" role="listitem" aria-label="' + esc(t("tk_ticket_for", { name: m.name }) + (paid ? " – " + t("tk_paid") : "")) + '">' +
+    (paid ? '<span class="paid-stamp" aria-hidden="true">' + t("tk_paid_stamp") + '</span>' : '') +
     '<div class="ticket-top"><img src="images/logo.png" alt="" width="96" height="48">' +
       '<p class="ticket-name">' + esc(m.name) + '</p><p class="ticket-type">' + typeLabel(m.type) + '</p></div>' +
     '<div class="ticket-qr" role="img" aria-label="' + esc(t("tk_qr_label", { n: ticketNumber(code, m.n) })) + '">' + qrSvg(qrText(code, m.n)) + '</div>' +
     '<p class="ticket-number">' + ticketNumber(code, m.n) + '</p>' +
-    '<p class="ticket-state">' + (m.type === "under5" ? t("tk_free_entry") : t("tk_pay_gate_short")) + '</p>' +
+    ticketState(m, code) +
     (canShare ? '<button type="button" class="ticket-share" data-share="' + m.n + '" aria-label="' + esc(t("tk_share_one_label", { name: m.name })) + '">📤 ' + t("tk_share_one") + '</button>' : '') +
   '</article>';
 }
@@ -456,6 +519,7 @@ function showIncoming(tickets) {
     const list = loadShared().filter((x) => !tickets.some((y) => y.code === x.code && y.n === x.n));
     saveShared(tickets.concat(list));
     done();
+    watchPayments();
   });
   document.getElementById("tk-in-skip").addEventListener("click", done);
 }
@@ -492,6 +556,9 @@ function focusTop() {
 step = saved ? "tickets" : "intro";
 const incoming = readShareLink();
 if (incoming) showIncoming(incoming); else render();
+
+watchPayments();
+window.addEventListener("online", watchPayments);
 
 // A share link opened while the Tickets page is already open
 window.addEventListener("hashchange", () => {
