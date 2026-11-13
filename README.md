@@ -120,8 +120,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=13` on the end (e.g. `js/app.js?v=13`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=14`, then `?v=15`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=15` on the end (e.g. `js/app.js?v=15`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=16`, then `?v=17`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -245,3 +245,10 @@ Everything for organisers – the Team hub dashboard, meetings, actions, documen
 photo approval – is a **separate app**: https://github.com/vinnie89-wq/silage-day-team
 (https://vinnie89-wq.github.io/silage-day-team/). This visitor app contains nothing for organisers.
 The Firebase security rules for both apps stay here, in `firebase/firestore.rules`.
+
+## Ticket prices
+
+Set in the **Team hub → Tools → Ticket prices** (saved in Firebase as `config/prices`: `adult`,
+`child`, `show`). While **Show prices to visitors** is off, the app says "prices to be confirmed".
+Once it's on, the Tickets page shows the prices and each group's total ("Your group: £15 to pay at the
+gate", and "Left to pay" when part-paid). Under-5s are always free.

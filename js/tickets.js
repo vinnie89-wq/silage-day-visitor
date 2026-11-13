@@ -94,7 +94,7 @@ function renderIntro() {
       '<h2>' + t("tk_free_h") + '</h2>' +
       '<p>' + t("tk_intro") + '</p>' +
       '<ul class="tick-list"><li>' + t("tk_b1") + '</li><li>' + t("tk_b2") + '</li><li>' + t("tk_b3") + '</li></ul>' +
-      '<p class="muted">' + t("tk_pay_at_gate") + '</p>' +
+      '<p class="muted">' + payAtGateText() + '</p>' +
       (configured
         ? '<button type="button" class="btn" id="tk-start">' + t("tk_start") + '</button>'
         : '<p class="note">' + t("tk_not_yet") + '</p>') +
@@ -378,6 +378,38 @@ function renderTickets() {
   document.getElementById("tk-delete").addEventListener("click", cancelRegistration);
 }
 
+/* ---------- Ticket prices ----------
+   Set by the organisers in the Team hub (Firebase: config/prices →
+   adult, child, show). Until "show" is ticked there, visitors see
+   "prices to be confirmed". The last prices seen are kept on the
+   phone. Under-5s are always free. */
+const PRICES_KEY = "silageday-prices";
+let prices = (() => { try { return JSON.parse(localStorage.getItem(PRICES_KEY) || "null"); } catch (e) { return null; } })();
+function pricesShown() { return !!(prices && prices.show && prices.adult >= 0 && prices.child >= 0); }
+function money(n) { return "£" + (Number.isInteger(n) ? n : n.toFixed(2)); }
+function priceOf(type) { return type === "adult" ? prices.adult : type === "child" ? prices.child : 0; }
+function payAtGateText() {
+  return pricesShown()
+    ? t("tk_pay_at_gate_prices", { adult: money(prices.adult), child: money(prices.child) })
+    : t("tk_pay_at_gate");
+}
+function totalLine(members, key) {
+  if (!pricesShown()) return "";
+  const total = members.reduce((sum, m) => sum + priceOf(m.type), 0);
+  return '<p class="total-due">' + t(key, { total: money(total) }) + '</p>';
+}
+function loadPrices() {
+  if (!configured) return;
+  getFirebase().then(({ F, db }) => F.onSnapshot(F.doc(db, "config", "prices"), (snap) => {
+    const d = snap.exists() ? snap.data() : null;
+    const next = d ? { adult: Number(d.adult), child: Number(d.child), show: !!d.show } : null;
+    if (JSON.stringify(next) === JSON.stringify(prices)) return;
+    prices = next;
+    try { localStorage.setItem(PRICES_KEY, JSON.stringify(prices)); } catch (e) {}
+    if (step === "tickets" || step === "intro") render();
+  }, () => {})).catch(() => {});
+}
+
 /* ---------- Paid or not ---------- */
 function loadPaid() {
   try { return JSON.parse(localStorage.getItem(PAID_KEY) || "{}"); } catch (e) { return {}; }
@@ -403,9 +435,11 @@ function payCard() {
     return '<section class="card pay-card"><h2>💷 ' + t("tk_part_paid_h") + '</h2>' +
       '<p><b>' + t("tk_paid_for") + ':</b> ' + paid.map((m) => esc(m.name)).join(", ") + '</p>' +
       '<p><b>' + t("tk_still_to_pay") + ':</b> ' + still.map((m) => esc(m.name)).join(", ") + '</p>' +
+      totalLine(still, "tk_total_left") +
       '<p class="muted">' + t("tk_part_paid_note") + '</p></section>';
   }
-  return '<section class="card pay-card"><h2>💷 ' + t("tk_pay_h") + '</h2><p>' + t("tk_pay_note") + '</p><p class="muted">' + t("tk_pay_at_gate") + '</p></section>';
+  return '<section class="card pay-card"><h2>💷 ' + t("tk_pay_h") + '</h2>' + totalLine(saved.members, "tk_total") +
+    '<p>' + t("tk_pay_note") + '</p><p class="muted">' + payAtGateText() + '</p></section>';
 }
 
 // Listen to the gate's paid list for every group with tickets on this phone
@@ -566,6 +600,7 @@ const incoming = readShareLink();
 if (incoming) showIncoming(incoming); else render();
 
 watchPayments();
+loadPrices();
 window.addEventListener("online", watchPayments);
 
 // A share link opened while the Tickets page is already open
