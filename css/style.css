@@ -957,3 +957,32 @@ textarea.input { min-height: 96px; resize: vertical; }
 .admin-status.expired { color: var(--muted); }
 .total-due { font-size: 1.125rem; margin: 4px 0 8px; }
 .total-due b { font: 800 1.5rem var(--head); color: var(--green); }
+
+/* ---------- Raffle (raffle.html) ---------- */
+.rf-charity { margin: 0 0 6px; color: var(--green); }
+.rf-law { font-size: 0.875rem; margin: 10px 0 0; }
+.rf-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,.25); margin-right: 6px; vertical-align: -2px; }
+.rf-prizes { margin: 0 0 8px; padding-left: 1.4em; display: grid; gap: 8px; }
+.rf-prizes b { display: block; }
+.rf-prizes small { display: block; color: var(--muted); font-size: 0.875rem; }
+.rf-prizes .rf-won-by { color: var(--green); font-weight: 700; }
+.rf-add-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; align-items: end; }
+.rf-add .btn { margin-top: 10px; }
+.rf-mine { list-style: none; margin: 12px 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.rf-mine li { display: flex; align-items: center; gap: 2px; background: var(--light); border-radius: 999px; padding: 4px 4px 4px 10px; font-weight: 700; }
+.rf-mine li.won { background: #fff1cc; outline: 2px solid #e0a800; }
+.rf-mine button { border: 0; background: transparent; color: var(--muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.875rem; }
+.rf-mine button:focus-visible { outline: 3px solid var(--focus); }
+.rf-results { border: 2px solid var(--green); }
+.rf-result-list { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
+.rf-result-list li { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; align-items: center; background: var(--light); border-radius: 10px; padding: 10px 12px; }
+.rf-ticket { font: 800 1.375rem var(--head); color: var(--green); grid-row: span 2; white-space: nowrap; }
+.rf-prize { font-weight: 700; }
+.rf-state { font-size: 0.8125rem; color: #8a5300; }
+.rf-state.done { color: var(--muted); }
+.rf-result-list li.mine { background: #fff1cc; outline: 3px solid #e0a800; }
+.rf-result-list li.mine .rf-state { color: #1b5e20; font-weight: 700; font-size: 0.9375rem; }
+.raffle-banner { background: #1b5e20; }
+.raffle-banner a { color: #fff; font-weight: 700; }
+html.calm .raffle-banner { background: #4f6b45; }
+@media (max-width: 380px) { .rf-add-row { grid-template-columns: 1fr 1fr; } .rf-add-row > div:first-child { grid-column: 1 / -1; } }
