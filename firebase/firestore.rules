@@ -12,6 +12,7 @@ rules_version = '2';
 //   registrations/{code} – ticket pre-registrations (one per group)
 //   checkins/{code}      – who in the group has paid at the gate
 //   news/{id}            – news posts and urgent alerts
+//   meetings, actions, teamDocs – the organisers' Team hub (team/)
 // =========================================================
 
 service cloud.firestore {
@@ -129,6 +130,22 @@ service cloud.firestore {
       allow read: if true;
       allow create, update: if isOrganiser() && isValidNews(request.resource.data);
       allow delete: if isOrganiser();
+    }
+
+    // ---------- Team hub (organisers only) ----------
+    // Meetings, the shared action tracker and the list of document
+    // links. Only organisers can read or change any of it.
+    match /meetings/{id} {
+      allow read, write: if isOrganiser();
+    }
+    match /actions/{id} {
+      allow read, delete: if isOrganiser();
+      allow create, update: if isOrganiser()
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 300;
+    }
+    match /teamDocs/{id} {
+      allow read, write: if isOrganiser();
     }
 
     // Everything else is closed

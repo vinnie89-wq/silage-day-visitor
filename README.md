@@ -238,3 +238,24 @@ address bar. (A website can't hide the browser's address bar any other way.)
 On iPhone the Home Screen app keeps its own storage, separate from Safari. If someone registered
 in Safari first, the Tickets page in the Home Screen app lets them paste a "Send all the tickets"
 link to bring their tickets across.
+
+## Team hub (organisers only) – `team/`
+
+`…/silage-day-visitor/team/` – an installable app for the organising team. Sign in with a Google
+account on the organisers' list (`firebase/firestore.rules` → `isOrganiser`); anyone else sees
+nothing.
+
+- **Dashboard** – days to go; groups and people registered (adults/children/under-5s), new this
+  week, paid at the gate; next meeting with a Join button; open/overdue actions; photos waiting;
+  news live/scheduled.
+- **Meetings** – next and past meetings with time, meeting link, agenda link and notes.
+- **Actions** – shared tracker: add, set owner and due date, tick off; filter Open/Mine/Done/All;
+  overdue ones are highlighted.
+- **Documents** – the plan links by section, with Open / Sign in / Invite only badges. Edit, add
+  or remove links in the app. **Import** (one-off) brings in the list from the old Team hub artifact.
+- **Tools** – post news, approve photos, preview the show day, open the visitor app, Firebase, GitHub.
+
+Data: `meetings`, `actions`, `teamDocs` in Firebase (organisers only). No private links are in this
+public code – they're typed or imported into Firebase. Signing out also wipes the saved copy from
+that device. To give someone access, add their Google email to the organisers' list in the rules
+and publish them (this also lets them approve photos and post news).

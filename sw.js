@@ -41,7 +41,9 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
   if (req.method !== "GET" || url.origin !== self.location.origin) return;
-  if (url.pathname.includes("/videos/") || url.pathname.endsWith("approve.html") || url.pathname.endsWith("news-admin.html")) return;
+  // Videos, organiser pages and the Team hub always come straight from the internet
+  if (url.pathname.includes("/videos/") || url.pathname.includes("/team/") ||
+      url.pathname.endsWith("approve.html") || url.pathname.endsWith("news-admin.html")) return;
 
   if (req.mode === "navigate") {
     // Pages: internet first, saved copy if offline
