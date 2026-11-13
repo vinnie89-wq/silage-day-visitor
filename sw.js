@@ -16,10 +16,10 @@
    If you add a new page, add it to PAGES below.
    ========================================================= */
 
-const CACHE = "silageday-v3";
+const CACHE = "silageday-v4";
 const PAGES = [
   "./", "index.html", "tickets.html", "timetable.html", "safety.html",
-  "map.html", "photos.html", "getting-here.html", "news.html", "raffle.html",
+  "map.html", "photos.html", "getting-here.html", "news.html", "raffle.html", "sponsors.html",
   "images/logo.png", "images/site-map.svg", "images/icon-192.png", "manifest.webmanifest"
 ];
 

@@ -121,8 +121,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=19` on the end (e.g. `js/app.js?v=19`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=20`, then `?v=21`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=20` on the end (e.g. `js/app.js?v=20`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=21`, then `?v=22`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -289,3 +289,19 @@ The price, draw time, stand location and unclaimed-prize weeks are key facts (G6
 and results come from `config/raffle`, written by the **Team hub → Raffle** page (settings, prizes, sales, draw, record). The organisers' own records
 (`rafflePrizes`, `raffleSales`, `raffleCosts`, `raffleDraws`) are organisers-only in
 `firebase/firestore.rules`; draws can't be deleted, only voided.
+
+## Sponsors
+
+`sponsors.html` + `js/sponsors.js`. The organisers keep every sponsor (and the deal) in **Team hub →
+Sponsors**. Only what visitors should see is copied to Firebase `sponsorsPublic`: name, level, field,
+logo, website, a line about them and any offer. Each sponsor is **Off**, **Preview only** or **Live**:
+
+- **Live** – everyone sees them (switch on once they've paid – the agreement says benefits start then).
+- **Preview only** – only shown when the app is opened with `?preview=1` (e.g. last year's sponsors, to
+  try the look without showing them to the public as this year's sponsors).
+
+Where they show: the home page's "Thank you to our sponsors" card (headline sponsor large, field
+sponsors medium), the Sponsors page (everyone, with offers), and a field sponsor's name on its field
+in the timetable, map and "Live now" card ("Field 6 – sponsored by …", tokens `{sp5}`…`{sp11}`).
+To save database reads, only the home and Sponsors pages ask Firebase; the other pages use the copy
+kept on the phone.
