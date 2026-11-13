@@ -955,3 +955,5 @@ textarea.input { min-height: 96px; resize: vertical; }
 .admin-status.live { color: #11713a; }
 .admin-status.scheduled { color: #8a5300; }
 .admin-status.expired { color: var(--muted); }
+.total-due { font-size: 1.125rem; margin: 4px 0 8px; }
+.total-due b { font: 800 1.5rem var(--head); color: var(--green); }

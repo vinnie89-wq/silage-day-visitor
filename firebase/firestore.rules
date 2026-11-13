@@ -148,6 +148,17 @@ service cloud.firestore {
       allow read, write: if isOrganiser();
     }
 
+    // ---------- Settings the organisers control (e.g. ticket prices) ----------
+    // config/prices: adult, child (numbers, £), show (true = visitors see them).
+    // Everyone can read; only organisers can change (from the Team hub).
+    match /config/{id} {
+      allow read: if true;
+      allow write: if isOrganiser()
+        && (id != "prices" || (request.resource.data.adult is number && request.resource.data.adult >= 0
+                               && request.resource.data.child is number && request.resource.data.child >= 0
+                               && request.resource.data.show is bool));
+    }
+
     // Everything else is closed
     match /{document=**} {
       allow read, write: if false;
