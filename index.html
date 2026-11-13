@@ -8,7 +8,8 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Silage Day">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="apple-touch-icon" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
   <!-- All the words on this page live in js/translations.js.
        data-i18n="key" says which words go in each element. -->
   <title data-i18n="title_home">Pembrokeshire Silage Day 2027</title>
@@ -19,11 +20,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
   <!-- Easy-read font: the browser only downloads it if the Easy-read option is on -->
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=fallback" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=13">
-  <script src="js/translations.js?v=13"></script>
-  <script src="js/language.js?v=13"></script>
-  <script src="js/comfort.js?v=13"></script>
-  <script src="js/first-visit.js?v=13"></script>
+  <link rel="stylesheet" href="css/style.css?v=14">
+  <script src="js/translations.js?v=14"></script>
+  <script src="js/language.js?v=14"></script>
+  <script src="js/comfort.js?v=14"></script>
+  <script src="js/first-visit.js?v=14"></script>
 </head>
 <body>
 <div class="app">
@@ -49,6 +50,12 @@
       <b id="days-left">–</b>
       <div id="countdown-text"></div>
     </div>
+
+    <!-- "Add to your Home Screen" tip (js/install.js) – only shown when it can help -->
+    <section class="card install-tip" id="install-tip" hidden></section>
+
+    <!-- Latest news (js/news.js) -->
+    <section class="card latest-news" id="latest-news" aria-live="polite"></section>
 
     <section class="card">
       <h2 data-i18n="welcome_h"></h2>
@@ -103,7 +110,11 @@
     </ul>
   </nav>
 </div>
-<script src="js/programme.js?v=13"></script>
-<script src="js/app.js?v=13"></script>
+<script src="js/programme.js?v=14"></script>
+<script src="js/app.js?v=14"></script>
+<script src="js/firebase-config.js?v=14"></script>
+<script src="js/firebase.js?v=14"></script>
+<script src="js/news.js?v=14"></script>
+<script src="js/install.js?v=14"></script>
 </body>
 </html>

@@ -910,3 +910,48 @@ html.calm .pay-card { border-color: var(--line); }
 .pay-card.all-paid { border-color: #11713a; background: #dcf5e3; }
 .pay-card.all-paid h2 { color: #11713a; }
 html.calm .paid-stamp { transform: none; }
+
+
+/* ---------- News ---------- */
+.latest-news .news-item { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.latest-news .news-item:last-of-type { border-bottom: 0; margin-bottom: 4px; }
+.news-title { margin: 0; font-size: 1.25rem; color: var(--ink); }
+.latest-news .news-title { font-size: 1.125rem; }
+.news-when { margin: 2px 0 6px; color: var(--muted); font-size: 0.8125rem; }
+.news-body p { margin: 0 0 8px; }
+.news-urgent-tag {
+  display: inline-block; margin-bottom: 4px; padding: 1px 8px; border-radius: 6px;
+  background: #fde2e2; color: #a01919; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
+}
+.news-banner {
+  position: relative; z-index: 19;
+  display: flex; gap: 10px; align-items: flex-start;
+  margin: 0; padding: 10px 12px 10px 16px;
+  background: #c8202a; color: #fff;
+}
+.news-banner-text { flex: 1; }
+.news-banner-text b { display: block; font-size: 1rem; }
+.news-banner-text span { font-size: 0.9375rem; }
+.news-banner-close { flex: none; width: 36px; height: 36px; border: 0; border-radius: 8px; background: rgba(255,255,255,.2); color: #fff; font-size: 1rem; cursor: pointer; }
+.news-banner-close:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+html.calm .news-banner { background: #a5524f; }
+html.calm .news-urgent-tag { background: var(--light); color: var(--ink); }
+
+/* ---------- Add to Home Screen tip ---------- */
+.install-tip { position: relative; display: flex; gap: 12px; align-items: flex-start; border: 2px solid var(--green); }
+.install-tip[hidden] { display: none; }
+.install-tip img { border-radius: 12px; flex: none; }
+.install-tip h2 { font-size: 1.125rem; margin: 0 28px 4px 0; }
+.install-tip p { margin: 0 0 6px; }
+.install-tip .btn { width: auto; padding: 10px 22px; margin-top: 4px; }
+.install-close { position: absolute; top: 6px; right: 6px; width: 36px; height: 36px; border: 0; background: none; font-size: 1rem; cursor: pointer; color: var(--muted); border-radius: 8px; }
+.install-close:focus-visible { outline: 3px solid var(--focus); }
+
+/* ---------- Organiser news page ---------- */
+textarea.input { min-height: 96px; resize: vertical; }
+.admin-h { margin: 18px 16px 8px; font-size: 1.125rem; }
+.admin-post h3 { margin: 2px 0; }
+.admin-status { margin: 0; font-weight: 700; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: .4px; }
+.admin-status.live { color: #11713a; }
+.admin-status.scheduled { color: #8a5300; }
+.admin-status.expired { color: var(--muted); }

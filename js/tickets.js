@@ -31,7 +31,6 @@
    the organisers (see firebase/firestore.rules).
    ========================================================= */
 
-const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
 const STORE_KEY = "silageday-registration";
 const SHARED_KEY = "silageday-shared-tickets"; // tickets other people have sent to this phone
 const PAID_KEY = "silageday-paid";              // last known paid list for each group code
@@ -46,7 +45,7 @@ let draft = null;     // the form while filling it in
 let saved = loadLocal();
 let busy = false;
 
-const configured = typeof FIREBASE_CONFIG !== "undefined" && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId;
+const configured = firebaseConfigured(); // see js/firebase.js
 
 
 /* ---------- Small helpers ---------- */
@@ -74,18 +73,9 @@ function ticketNumber(code, n) { return code + "-" + n; }
 
 
 /* ---------- Firebase ---------- */
+// The shared connection (js/firebase.js), signed in anonymously
 async function firebase() {
-  if (fb) return fb;
-  const [appMod, authMod, fsMod] = await Promise.all([
-    import(SDK + "firebase-app.js"),
-    import(SDK + "firebase-auth.js"),
-    import(SDK + "firebase-firestore.js")
-  ]);
-  const app = appMod.initializeApp(FIREBASE_CONFIG);
-  fb = { auth: authMod.getAuth(app), db: fsMod.getFirestore(app), A: authMod, F: fsMod };
-  // Wait for Firebase to remember who this phone is (from an earlier visit)
-  await new Promise((resolve) => { const stop = authMod.onAuthStateChanged(fb.auth, () => { stop(); resolve(); }); });
-  if (!fb.auth.currentUser) await authMod.signInAnonymously(fb.auth);
+  if (!fb) fb = await signInVisitor();
   return fb;
 }
 
@@ -113,6 +103,24 @@ function renderIntro() {
   // Tickets someone else sent to this phone go at the top
   if (loadShared().length) appEl.insertAdjacentHTML("afterbegin", sharedSection());
   bindShared();
+
+  // Opened from the Home Screen? That app keeps its own storage, separate
+  // from the web browser – so offer a way to bring tickets across.
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if (standalone) {
+    appEl.insertAdjacentHTML("beforeend",
+      '<section class="card"><h2>' + t("tk_paste_h") + '</h2><p>' + t("tk_paste") + '</p>' +
+      '<label class="field" for="tk-paste">' + t("tk_paste_label") + '</label>' +
+      '<input class="input" id="tk-paste" inputmode="url" autocomplete="off" spellcheck="false">' +
+      '<p class="form-error" id="tk-paste-error" role="alert" hidden></p>' +
+      '<button type="button" class="btn" id="tk-paste-btn">' + t("tk_paste_btn") + '</button></section>');
+    document.getElementById("tk-paste-btn").addEventListener("click", () => {
+      const m = document.getElementById("tk-paste").value.match(/#share=([A-Za-z0-9_-]+)/);
+      const e = document.getElementById("tk-paste-error");
+      if (!m) { e.textContent = t("tk_paste_bad"); e.hidden = false; return; }
+      location.hash = "share=" + m[1];   // shows "Save to this phone", same as opening the link
+    });
+  }
   const start = document.getElementById("tk-start");
   if (start) start.addEventListener("click", () => {
     draft = { leadName: "", email: "", mobile: "", members: [{ name: "", type: "adult" }], news: false };

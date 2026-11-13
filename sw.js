@@ -16,11 +16,11 @@
    If you add a new page, add it to PAGES below.
    ========================================================= */
 
-const CACHE = "silageday-v1";
+const CACHE = "silageday-v2";
 const PAGES = [
   "./", "index.html", "tickets.html", "timetable.html", "safety.html",
-  "map.html", "photos.html", "getting-here.html",
-  "images/logo.png", "images/site-map.svg"
+  "map.html", "photos.html", "getting-here.html", "news.html",
+  "images/logo.png", "images/site-map.svg", "images/icon-192.png", "manifest.webmanifest"
 ];
 
 self.addEventListener("install", (event) => {
@@ -41,7 +41,7 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
   if (req.method !== "GET" || url.origin !== self.location.origin) return;
-  if (url.pathname.includes("/videos/") || url.pathname.endsWith("approve.html")) return;
+  if (url.pathname.includes("/videos/") || url.pathname.endsWith("approve.html") || url.pathname.endsWith("news-admin.html")) return;
 
   if (req.mode === "navigate") {
     // Pages: internet first, saved copy if offline

@@ -16,7 +16,6 @@
    Who can do what: firebase/firestore.rules.
    ========================================================= */
 
-const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
 const MAX_PHOTOS_AT_ONCE = 10;
 const MAX_PER_DAY = 30;             // per phone – a gentle limit against floods
 const FULL_SIZE = 1280;             // longest side in pixels for the big picture
@@ -48,7 +47,7 @@ function say(key, values) {
   statusEl.textContent = key ? t(key, values) : "";
 }
 
-const configured = typeof FIREBASE_CONFIG !== "undefined" && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId;
+const configured = firebaseConfigured(); // see js/firebase.js
 
 
 /* ---------- Not set up yet? ---------- */
@@ -65,13 +64,7 @@ if (!configured) {
 /* ---------- Start Firebase ---------- */
 async function start() {
   try {
-    const [appMod, authMod, fsMod] = await Promise.all([
-      import(SDK + "firebase-app.js"),
-      import(SDK + "firebase-auth.js"),
-      import(SDK + "firebase-firestore.js")
-    ]);
-    const app = appMod.initializeApp(FIREBASE_CONFIG);
-    fb = { auth: authMod.getAuth(app), db: fsMod.getFirestore(app), A: authMod, F: fsMod };
+    fb = await getFirebase(); // the shared connection – js/firebase.js
     loadGallery();
   } catch (e) {
     console.error(e);
@@ -153,7 +146,7 @@ sendBtn.addEventListener("click", async function () {
   try {
     // A quick anonymous sign-in – no account or details needed, it just
     // lets the security rules tell real visitors from robots
-    if (!auth.currentUser) await A.signInAnonymously(auth);
+    await signInVisitor();
     const uid = auth.currentUser.uid;
 
     for (let i = 0; i < chosen.length; i++) {
