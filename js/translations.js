@@ -277,6 +277,7 @@ const TRANSLATIONS = {
   news_none:       { en: "No news yet – check back soon.", cy: "Dim newyddion eto – dewch yn ôl cyn hir." },
   news_urgent:     { en: "Urgent", cy: "Brys" },
   news_dismiss:    { en: "Close this alert", cy: "Cau'r rhybudd hwn" },
+  news_play:       { en: "Play the video", cy: "Chwarae'r fideo" },
 
   /* ---------- Sponsors (sponsors.html, js/sponsors.js) ---------- */
   nav_sponsors:    { en: "Sponsors", cy: "Noddwyr" },

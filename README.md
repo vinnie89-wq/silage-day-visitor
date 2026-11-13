@@ -121,8 +121,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=21` on the end (e.g. `js/app.js?v=21`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=22`, then `?v=23`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=22` on the end (e.g. `js/app.js?v=22`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=23`, then `?v=24`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -228,6 +228,11 @@ optional **Hide after**, and an **Urgent** tick for on-the-day alerts.
   `createdAt`, `updatedAt` – see `js/news.js`), so nothing on the visitor side needs to change.
 - Scheduled posts are hidden by the app until their time but are in the database before then,
   so don't schedule anything confidential.
+
+
+**Photos and video in news.** A post can have up to 4 photos (shrunk in the Team hub; each saved as
+its own document in `newsImages`, fetched only when the post is on screen) and a YouTube video (a
+picture until tapped). The home page shows just the first photo; the News page shows them all.
 
 ## Add to Home Screen
 

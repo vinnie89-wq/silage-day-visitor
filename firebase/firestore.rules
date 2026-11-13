@@ -114,7 +114,10 @@ service cloud.firestore {
     // from the organiser app using the same fields.
     function isValidNews(d) {
       return d.keys().hasOnly(["titleEn", "titleCy", "bodyEn", "bodyCy", "urgent",
-                               "publishAt", "hideAt", "author", "createdAt", "updatedAt"])
+                               "publishAt", "hideAt", "author", "createdAt", "updatedAt",
+                               "images", "youtube"])
+        && (!("images" in d) || (d.images is list && d.images.size() <= 4))
+        && (!("youtube" in d) || (d.youtube is string && d.youtube.size() <= 20))
         && d.titleEn is string && d.titleEn.size() <= 120
         && d.titleCy is string && d.titleCy.size() <= 120
         && (d.titleEn.size() > 0 || d.titleCy.size() > 0)
@@ -130,6 +133,21 @@ service cloud.firestore {
       allow read: if true;
       allow create, update: if isOrganiser() && isValidNews(request.resource.data);
       allow delete: if isOrganiser();
+    }
+
+    // Photos for news posts – one document each ({ data: "data:image/jpeg;base64,…" }),
+    // listed by id in the post's "images". Everyone can read; organisers write.
+    match /newsImages/{id} {
+      allow read: if true;
+      allow delete: if isOrganiser();
+      allow create, update: if isOrganiser()
+        && request.resource.data.data is string && request.resource.data.data.size() <= 1000000
+        && request.resource.data.data.matches('^data:image/(jpeg|png|webp);base64,.*');
+    }
+
+    // Organisers' private settings, e.g. the translation key (teamSecrets/translate)
+    match /teamSecrets/{id} {
+      allow read, write: if isOrganiser();
     }
 
     // ---------- Team hub (organisers only) ----------
