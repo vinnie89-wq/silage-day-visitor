@@ -300,6 +300,11 @@ const TRANSLATIONS = {
   videos_copied:   { en: "Copied ✓", cy: "Wedi copïo ✓" },
   videos_play:     { en: "Play video", cy: "Chwarae'r fideo" },
 
+  /* ---------- Preview mode (organisers) ---------- */
+  pv_tag:          { en: "Preview", cy: "Rhagolwg" },
+  pv_label:        { en: "Time of day on the show day", cy: "Amser o'r dydd ar ddiwrnod y sioe" },
+  pv_off:          { en: "Turn preview off", cy: "Diffodd y rhagolwg" },
+
   /* ---------- Map: live now and "Where am I?" ---------- */
   live_h:          { en: "Happening now", cy: "Yn digwydd nawr" },
   live_before_day: { en: "On the day, this shows which demonstrations are running right now – and the fields light up on the map.",
