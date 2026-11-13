@@ -165,6 +165,10 @@ service cloud.firestore {
     match /teamDocs/{id} {
       allow read, write: if isOrganiser();
     }
+    // The plan: critical path and Gantt chart tasks, one per code (G1, R2 …)
+    match /gantt/{code} {
+      allow read, write: if isOrganiser();
+    }
 
     // ---------- Settings the organisers control (e.g. ticket prices) ----------
     // config/facts: the KEY FACTS the visitor app shows – date, hours, venue,
