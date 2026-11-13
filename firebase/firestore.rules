@@ -11,6 +11,7 @@ rules_version = '2';
 //   gallery/{id} – approved photos everyone can see
 //   registrations/{code} – ticket pre-registrations (one per group)
 //   checkins/{code}      – who in the group has paid at the gate
+//   news/{id}            – news posts and urgent alerts
 // =========================================================
 
 service cloud.firestore {
@@ -103,6 +104,31 @@ service cloud.firestore {
     match /checkins/{code} {
       allow get: if request.auth != null;
       allow list, create, update, delete: if isOrganiser();
+    }
+
+    // ---------- News and urgent alerts ----------
+    // Everyone can read news (scheduled posts are only hidden by the app
+    // until their time – don't schedule anything confidential).
+    // Only organisers can write: from news-admin.html now, and later
+    // from the organiser app using the same fields.
+    function isValidNews(d) {
+      return d.keys().hasOnly(["titleEn", "titleCy", "bodyEn", "bodyCy", "urgent",
+                               "publishAt", "hideAt", "author", "createdAt", "updatedAt"])
+        && d.titleEn is string && d.titleEn.size() <= 120
+        && d.titleCy is string && d.titleCy.size() <= 120
+        && (d.titleEn.size() > 0 || d.titleCy.size() > 0)
+        && d.bodyEn is string && d.bodyEn.size() <= 2000
+        && d.bodyCy is string && d.bodyCy.size() <= 2000
+        && d.urgent is bool
+        && d.publishAt is timestamp
+        && (d.hideAt == null || d.hideAt is timestamp)
+        && d.updatedAt == request.time;
+    }
+
+    match /news/{id} {
+      allow read: if true;
+      allow create, update: if isOrganiser() && isValidNews(request.resource.data);
+      allow delete: if isOrganiser();
     }
 
     // Everything else is closed

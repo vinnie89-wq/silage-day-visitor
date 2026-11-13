@@ -210,3 +210,31 @@ A slider appears in the header: drag it to see the app at any time on the show d
 live markers, "Happening now" and the timetable update as you drag. It stays on as you move
 between pages in that tab. Tap ✕ on the bar (or use `?preview=0`) to switch it off.
 Visitors never see it unless they're given a preview link.
+
+## News and urgent alerts
+
+Posts are kept in Firebase (`news`). Organisers write them on **news-admin.html**
+(e.g. `…/silage-day-visitor/news-admin.html`, sign in with the organiser Google account):
+headline and text in English and Welsh, **Publish** now or at a scheduled date and time,
+optional **Hide after**, and an **Urgent** tick for on-the-day alerts.
+
+- Visitors see the three latest posts on the home page and everything on **news.html**.
+- **Urgent** posts pop up as a red banner at the top of every page (for 12 hours after
+  publishing); each visitor can close it.
+- Scheduled posts appear by themselves at their time, even if the app is already open.
+- The organiser app will write to the same `news` collection with the same fields
+  (`titleEn`, `titleCy`, `bodyEn`, `bodyCy`, `urgent`, `publishAt`, `hideAt`, `author`,
+  `createdAt`, `updatedAt` – see `js/news.js`), so nothing on the visitor side needs to change.
+- Scheduled posts are hidden by the app until their time but are in the database before then,
+  so don't schedule anything confidential.
+
+## Add to Home Screen
+
+`manifest.webmanifest` gives the app its name, icon (`images/icon-*.png`) and colours, and
+`js/install.js` shows a tip on the home page: an **Install** button on Android, and
+"Share → Add to Home Screen" on iPhone. Opened from the Home Screen it runs full-screen with no
+address bar. (A website can't hide the browser's address bar any other way.)
+
+On iPhone the Home Screen app keeps its own storage, separate from Safari. If someone registered
+in Safari first, the Tickets page in the Home Screen app lets them paste a "Send all the tickets"
+link to bring their tickets across.

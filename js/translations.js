@@ -257,6 +257,31 @@ const TRANSLATIONS = {
   tk_delete_q:     { en: "Cancel your group's registration and tickets?", cy: "Canslo cofrestriad a thocynnau eich grŵp?" },
   tk_err_delete:   { en: "Sorry, that didn't work. Check your signal and try again.", cy: "Mae'n ddrwg gennym, wnaeth hynny ddim gweithio. Gwiriwch eich signal a rhowch gynnig arall arni." },
 
+  /* ---------- News ---------- */
+  title_news:      { en: "News – Pembrokeshire Silage Day 2027", cy: "Newyddion – Diwrnod Silwair Sir Benfro 2027" },
+  news_h:          { en: "News", cy: "Newyddion" },
+  news_intro:      { en: "The latest from the organisers. On the day, urgent updates also pop up at the top of every page.",
+                     cy: "Y diweddaraf gan y trefnwyr. Ar y diwrnod, mae diweddariadau brys hefyd yn ymddangos ar frig pob tudalen." },
+  news_latest_h:   { en: "<span aria-hidden=\"true\">📣</span> Latest news", cy: "<span aria-hidden=\"true\">📣</span> Newyddion diweddaraf" },
+  news_all:        { en: "All news", cy: "Pob newyddion" },
+  news_none:       { en: "No news yet – check back soon.", cy: "Dim newyddion eto – dewch yn ôl cyn hir." },
+  news_urgent:     { en: "Urgent", cy: "Brys" },
+  news_dismiss:    { en: "Close this alert", cy: "Cau'r rhybudd hwn" },
+
+  /* ---------- Add to Home Screen ---------- */
+  inst_h:          { en: "Add Silage Day to your Home Screen", cy: "Ychwanegu Diwrnod Silwair at eich Sgrin Gartref" },
+  inst_why:        { en: "Opens full-screen like an app, with your tickets one tap away.", cy: "Yn agor ar sgrin lawn fel ap, gyda'ch tocynnau dim ond un tap i ffwrdd." },
+  inst_btn:        { en: "Install", cy: "Gosod" },
+  inst_ios:        { en: "Tap <b>Share</b> <span aria-hidden=\"true\">⬆</span>, then <b>Add to Home Screen</b>.",
+                     cy: "Tapiwch <b>Rhannu</b> <span aria-hidden=\"true\">⬆</span>, yna <b>Ychwanegu at y Sgrin Gartref</b>." },
+  inst_close:      { en: "Close this tip", cy: "Cau'r awgrym hwn" },
+  tk_paste_h:      { en: "Registered in your web browser?", cy: "Wedi cofrestru yn eich porwr gwe?" },
+  tk_paste:        { en: "The Home Screen app keeps its own copy of your tickets. In your browser, open Tickets, tap <b>Send all the tickets</b> and copy the link – then paste it here.",
+                     cy: "Mae ap y Sgrin Gartref yn cadw ei gopi ei hun o'ch tocynnau. Yn eich porwr, agorwch Tocynnau, tapiwch <b>Anfon pob tocyn</b> a chopïwch y ddolen – yna gludwch hi yma." },
+  tk_paste_label:  { en: "Ticket link", cy: "Dolen tocyn" },
+  tk_paste_btn:    { en: "Add my tickets", cy: "Ychwanegu fy nhocynnau" },
+  tk_paste_bad:    { en: "That doesn't look like a ticket link. Copy the whole link and try again.", cy: "Dydy hynny ddim yn edrych fel dolen tocyn. Copïwch y ddolen gyfan a rhowch gynnig arall arni." },
+
   /* ---------- Paid tickets ---------- */
   tk_paid:         { en: "Paid", cy: "Wedi talu" },
   tk_paid_stamp:   { en: "PAID", cy: "TALWYD" },
