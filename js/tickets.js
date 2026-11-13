@@ -379,18 +379,11 @@ function renderTickets() {
 }
 
 /* ---------- Ticket prices ----------
-   Set by the organisers in the Team hub (Firebase: config/prices →
-   adult, child, show). Until "show" is ticked there, visitors see
-   "prices to be confirmed". The last prices seen are kept on the
-   phone. Under-5s are always free. */
-const PRICES_KEY = "silageday-prices";
-let prices = (() => { try { return JSON.parse(localStorage.getItem(PRICES_KEY) || "null"); } catch (e) { return null; } })();
-function pricesShown() { return !!(prices && prices.show && prices.adult >= 0 && prices.child >= 0); }
-function money(n) { return "£" + (Number.isInteger(n) ? n : n.toFixed(2)); }
-function priceOf(type) { return type === "adult" ? prices.adult : type === "child" ? prices.child : 0; }
+   The prices themselves come from js/prices.js (shared with the
+   home page): ticketPrices, pricesShown(), money(), priceOf(). */
 function payAtGateText() {
   return pricesShown()
-    ? t("tk_pay_at_gate_prices", { adult: money(prices.adult), child: money(prices.child) })
+    ? t("tk_pay_at_gate_prices", { adult: money(ticketPrices.adult), child: money(ticketPrices.child) })
     : t("tk_pay_at_gate");
 }
 function totalLine(members, key) {
@@ -398,17 +391,8 @@ function totalLine(members, key) {
   const total = members.reduce((sum, m) => sum + priceOf(m.type), 0);
   return '<p class="total-due">' + t(key, { total: money(total) }) + '</p>';
 }
-function loadPrices() {
-  if (!configured) return;
-  getFirebase().then(({ F, db }) => F.onSnapshot(F.doc(db, "config", "prices"), (snap) => {
-    const d = snap.exists() ? snap.data() : null;
-    const next = d ? { adult: Number(d.adult), child: Number(d.child), show: !!d.show } : null;
-    if (JSON.stringify(next) === JSON.stringify(prices)) return;
-    prices = next;
-    try { localStorage.setItem(PRICES_KEY, JSON.stringify(prices)); } catch (e) {}
-    if (step === "tickets" || step === "intro") render();
-  }, () => {})).catch(() => {});
-}
+// Redraw when the organisers change the prices
+document.addEventListener("priceschange", () => { if (step === "tickets" || step === "intro") render(); });
 
 /* ---------- Paid or not ---------- */
 function loadPaid() {
@@ -600,7 +584,6 @@ const incoming = readShareLink();
 if (incoming) showIncoming(incoming); else render();
 
 watchPayments();
-loadPrices();
 window.addEventListener("online", watchPayments);
 
 // A share link opened while the Tickets page is already open
