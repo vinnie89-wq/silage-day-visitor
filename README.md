@@ -16,6 +16,7 @@ see are exactly what the browser gets. The look matches the design prototype in
 | Safety rules | `safety.html` |
 | Site map | `map.html` |
 | Getting here | `getting-here.html` |
+| Raffle | `raffle.html` |
 
 ## What each file does
 
@@ -120,8 +121,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=16` on the end (e.g. `js/app.js?v=16`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=17`, then `?v=18`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=17` on the end (e.g. `js/app.js?v=17`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=18`, then `?v=19`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -252,3 +253,22 @@ Set in the **Team hub → Tools → Ticket prices** (saved in Firebase as `confi
 `child`, `show`). While **Show prices to visitors** is off, the app says "prices to be confirmed".
 Once it's on, the home page's Key facts show the prices (`js/prices.js`), and the Tickets page shows the prices and each group's total ("Your group: £15 to pay at the
 gate", and "Left to pay" when part-paid). Under-5s are always free.
+
+## Raffle
+
+`raffle.html` + `js/raffle.js`. **The app never sells raffle tickets.** The raffle is an
+*incidental lottery* (Gambling Act 2005): tickets are sold on paper at the raffle stand,
+at the show, on the day only – not in the app, online or in advance.
+
+What visitors get:
+- the price, where the stand is, the draw time and the prize list (with thanks to donors)
+- **My raffle numbers** – they can type in the numbers from their paper tickets (colour + number,
+  or a strip "from … to …"). Saved on their phone only. A number saved with "no colour" matches
+  that number in any colour.
+- **Results** as soon as each prize is drawn, and a green **"You've won!"** banner on every page
+  if one of their numbers comes up. Winners' names only appear if the winner agreed.
+
+Everything comes from one Firebase document, `config/raffle`, written by the
+**Team hub → Raffle** page (settings, prizes, sales, draw, record). The organisers' own records
+(`rafflePrizes`, `raffleSales`, `raffleCosts`, `raffleDraws`) are organisers-only in
+`firebase/firestore.rules`; draws can't be deleted, only voided.

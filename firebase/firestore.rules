@@ -150,13 +150,33 @@ service cloud.firestore {
 
     // ---------- Settings the organisers control (e.g. ticket prices) ----------
     // config/prices: adult, child (numbers, £), show (true = visitors see them).
+    // config/raffle: what visitors see on the Raffle page – prices, draw
+    //   time, the prize list and the results (winners' names only if
+    //   they agreed). Written by the Team hub's raffle.html.
     // Everyone can read; only organisers can change (from the Team hub).
     match /config/{id} {
       allow read: if true;
       allow write: if isOrganiser()
         && (id != "prices" || (request.resource.data.adult is number && request.resource.data.adult >= 0
                                && request.resource.data.child is number && request.resource.data.child >= 0
-                               && request.resource.data.show is bool));
+                               && request.resource.data.show is bool))
+        && (id != "raffle" || (request.resource.data.show is bool
+                               && request.resource.data.prizes is list && request.resource.data.prizes.size() <= 100
+                               && request.resource.data.results is list && request.resource.data.results.size() <= 100));
+    }
+
+    // ---------- Raffle – the organisers' side (Team hub raffle.html) ----------
+    // ⚖ Incidental lottery: tickets are sold ONLY on paper at the show,
+    // on the day. Nothing here sells tickets – these are the organisers'
+    // records: prizes (incl. what was spent), sales tallies, costs, and
+    // every draw (who drew it, when, claimed or not, winner contact).
+    // Organisers only – visitors never see these.
+    match /rafflePrizes/{id} { allow read, write: if isOrganiser(); }
+    match /raffleSales/{id}  { allow read, write: if isOrganiser(); }
+    match /raffleCosts/{id}  { allow read, write: if isOrganiser(); }
+    match /raffleDraws/{id}  {
+      allow read, create, update: if isOrganiser();
+      allow delete: if false; // a draw is never deleted – void it instead, so the record stays honest
     }
 
     // Everything else is closed
