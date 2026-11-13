@@ -2,7 +2,8 @@
    News and urgent alerts
    ---------------------------------------------------------
    Posts live in Firebase, in the "news" collection. Organisers
-   write them on news-admin.html now – and later from the
+   write them in the Team hub app (silage-day-team, news.html) –
+   and later from the
    organiser app, which will use exactly the same fields:
 
      titleEn, titleCy   the headline in English and Welsh
