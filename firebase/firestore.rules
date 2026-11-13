@@ -149,7 +149,11 @@ service cloud.firestore {
     }
 
     // ---------- Settings the organisers control (e.g. ticket prices) ----------
-    // config/prices: adult, child (numbers, £), show (true = visitors see them).
+    // config/facts: the KEY FACTS the visitor app shows – date, hours, venue,
+    //   charities, entry prices, raffle price and draw time. The master copy is
+    //   the "Key assumptions and details" register; the Team hub's Key facts
+    //   page copies them here (each box labelled with its register ID).
+    // config/prices: no longer used (prices moved into config/facts).
     // config/raffle: what visitors see on the Raffle page – prices, draw
     //   time, the prize list and the results (winners' names only if
     //   they agreed). Written by the Team hub's raffle.html.
@@ -160,6 +164,12 @@ service cloud.firestore {
         && (id != "prices" || (request.resource.data.adult is number && request.resource.data.adult >= 0
                                && request.resource.data.child is number && request.resource.data.child >= 0
                                && request.resource.data.show is bool))
+        && (id != "facts" || (request.resource.data.date is string
+                              && request.resource.data.date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+                              && request.resource.data.adult is number && request.resource.data.adult >= 0
+                              && request.resource.data.child is number && request.resource.data.child >= 0
+                              && request.resource.data.showPrices is bool
+                              && request.resource.data.charities is list && request.resource.data.charities.size() <= 6))
         && (id != "raffle" || (request.resource.data.show is bool
                                && request.resource.data.prizes is list && request.resource.data.prizes.size() <= 100
                                && request.resource.data.results is list && request.resource.data.results.size() <= 100));

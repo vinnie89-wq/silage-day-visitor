@@ -48,8 +48,10 @@ function t(key, values) {
   if (!entry) return key; // shows the key name so a missing entry is easy to spot
   let text = entry[currentLang || "cy"];
   if (text === undefined) text = entry.en;
-  if (values) {
-    text = text.replace(/\{(\w+)\}/g, function (match, name) { return values[name]; });
+  // Fill in {tokens}: the event's key facts (js/facts.js) plus any values passed in
+  if (text.indexOf("{") !== -1) {
+    const all = Object.assign(typeof factTokens === "function" ? factTokens(currentLang || "cy") : {}, values || {});
+    text = text.replace(/\{(\w+)\}/g, function (match, name) { return all[name] !== undefined ? all[name] : match; });
   }
   return text;
 }

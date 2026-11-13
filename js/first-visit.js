@@ -20,7 +20,7 @@
    translations.js). Raise that number and everyone is asked
    again.
 
-   ON THE EVENT DAY (EVENT_DAY below) the rules are asked for
+   ON THE EVENT DAY (the show date in js/facts.js) the rules are asked for
    EVERY time the app is freshly opened – an acceptance from
    before the day doesn't count, and an acceptance on the day
    only lasts until the browser tab is closed.
@@ -30,7 +30,7 @@
 
 const SAFETY_STORAGE_KEY = "silageday-safety-accepted";
 const SAFETY_SESSION_KEY = "silageday-safety-today"; // only lasts until the tab is closed
-const EVENT_DAY = "2027-09-11"; // the show date – year-month-day
+// The show date (year-month-day) comes from the key facts – js/facts.js, A1
 
 // Is today the event day (on the visitor's phone clock)?
 function isEventDay() {
@@ -44,7 +44,7 @@ function isEventDay() {
   const today = now.getFullYear() + "-" +
     String(now.getMonth() + 1).padStart(2, "0") + "-" +
     String(now.getDate()).padStart(2, "0");
-  return today === EVENT_DAY;
+  return today === FACTS.date;
 }
 
 // Has the visitor accepted since opening the app today?
