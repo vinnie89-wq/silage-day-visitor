@@ -790,3 +790,78 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 @media (min-width: 760px) and (min-height: 501px) {
   .video-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+
+/* ---------- Tickets ---------- */
+.tick-list { margin: 10px 0; padding-left: 22px; }
+.tick-list li { margin-bottom: 6px; }
+.muted { color: var(--muted); font-size: 0.9375rem; }
+.step-label { margin: 0 16px 10px; color: var(--muted); font-weight: 600; font-size: 0.9375rem; }
+.pad-x { padding: 0 16px 14px; }
+.pad-x .btn + .btn { margin-top: 10px; }
+
+/* Form fields: big enough to tap, clear labels */
+.form-card .field:first-of-type { margin-top: 4px; }
+.field { display: block; font-weight: 700; margin: 14px 0 4px; }
+.field-hint { margin: 0 0 6px; font-size: 0.875rem; color: var(--muted); }
+.input {
+  display: block; width: 100%; min-height: 48px; padding: 10px 12px;
+  border: 2px solid var(--edge); border-radius: 10px; background: #fff; color: var(--ink);
+  font: inherit; font-size: 1rem; /* 16px+ stops iPhones zooming in */
+}
+.input:focus { outline: 3px solid var(--focus); outline-offset: 1px; border-color: var(--green); }
+select.input { appearance: auto; }
+.signature { font-family: "Brush Script MT", "Segoe Script", cursive; font-size: 1.5rem; }
+.member-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.member-row .member-name { flex: 1.4; min-width: 0; }
+.member-row .member-type { flex: 1; min-width: 0; }
+.icon-btn, .icon-btn-space { flex: none; width: 44px; height: 44px; }
+.icon-btn { border: 2px solid var(--edge); border-radius: 10px; background: #fff; color: var(--ink); font-size: 1.125rem; cursor: pointer; }
+.icon-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.check-row { display: flex; gap: 12px; align-items: flex-start; margin: 14px 0 4px; cursor: pointer; }
+.check-row input { width: 24px; height: 24px; flex: none; margin: 2px 0 0; accent-color: var(--green); }
+.rules-list { margin: 0 0 12px; padding-left: 22px; }
+.rules-list li { margin-bottom: 6px; }
+.form-error { margin: 0 16px 12px; padding: 10px 12px; border-radius: 10px; background: #fde2e2; color: #8a1414; font-weight: 700; }
+
+/* The tickets */
+.group-summary { margin: 0 16px 12px; padding: 14px 16px; border-radius: 14px; background: var(--green); color: var(--cream); }
+.group-summary p { margin: 2px 0; }
+.group-code { display: flex; align-items: baseline; gap: 10px; }
+.group-code span { font-size: 0.875rem; opacity: .85; }
+.group-code b { font: 800 1.75rem var(--head); letter-spacing: 2px; color: #fff; }
+.done-note { margin: 0 16px 12px; padding: 10px 12px; border-radius: 10px; background: #dcf5e3; color: #11713a; font-weight: 700; }
+.pay-card { border: 2px solid var(--amber); }
+.swipe-hint { margin: 0 16px 6px; color: var(--muted); font-size: 0.875rem; }
+.ticket-list {
+  display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 2px 16px 16px; -webkit-overflow-scrolling: touch;
+}
+.ticket {
+  flex: 0 0 82%; max-width: 320px; scroll-snap-align: center;
+  background: #fff; border: 2px solid var(--brown); border-radius: 16px; overflow: hidden; text-align: center;
+}
+.ticket-top { background: var(--cream); border-bottom: 2px dashed var(--brown); padding: 10px 12px; }
+.ticket-top img { height: 48px; width: auto; }
+.ticket-name { margin: 4px 0 0; font: 700 1.375rem var(--head); overflow-wrap: anywhere; }
+.ticket-type { margin: 0; color: var(--muted); font-weight: 600; font-size: 0.875rem; }
+.ticket-qr { width: 72%; margin: 14px auto 4px; }
+.ticket-qr svg { display: block; width: 100%; height: auto; }
+.ticket-number { margin: 0; font: 700 1.125rem var(--head); letter-spacing: 1px; }
+.ticket-state { margin: 4px 0 14px; color: #8a5300; font-weight: 700; }
+.ticket-actions { display: grid; gap: 10px; }
+.ticket-actions .btn + .btn { margin-top: 0; }
+@media (min-width: 760px) and (min-height: 501px) {
+  .ticket-list { flex-wrap: wrap; overflow: visible; }
+  .ticket { flex: 0 0 260px; }
+  .swipe-hint { display: none; }
+  main:has(#tickets-app) { display: block; }
+  .tickets-app { max-width: 760px; }
+}
+/* Calm mode: no strong red/amber */
+html.calm .pay-card { border-color: var(--line); }
+/* Narrow phones: name on its own line, ticket type underneath */
+@media (max-width: 440px) {
+  .member-row { flex-wrap: wrap; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  .member-row .member-name { flex: 1 1 100%; }
+}

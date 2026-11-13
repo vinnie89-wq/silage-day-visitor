@@ -319,3 +319,13 @@ if (locateBtn && meDot) {
     );
   });
 }
+
+
+/* ---------- 6. Work offline ----------
+   Saves the app on the phone so it (and the tickets) still opens
+   with no signal. See sw.js. */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () { /* not supported here – the app still works online */ });
+  });
+}

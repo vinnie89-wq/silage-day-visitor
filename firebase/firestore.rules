@@ -1,7 +1,7 @@
 rules_version = '2';
 
 // =========================================================
-// Who can do what with the visitor photos.
+// Who can do what with visitor photos and ticket registrations.
 // Paste this into: Firebase console → Firestore Database → Rules,
 // put the organisers' Google email addresses in the list below,
 // then press Publish.
@@ -9,6 +9,7 @@ rules_version = '2';
 //   pending/{id} – new photos waiting to be checked (small picture)
 //   full/{id}    – the bigger picture for each photo
 //   gallery/{id} – approved photos everyone can see
+//   registrations/{code} – ticket pre-registrations (one per group)
 // =========================================================
 
 service cloud.firestore {
@@ -55,6 +56,41 @@ service cloud.firestore {
     match /gallery/{id} {
       allow read: if true;
       allow create, update, delete: if isOrganiser();
+    }
+
+    // ---------- Ticket pre-registrations ----------
+    // One document per group, named by its 6-letter group code.
+    // The phone that made it can see, change or cancel it; organisers
+    // can see all of them (for the gate). Nobody else can see anything.
+    function isValidRegistration(d) {
+      return d.keys().hasOnly(["uid", "leadName", "email", "mobile", "members",
+                               "agreed", "childrenAgreed", "signedName", "rulesVersion",
+                               "lang", "news", "createdAt", "updatedAt"])
+        && d.uid == request.auth.uid
+        && d.leadName is string && d.leadName.size() >= 2 && d.leadName.size() <= 80
+        && d.email is string && d.email.size() <= 120 && d.email.matches("^[^@ ]+@[^@ ]+[.][^@ ]+$")
+        && d.mobile is string && d.mobile.size() <= 30
+        && d.members is list && d.members.size() >= 1 && d.members.size() <= 12
+        && d.agreed == true && d.childrenAgreed is bool
+        && d.signedName is string && d.signedName.size() >= 2 && d.signedName.size() <= 80
+        && d.rulesVersion is int && d.lang in ["cy", "en"] && d.news is bool
+        && d.updatedAt == request.time;
+    }
+
+    match /registrations/{code} {
+      allow create: if request.auth != null
+        && code.matches("^[A-Z2-9]{6}$")
+        && isValidRegistration(request.resource.data)
+        && request.resource.data.createdAt == request.time;
+      // (resource == null: lets a phone find out its group was cancelled)
+      allow read: if request.auth != null
+        && (resource == null || resource.data.uid == request.auth.uid || isOrganiser());
+      allow update: if request.auth != null
+        && resource.data.uid == request.auth.uid
+        && isValidRegistration(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if request.auth != null
+        && (resource == null || resource.data.uid == request.auth.uid || isOrganiser());
     }
 
     // Everything else is closed

@@ -120,8 +120,8 @@ add a new one, and add its name in both languages to `js/translations.js`; the "
 ## Updating the site
 
 Phones and browsers keep copies of the CSS and JavaScript files to load faster.
-Each page links to them with `?v=8` on the end (e.g. `js/app.js?v=8`).
-When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=9`, then `?v=10`, …) – including `translations.js` and `style.css`, which change most often.
+Each page links to them with `?v=9` on the end (e.g. `js/app.js?v=9`).
+When you change any CSS or JS file, bump the number on **every** file link on **every** page (to `?v=10`, then `?v=11`, …) – including `translations.js` and `style.css`, which change most often.
 so visitors get the new version straight away instead of an old saved copy.
 
 ## Photos – setting up Firebase
@@ -160,3 +160,32 @@ and only the Google accounts in the rules can see or approve anything.
   If the day is busier than that, the gallery pauses until midnight. To remove the limit, switch the
   project to the **Blaze (pay as you go)** plan before the event – at this size it would cost
   pennies, and you can set a budget alert.
+
+## Tickets – free pre-registration
+
+`tickets.html` and `js/tickets.js`. Visitors register their group for free and pay at the gate:
+
+1. **Step 1** – lead adult's name, email and (optional) mobile, then everyone in the group with a
+   ticket type: Adult (16+), Child (5–15) or Under 5 (free). Up to 12 people.
+2. **Step 2** – the safety rules, a tick to agree for the whole group (and a second tick for
+   children, if there are any), and the lead adult's typed name as their signature.
+3. **Tickets** – a 6-letter group code (e.g. `K7Q2MX`) and one ticket per person, each with its
+   own QR code. The QR holds only `PSD27|GROUPCODE|personNumber`, never names.
+
+Registrations are saved in Firebase (`registrations`, one document per group) **and** on the
+phone, so tickets show with no signal. Only the phone that registered and the organisers can
+see a registration. Visitors can change their group or cancel.
+
+**When you change the rules in `firebase/firestore.rules`, paste them into Firebase and Publish
+again** – the ticket rules are a new section.
+
+Still to come: the organisers' gate check-in (scan a QR, see the group, take payment, mark them in),
+sharing one person's ticket to their own phone, and confirmation emails (these need Firebase's paid
+plan, so for now visitors are told to keep their tickets on their phone or take a screenshot).
+
+## Working offline
+
+`sw.js` (a "service worker") saves the app on the phone so it opens with no signal – most
+importantly the tickets. Pages always try the internet first, so changes show up straight away.
+If you add a new page, add it to the `PAGES` list in `sw.js`. If you replace a picture in
+`images/` with one of the same name, change `CACHE = "silageday-v1"` to `v2` so phones get the new one.
