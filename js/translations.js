@@ -102,6 +102,7 @@ const TRANSLATIONS = {
                      cy: "Yn codi arian at {charities}." },
   facts_h:         { en: "Key facts", cy: "Ffeithiau allweddol" },
   fact_date_l:     { en: "Date", cy: "Dyddiad" },
+  welcome_p2_logos: { en: "Raising money for:", cy: "Yn codi arian at:" },
   fact_charity_l:  { en: "In aid of", cy: "Er budd" },
   fact_charity:    { en: "{charities}", cy: "{charities}" },
   fact_date:       { en: "{dateLong}", cy: "{dateLong}" },
