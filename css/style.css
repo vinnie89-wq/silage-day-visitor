@@ -992,3 +992,30 @@ html.calm .raffle-banner { background: #4f6b45; }
 .charity-logos > a, .charity-logos > .charity-logo { flex: 1 1 140px; display: flex; align-items: center; justify-content: center; min-height: 76px; padding: 10px 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--green); font-weight: 700; text-align: center; }
 .charity-logos img { display: block; max-width: 100%; max-height: 60px; object-fit: contain; }
 .charity-logos > a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* ---------- Sponsors (home card + sponsors.html, js/sponsors.js) ---------- */
+.sp-label { margin: 10px 0 6px; font-weight: 700; color: var(--muted); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.4px; }
+.sp-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-bottom: 8px; }
+.sp-row-head { grid-template-columns: 1fr; }
+.sp-tile { display: flex; align-items: center; justify-content: center; min-height: 72px; padding: 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--green); text-align: center; }
+.sp-row-head .sp-tile { min-height: 110px; }
+.sp-tile:focus-visible, .sp-card-logo:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.sp-logo { display: block; max-width: 100%; object-fit: contain; }
+.sp-logo.lg { max-height: 84px; } .sp-logo.md { max-height: 52px; } .sp-logo.sm { max-height: 40px; }
+.sp-name { font-weight: 800; font-family: var(--head); }
+.sp-name.lg { font-size: 1.75rem; } .sp-name.md { font-size: 1.25rem; } .sp-name.sm { font-size: 1.0625rem; }
+.sp-preview-note { margin: 0 0 6px; padding: 6px 10px; border-radius: 8px; background: #fff1cc; color: #7a5200; font-size: 0.875rem; }
+.sp-group-h { margin: 18px 16px 8px; color: var(--green); font-size: 1.25rem; }
+.sp-card { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: start; }
+.sp-card-logo { display: flex; align-items: center; justify-content: center; min-height: 80px; padding: 8px; border: 1px solid var(--line); border-radius: 10px; background: #fff; text-decoration: none; color: var(--green); }
+.sp-card-text h3 { margin: 0 0 4px; }
+.sp-card-text p { margin: 0 0 6px; font-weight: 400; color: var(--ink); }
+.sp-card-text .sp-field { color: var(--green); font-weight: 700; font-size: 0.9375rem; }
+.sp-offer { background: var(--light); border-radius: 8px; padding: 8px 10px; }
+.sp-headline { border: 2px solid var(--green); }
+.sp-headline.sp-card { grid-template-columns: 1fr; }
+.sp-headline .sp-card-logo { min-height: 110px; }
+@media (max-width: 380px) { .sp-card { grid-template-columns: 1fr; } }
+/* Home card: field sponsors two to a row under the headline sponsor */
+.sponsors-home .sp-row:not(.sp-row-head) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sponsors-home .sp-row:not(.sp-row-head) .sp-tile { min-height: 84px; }

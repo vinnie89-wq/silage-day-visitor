@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="cy">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Lets visitors "Add to Home Screen" and open it full-screen like an app -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Silage Day">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title data-i18n="title_sponsors">Sponsors – Pembrokeshire Silage Day 2027</title>
+  <meta name="theme-color" content="#2c4a1c">
+  <link rel="icon" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+  <!-- Easy-read font: the browser only downloads it if the Easy-read option is on -->
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=fallback" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=21">
+  <script src="js/translations.js?v=21"></script>
+  <script src="js/facts.js?v=21"></script>
+  <script src="js/language.js?v=21"></script>
+  <script src="js/comfort.js?v=21"></script>
+  <script src="js/first-visit.js?v=21"></script>
+</head>
+<body>
+<div class="app">
+
+  <header class="site-header">
+    <div class="header-row">
+      <a href="index.html"><img class="header-logo" src="images/logo.png" alt="" data-i18n-attr="alt:logo_alt" width="116" height="58"></a>
+      <p class="header-date" data-i18n="header_date"></p>
+      <div class="header-buttons">
+        <button type="button" class="comfort-btn" id="comfort-btn" aria-haspopup="dialog" aria-expanded="false" data-i18n="comfort_btn"></button>
+        <a class="safety-btn" href="safety.html" data-i18n="safety_btn"></a>
+      </div>
+    </div>
+  </header>
+  <p class="draft-note" data-i18n="draft_note"></p>
+
+  <main>
+    <h1 class="page-title" data-i18n="nav_sponsors"></h1>
+    <p class="page-intro" data-i18n="sp_intro"></p>
+    <!-- Drawn by js/sponsors.js from Firebase (sponsorsPublic, set in Team hub → Sponsors) -->
+    <div id="sponsors-page"></div>
+  </main>
+
+  <footer class="site-footer" data-i18n="footer"></footer>
+
+  <nav class="bottom-nav" data-i18n-attr="aria-label:nav_label">
+    <ul>
+      <li><a href="index.html"><span class="icon" aria-hidden="true">🏠</span><span class="label" data-i18n="nav_home"></span></a></li>
+      <li><a href="tickets.html"><span class="icon" aria-hidden="true">🎟️</span><span class="label" data-i18n="nav_tickets"></span></a></li>
+      <li><a href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><span class="label" data-i18n="nav_timetable"></span></a></li>
+      <li><a href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><span class="label" data-i18n="nav_safety"></span></a></li>
+      <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label" data-i18n="nav_map"></span></a></li>
+      <li><a href="photos.html"><span class="icon" aria-hidden="true">📷</span><span class="label" data-i18n="nav_photos"></span></a></li>
+    </ul>
+  </nav>
+</div>
+<script src="js/programme.js?v=21"></script>
+<script src="js/app.js?v=21"></script>
+<script src="js/firebase-config.js?v=21"></script>
+<script src="js/firebase.js?v=21"></script>
+<script src="js/prices.js?v=21"></script>
+<script src="js/news.js?v=21"></script>
+<script src="js/raffle.js?v=21"></script>
+<script src="js/sponsors.js?v=21"></script>
+</body>
+</html>

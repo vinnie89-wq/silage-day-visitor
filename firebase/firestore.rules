@@ -189,6 +189,20 @@ service cloud.firestore {
       allow delete: if false; // a draw is never deleted – void it instead, so the record stays honest
     }
 
+    // ---------- Sponsors ----------
+    // sponsors: the organisers' sponsor tracker (deal, price, contact, status) – organisers only.
+    // sponsorsPublic: what visitors see, copied by the Team hub for each sponsor switched on
+    // ("live", or "preview" = only in the app's preview mode). Everyone can read.
+    match /sponsors/{id} { allow read, write: if isOrganiser(); }
+    match /sponsorsPublic/{id} {
+      allow read: if true;
+      allow delete: if isOrganiser();
+      allow create, update: if isOrganiser()
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80
+        && request.resource.data.level in ["headline", "field", "supporter", "partner"]
+        && request.resource.data.visible in ["live", "preview"];
+    }
+
     // Everything else is closed
     match /{document=**} {
       allow read, write: if false;

@@ -50,7 +50,9 @@ function t(key, values) {
   if (text === undefined) text = entry.en;
   // Fill in {tokens}: the event's key facts (js/facts.js) plus any values passed in
   if (text.indexOf("{") !== -1) {
-    const all = Object.assign(typeof factTokens === "function" ? factTokens(currentLang || "cy") : {}, values || {});
+    const lang = currentLang || "cy";
+    const all = Object.assign(typeof factTokens === "function" ? factTokens(lang) : {},
+                              typeof sponsorTokens === "function" ? sponsorTokens(lang) : {}, values || {});
     text = text.replace(/\{(\w+)\}/g, function (match, name) { return all[name] !== undefined ? all[name] : match; });
   }
   return text;
