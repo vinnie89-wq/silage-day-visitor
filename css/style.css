@@ -1019,3 +1019,12 @@ html.calm .raffle-banner { background: #4f6b45; }
 /* Home card: field sponsors two to a row under the headline sponsor */
 .sponsors-home .sp-row:not(.sp-row-head) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .sponsors-home .sp-row:not(.sp-row-head) .sp-tile { min-height: 84px; }
+
+/* News photos and video (js/news.js) */
+.news-photos { margin: 8px 0; }
+.news-photo { display: block; width: 100%; border-radius: 10px; background: var(--light); min-height: 60px; object-fit: cover; }
+.news-photos.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.news-photos.grid .news-photo { aspect-ratio: 1 / 1; }
+.news-photos.compact .news-photo { max-height: 200px; }
+.news-video { margin: 8px 0 4px; }
+.news-banner-text img { display: none; }
