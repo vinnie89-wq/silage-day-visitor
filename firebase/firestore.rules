@@ -169,6 +169,11 @@ service cloud.firestore {
     match /gantt/{code} {
       allow read, write: if isOrganiser();
     }
+    // Numbered snapshots of the action list (Team hub → Actions → Export / new revision)
+    match /revisions/{id} {
+      allow read, create: if isOrganiser();
+      allow update, delete: if false; // a revision is a record – it's never changed or removed
+    }
 
     // ---------- Settings the organisers control (e.g. ticket prices) ----------
     // config/facts: the KEY FACTS the visitor app shows – date, hours, venue,
