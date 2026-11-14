@@ -90,6 +90,16 @@ html.calm .map-box img,
 html.calm .places .dot { filter: saturate(0.55) brightness(1.05); }
 html.calm .pill.live { background: #e3ece5; color: #34553c; }
 html.calm .pill.soon { background: #f3ecdc; color: #63502a; }
+/* Calm mode: the bright blue (Comfort "on", Where am I?, you-are-here dot)
+   becomes a soft slate blue. It still means the same thing, and white
+   text on it is just as readable (5.3:1, the same as the bright blue). */
+html.calm .comfort-btn.is-on,
+html.calm .locate-btn,
+html.calm .map-tools .locate-btn { background: #4f6f86; }
+html.calm .locate-btn[aria-pressed="true"],
+html.calm .map-tools .locate-btn[aria-pressed="true"] { background: #3e5869; }
+html.calm .me-centre { background: #4f6f86; }
+html.calm .me-accuracy { background: rgba(79,111,134,.16); border-color: rgba(79,111,134,.45); }
 
 /* Larger text – every text size in this file is in "rem", which is
    a share of this one root size. Raise it and all text grows
