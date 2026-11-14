@@ -264,8 +264,8 @@ const TRANSLATIONS = {
   tk_pay_gate_short: { en: "Pay at the gate", cy: "Talu wrth y gât" },
   tk_free_entry:   { en: "Free entry", cy: "Mynediad am ddim" },
   tk_keep_h:       { en: "Keeping your tickets safe", cy: "Cadw eich tocynnau'n ddiogel" },
-  tk_keep:         { en: "Your tickets are saved on this phone and show even without signal. Taking a screenshot is a good backup. Lost them? Just give your name or group code at the gate.",
-                     cy: "Mae eich tocynnau wedi'u cadw ar y ffôn hwn ac yn dangos hyd yn oed heb signal. Mae tynnu sgrinlun yn gopi wrth gefn da. Wedi'u colli? Rhowch eich enw neu god grŵp wrth y gât." },
+  tk_keep:         { en: "Your tickets are saved on this phone and show even without signal. For a backup that stays on your phone, tap “Save to Photos” on each ticket (or take a screenshot). This matters most on iPhone: if you don't open the app for a while, Safari can clear what it has saved. Lost them? Just give your name or group code at the gate.",
+                     cy: "Mae eich tocynnau wedi'u cadw ar y ffôn hwn ac yn dangos hyd yn oed heb signal. I gael copi wrth gefn sy'n aros ar eich ffôn, tapiwch “Cadw yn Lluniau” ar bob tocyn (neu tynnwch sgrinlun). Mae hyn yn bwysicaf ar iPhone: os nad ydych chi'n agor yr ap am sbel, gall Safari glirio'r hyn y mae wedi'i gadw. Wedi'u colli? Rhowch eich enw neu god grŵp wrth y gât." },
   tk_edit:         { en: "Change my group", cy: "Newid fy ngrŵp" },
   tk_delete:       { en: "Cancel registration", cy: "Canslo'r cofrestriad" },
   tk_delete_q:     { en: "Cancel your group's registration and tickets?", cy: "Canslo cofrestriad a thocynnau eich grŵp?" },
@@ -385,6 +385,15 @@ const TRANSLATIONS = {
   tk_still_to_pay: { en: "Still to pay", cy: "I dalu o hyd" },
   tk_part_paid_note: { en: "The others can pay when they arrive – just show their ticket at the gate.",
                      cy: "Gall y lleill dalu pan fyddan nhw'n cyrraedd – dangoswch eu tocyn wrth y gât." },
+
+  /* ---------- Saving tickets as pictures (Save to Photos) ---------- */
+  tk_save_one:     { en: "Save to Photos", cy: "Cadw yn Lluniau" },
+  tk_save_one_label: { en: "Save {name}'s ticket as a picture", cy: "Cadw tocyn {name} fel llun" },
+  tk_save_all:     { en: "Save all to Photos", cy: "Cadw'r cyfan yn Lluniau" },
+  tk_save_done:    { en: "Ticket picture saved – look in your Photos or Downloads.", cy: "Llun y tocyn wedi'i gadw – edrychwch yn eich Lluniau neu Lawrlwythiadau." },
+  tk_save_fail:    { en: "Sorry, that didn't work – please take a screenshot of the ticket instead.", cy: "Mae'n ddrwg gennym, wnaeth hynny ddim gweithio – tynnwch sgrinlun o'r tocyn yn lle hynny." },
+  tk_img_title:    { en: "Pembrokeshire Silage Day", cy: "Diwrnod Silwair Sir Benfro" },
+  tk_img_show:     { en: "Show this at the pay gate", cy: "Dangoswch hwn wrth y gât dalu" },
 
   /* ---------- Sharing tickets ---------- */
   tk_share_one:    { en: "Send this ticket", cy: "Anfon y tocyn hwn" },
