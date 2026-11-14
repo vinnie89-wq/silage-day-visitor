@@ -348,7 +348,8 @@ function renderTickets() {
     payCard() +
     '<p class="swipe-hint" aria-hidden="true">' + t("tk_swipe") + ' →</p>' +
     '<div class="ticket-list" role="list">' + saved.members.map((m) => ticketCard(m, saved.code, true)).join("") + '</div>' +
-    (saved.members.length > 1 ? '<div class="pad-x"><button type="button" class="btn alt" id="tk-share-all">📤 ' + t("tk_share_all") + '</button></div>' : '') +
+    (saved.members.length > 1 ? '<div class="pad-x"><button type="button" class="btn alt" id="tk-save-all">🖼️ ' + t("tk_save_all") + '</button>' +
+      '<button type="button" class="btn alt" id="tk-share-all">📤 ' + t("tk_share_all") + '</button></div>' : '') +
     '<p class="share-status" id="tk-share-status" role="status" hidden></p>' +
     '<section class="card"><h2>' + t("tk_keep_h") + '</h2><p>' + t("tk_keep") + '</p></section>' +
     '<div class="pad-x ticket-actions">' +
@@ -458,6 +459,7 @@ function ticketCard(m, code, canShare) {
     '<div class="ticket-qr" role="img" aria-label="' + esc(t("tk_qr_label", { n: ticketNumber(code, m.n) })) + '">' + qrSvg(qrText(code, m.n)) + '</div>' +
     '<p class="ticket-number">' + ticketNumber(code, m.n) + '</p>' +
     ticketState(m, code) +
+    '<button type="button" class="ticket-share" data-save="' + esc(code) + '|' + m.n + '" aria-label="' + esc(t("tk_save_one_label", { name: m.name })) + '">🖼️ ' + t("tk_save_one") + '</button>' +
     (canShare ? '<button type="button" class="ticket-share" data-share="' + m.n + '" aria-label="' + esc(t("tk_share_one_label", { name: m.name })) + '">📤 ' + t("tk_share_one") + '</button>' : '') +
   '</article>';
 }
@@ -505,6 +507,175 @@ async function shareTickets(members, text) {
   // Computers: copy the link instead
   try { await navigator.clipboard.writeText(text + " " + url); say("tk_share_copied"); }
   catch (e) { window.prompt(t("tk_share_copy_this"), url); }
+}
+
+/* ---------- Save to Photos ----------
+   Draws a ticket as a picture (PNG) right here on the phone, so it
+   works with no signal and needs no accounts. On phones it opens the
+   share sheet: on iPhone "Save Image" puts it in Photos, on Android
+   "Save to device"/Photos. On a computer it simply downloads.
+
+   Why: tickets saved in the browser can be cleared (Safari clears
+   a website's saved data if it isn't opened for a while), but a
+   picture in Photos stays until the visitor deletes it.
+
+   The pictures are drawn as soon as the tickets show, so tapping the
+   button can open the share sheet straight away (iPhones only allow
+   sharing straight after a tap). */
+const imageCache = {}; // "code|n|language|paid" → Promise of a File
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+function plainText(html) { const d = document.createElement("div"); d.innerHTML = html; return d.textContent; }
+
+// A rectangle with rounded corners (drawn by hand, for older phones)
+function roundedRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+// Write a line of text centred, shrinking it until it fits the width
+function centreText(ctx, text, y, maxWidth, size, font, colour) {
+  do { ctx.font = font.replace("{size}", size + "px"); size -= 2; }
+  while (ctx.measureText(text).width > maxWidth && size > 18);
+  ctx.fillStyle = colour;
+  ctx.textAlign = "center";
+  ctx.fillText(text, 450, y);
+}
+
+async function drawTicketImage(m, code) {
+  const paid = isPaid(code, m.n);
+  const W = 900, H = 1500;
+  const ink = "#2a1e12", muted = "#6b6250", brown = "#3a2614", green = "#2c4a1c", paidGreen = "#11713a";
+  const HEAD = '700 {size} "Barlow Condensed", "Barlow", sans-serif';
+  const BODY = '600 {size} "Barlow", system-ui, sans-serif';
+  try {
+    await Promise.all([document.fonts.load('700 40px "Barlow Condensed"'), document.fonts.load('600 30px "Barlow"')]);
+  } catch (e) { /* fonts not ready – the standby font still works */ }
+
+  // The QR code: the same drawing as on screen, turned into a picture
+  const svg = qrSvg(qrText(code, m.n)).replace("<svg ", '<svg width="620" height="620" ');
+  const qrUrl = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+  const [qr, logo] = await Promise.all([loadImage(qrUrl), loadImage("images/logo.png").catch(() => null)]);
+  URL.revokeObjectURL(qrUrl);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext("2d");
+
+  // Background and the ticket itself
+  ctx.fillStyle = "#fbf8ee"; ctx.fillRect(0, 0, W, H);
+  roundedRect(ctx, 40, 40, 820, 1420, 40);
+  ctx.save(); ctx.clip();
+  ctx.fillStyle = "#fff"; ctx.fillRect(40, 40, 820, 1420);
+  ctx.fillStyle = paid ? "#dcf5e3" : "#f6efcf"; ctx.fillRect(40, 40, 820, 440); // top band
+  ctx.restore();
+  roundedRect(ctx, 40, 40, 820, 1420, 40);
+  ctx.lineWidth = 6; ctx.strokeStyle = paid ? paidGreen : brown; ctx.stroke();
+
+  // Top: logo, name, ticket type
+  if (logo) ctx.drawImage(logo, 250, 70, 400, 400 * logo.height / logo.width);
+  centreText(ctx, m.name, 380, 740, 76, HEAD, ink);
+  centreText(ctx, typeLabel(m.type), 438, 740, 36, BODY, muted);
+
+  // The tear-off line
+  ctx.setLineDash([20, 14]); ctx.lineWidth = 5; ctx.strokeStyle = paid ? paidGreen : brown;
+  ctx.beginPath(); ctx.moveTo(40, 480); ctx.lineTo(860, 480); ctx.stroke(); ctx.setLineDash([]);
+
+  // QR code, kept sharp
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(qr, 140, 520, 620, 620);
+  ctx.imageSmoothingEnabled = true;
+
+  // Ticket number and whether it's paid
+  centreText(ctx, ticketNumber(code, m.n), 1200, 740, 60, HEAD, ink);
+  const state = paid ? "✓ " + t("tk_paid") : (m.type === "under5" ? t("tk_free_entry") : t("tk_pay_gate_short"));
+  centreText(ctx, state, 1258, 740, 42, '700 {size} "Barlow", system-ui, sans-serif', paid ? paidGreen : "#8a5300");
+
+  // The event
+  centreText(ctx, t("tk_img_title"), 1330, 740, 40, HEAD, green);
+  centreText(ctx, plainText(t("tk_date")) + " · " + plainText(t("fact_open")), 1376, 740, 30, BODY, ink);
+  centreText(ctx, plainText(t("fact_where")), 1418, 740, 28, BODY, muted);
+
+  // A rubber stamp once paid, in the top corner (never over the QR code)
+  if (paid) {
+    ctx.save();
+    ctx.translate(735, 120); ctx.rotate(-12 * Math.PI / 180);
+    ctx.font = HEAD.replace("{size}", "48px");
+    const word = t("tk_paid_stamp"), w = ctx.measureText(word).width + 36;
+    roundedRect(ctx, -w / 2, -36, w, 66, 12);
+    ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.fill();
+    ctx.lineWidth = 5; ctx.strokeStyle = paidGreen; ctx.stroke();
+    ctx.fillStyle = paidGreen; ctx.textAlign = "center"; ctx.fillText(word, 0, 14);
+    ctx.restore();
+  }
+
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+  if (!blob) throw new Error("Couldn't make the picture");
+  return new File([blob], "silage-day-ticket-" + ticketNumber(code, m.n) + ".png", { type: "image/png" });
+}
+
+function ticketImage(m, code) {
+  const key = [code, m.n, currentLang, isPaid(code, m.n)].join("|");
+  if (!imageCache[key]) {
+    imageCache[key] = drawTicketImage(m, code);
+    imageCache[key].catch(() => { delete imageCache[key]; }); // try again next time
+  }
+  return imageCache[key];
+}
+
+// Draw the pictures quietly in the background once the tickets show
+function prepareTicketImages(list) {
+  setTimeout(() => list.forEach((x) => ticketImage(x.m, x.code).catch(() => {})), 300);
+}
+
+async function saveTicketImages(list, button) {
+  const status = (button.closest(".shared-section") || appEl).querySelector(".share-status");
+  const say = (key) => { if (status) { status.textContent = t(key); status.hidden = false; } };
+  let files;
+  try { files = await Promise.all(list.map((x) => ticketImage(x.m, x.code))); }
+  catch (e) { say("tk_save_fail"); return; }
+
+  // Phones: the share sheet ("Save Image" on iPhone)
+  if (navigator.canShare && navigator.canShare({ files: files })) {
+    try { await navigator.share({ files: files, title: t("tk_share_title") }); return; }
+    catch (e) { if (e.name === "AbortError") return; /* otherwise fall through and download */ }
+  }
+  // Computers (and phones that can't share files): download the pictures
+  files.forEach((file) => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(file);
+    a.download = file.name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 30000);
+  });
+  say("tk_save_done");
+}
+
+// Wire up every "Save to Photos" button on the page (own and shared tickets)
+function bindSave() {
+  const own = saved ? saved.members.map((m) => ({ m: m, code: saved.code })) : [];
+  const shared = loadShared().map((x) => ({ m: x, code: x.code }));
+  const find = (code, n) => own.concat(shared).find((x) => x.code === code && x.m.n === n);
+  const shown = [];
+  appEl.querySelectorAll("[data-save]").forEach((b) => {
+    const [code, n] = b.dataset.save.split("|");
+    const item = find(code, Number(n));
+    if (!item) return;
+    shown.push(item);
+    b.addEventListener("click", () => saveTicketImages([item], b));
+  });
+  const all = document.getElementById("tk-save-all");
+  if (all) all.addEventListener("click", () => saveTicketImages(own, all));
+  prepareTicketImages(shown);
 }
 
 function loadShared() {
@@ -559,10 +730,12 @@ function sharedSection() {
     '<h2 class="shared-h">📥 ' + t("tk_shared_h") + '</h2>' +
     '<p class="muted pad-x">' + t("tk_shared_note") + '</p>' +
     '<div class="ticket-list" role="list">' + list.map((x) => ticketCard(x, x.code, false)).join("") + '</div>' +
+    '<p class="share-status" role="status" hidden></p>' +
     '<div class="pad-x"><button type="button" class="link-btn" id="tk-shared-clear">' + t("tk_shared_remove") + '</button></div>' +
   '</section>';
 }
 function bindShared() {
+  bindSave();
   const clear = document.getElementById("tk-shared-clear");
   if (clear) clear.addEventListener("click", () => {
     if (!confirm(t("tk_shared_remove_q"))) return;
