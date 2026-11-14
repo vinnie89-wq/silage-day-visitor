@@ -386,6 +386,19 @@ const TRANSLATIONS = {
   tk_part_paid_note: { en: "The others can pay when they arrive – just show their ticket at the gate.",
                      cy: "Gall y lleill dalu pan fyddan nhw'n cyrraedd – dangoswch eu tocyn wrth y gât." },
 
+  /* ---------- Email my tickets to myself (backup email) ---------- */
+  tk_mail_btn:     { en: "Email my tickets to myself", cy: "E-bostio fy nhocynnau ataf fy hun" },
+  tk_mail_hint:    { en: "Opens your email app with a backup already written to {email} – just press Send. If your tickets ever disappear from this phone, the link in that email brings them back.",
+                     cy: "Mae'n agor eich ap e-bost gyda chopi wrth gefn wedi'i ysgrifennu'n barod at {email} – pwyswch Anfon. Os bydd eich tocynnau byth yn diflannu o'r ffôn hwn, bydd y ddolen yn yr e-bost hwnnw'n dod â nhw'n ôl." },
+  tk_mail_subject: { en: "Your Pembrokeshire Silage Day tickets – group {code}", cy: "Eich tocynnau Diwrnod Silwair Sir Benfro – grŵp {code}" },
+  tk_mail_keep:    { en: "Keep this email – it's the backup of your tickets.", cy: "Cadwch yr e-bost hwn – dyma'r copi wrth gefn o'ch tocynnau." },
+  tk_mail_restore: { en: "Tickets gone from your phone? Tap this link to get them back:", cy: "Tocynnau wedi diflannu o'ch ffôn? Tapiwch y ddolen hon i'w cael yn ôl:" },
+  tk_mail_gate:    { en: "Pay at the gate, card or cash. Show your tickets at the pay gate – or just give your name or group code.",
+                     cy: "Talu wrth y gât, cerdyn neu arian parod. Dangoswch eich tocynnau wrth y gât dalu – neu rhowch eich enw neu god y grŵp." },
+  tk_in_h_restore: { en: "Restore your tickets", cy: "Adfer eich tocynnau" },
+  tk_in_restore:   { en: "These are the tickets for {name}'s group. Save them on this phone to show them at the gate.",
+                     cy: "Dyma'r tocynnau ar gyfer grŵp {name}. Cadwch nhw ar y ffôn hwn i'w dangos wrth y gât." },
+
   /* ---------- Saving tickets as pictures (Save to Photos) ---------- */
   tk_save_one:     { en: "Save to Photos", cy: "Cadw yn Lluniau" },
   tk_save_one_label: { en: "Save {name}'s ticket as a picture", cy: "Cadw tocyn {name} fel llun" },
@@ -413,6 +426,9 @@ const TRANSLATIONS = {
   tk_in_own:       { en: "These are from your own group – they're already on this phone.", cy: "Mae'r rhain o'ch grŵp eich hun – maen nhw ar y ffôn hwn yn barod." },
   tk_in_save:      { en: "Save to this phone", cy: "Cadw ar y ffôn hwn" },
   tk_in_skip:      { en: "Not now", cy: "Dim nawr" },
+  tk_restored_h:   { en: "Your tickets", cy: "Eich tocynnau" },
+  tk_restored_note: { en: "Brought back from your backup email. Show these at the pay gate. To change or cancel your group, please contact the organisers.",
+                     cy: "Wedi'u hadfer o'ch e-bost wrth gefn. Dangoswch y rhain wrth y gât dalu. I newid neu ganslo eich grŵp, cysylltwch â'r trefnwyr." },
   tk_shared_h:     { en: "Tickets sent to you", cy: "Tocynnau a anfonwyd atoch" },
   tk_shared_note:  { en: "Show these at the pay gate. The safety declaration was signed by the person who registered the group.",
                      cy: "Dangoswch y rhain wrth y gât dalu. Llofnodwyd y datganiad diogelwch gan y person a gofrestrodd y grŵp." },

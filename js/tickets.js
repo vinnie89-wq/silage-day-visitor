@@ -89,7 +89,10 @@ function render() {
 }
 
 function renderIntro() {
-  appEl.innerHTML =
+  // Tickets brought back from the backup email are this person's own
+  // group, so don't invite them to register all over again
+  const restored = loadShared().some((x) => x.restore);
+  appEl.innerHTML = restored ? gettingHereCard() :
     '<section class="card">' +
       '<h2>' + t("tk_free_h") + '</h2>' +
       '<p>' + t("tk_intro") + '</p>' +
@@ -351,7 +354,9 @@ function renderTickets() {
     (saved.members.length > 1 ? '<div class="pad-x"><button type="button" class="btn alt" id="tk-save-all">🖼️ ' + t("tk_save_all") + '</button>' +
       '<button type="button" class="btn alt" id="tk-share-all">📤 ' + t("tk_share_all") + '</button></div>' : '') +
     '<p class="share-status" id="tk-share-status" role="status" hidden></p>' +
-    '<section class="card"><h2>' + t("tk_keep_h") + '</h2><p>' + t("tk_keep") + '</p></section>' +
+    '<section class="card"><h2>' + t("tk_keep_h") + '</h2><p>' + t("tk_keep") + '</p>' +
+      '<a class="btn" id="tk-mail-me" href="' + esc(backupMailLink()) + '">✉️ ' + t("tk_mail_btn") + '</a>' +
+      '<p class="muted">' + t("tk_mail_hint", { email: esc(saved.email || "") }) + '</p></section>' +
     '<div class="pad-x ticket-actions">' +
       '<button type="button" class="btn alt" id="tk-edit">✏️ ' + t("tk_edit") + '</button>' +
       '<button type="button" class="btn alt" id="tk-delete">' + t("tk_delete") + '</button>' +
@@ -490,8 +495,10 @@ function fromBase64Url(text) {
   return decodeURIComponent(escape(atob(b64 + "===".slice((b64.length + 3) % 4))));
 }
 
-function shareLink(members) {
+// restore = true for the "get my tickets back" link in the backup email
+function shareLink(members, restore) {
   const payload = { v: 1, c: saved.code, g: saved.leadName, t: members.map((m) => [m.n, m.name, m.type]) };
+  if (restore) payload.r = 1;
   return location.origin + location.pathname.replace(/[^/]*$/, "") + "tickets.html#share=" + toBase64Url(JSON.stringify(payload));
 }
 
@@ -508,6 +515,36 @@ async function shareTickets(members, text) {
   try { await navigator.clipboard.writeText(text + " " + url); say("tk_share_copied"); }
   catch (e) { window.prompt(t("tk_share_copy_this"), url); }
 }
+
+/* ---------- Email my tickets to myself ----------
+   Opens the visitor's own email app with a backup email already
+   written, addressed to the email they registered with. They just
+   press Send. It holds the group code, everyone's ticket number and
+   a "restore" link: if the tickets ever disappear from the phone
+   (e.g. Safari clears saved data), tapping that link brings them
+   back. Nothing is sent by us – it uses their own email app.
+   (An automatic email from Firebase can come later.) */
+function backupMailLink() {
+  const lines = [
+    t("tk_mail_keep"),
+    "",
+    plainText(t("tk_img_title")),
+    plainText(t("tk_date")) + " · " + plainText(t("fact_open")),
+    plainText(t("fact_where")),
+    "",
+    t("tk_group_code") + ": " + saved.code,
+    ...saved.members.map((m) => "• " + m.name + " – " + typeLabel(m.type) + " – " + ticketNumber(saved.code, m.n)),
+    "",
+    t("tk_mail_restore"),
+    shareLink(saved.members, true),
+    "",
+    t("tk_mail_gate")
+  ];
+  return "mailto:" + encodeURIComponent(saved.email || "") +
+    "?subject=" + encodeURIComponent(t("tk_mail_subject", { code: saved.code })) +
+    "&body=" + encodeURIComponent(lines.join("\n"));
+}
+
 
 /* ---------- Save to Photos ----------
    Draws a ticket as a picture (PNG) right here on the phone, so it
@@ -695,7 +732,7 @@ function readShareLink() {
     const tickets = p.t
       .filter((x) => Array.isArray(x) && Number.isInteger(x[0]) && typeof x[1] === "string" && TYPES.includes(x[2]))
       .slice(0, MAX_PEOPLE)
-      .map((x) => ({ code: p.c, n: x[0], name: x[1].slice(0, 80), type: x[2], from: String(p.g || "").slice(0, 80) }));
+      .map((x) => ({ code: p.c, n: x[0], name: x[1].slice(0, 80), type: x[2], from: String(p.g || "").slice(0, 80), restore: p.r === 1 }));
     return tickets.length ? tickets : null;
   } catch (e) { return null; }
 }
@@ -704,8 +741,10 @@ function showIncoming(tickets) {
   const own = saved && saved.code === tickets[0].code;
   appEl.innerHTML =
     '<section class="card incoming">' +
-      '<h2>📥 ' + t(tickets.length > 1 ? "tk_in_h_many" : "tk_in_h_one", { n: tickets.length }) + '</h2>' +
-      '<p>' + t("tk_in_from", { name: esc(tickets[0].from) }) + '</p>' +
+      (tickets[0].restore
+        ? '<h2>📥 ' + t("tk_in_h_restore") + '</h2><p>' + t("tk_in_restore", { name: esc(tickets[0].from) }) + '</p>'
+        : '<h2>📥 ' + t(tickets.length > 1 ? "tk_in_h_many" : "tk_in_h_one", { n: tickets.length }) + '</h2>' +
+          '<p>' + t("tk_in_from", { name: esc(tickets[0].from) }) + '</p>') +
       '<ul class="incoming-list">' + tickets.map((x) => '<li><b>' + esc(x.name) + '</b> – ' + typeLabel(x.type) + '</li>').join("") + '</ul>' +
       (own ? '<p class="note">' + t("tk_in_own") + '</p>' : '') +
       '<button type="button" class="btn" id="tk-in-save">' + t("tk_in_save") + '</button>' +
@@ -726,9 +765,10 @@ function sharedSection() {
   // Leave out any that are already this phone's own registration
   const list = loadShared().filter((x) => !(saved && saved.code === x.code));
   if (!list.length) return "";
+  const restored = list.some((x) => x.restore);
   return '<section class="shared-section">' +
-    '<h2 class="shared-h">📥 ' + t("tk_shared_h") + '</h2>' +
-    '<p class="muted pad-x">' + t("tk_shared_note") + '</p>' +
+    '<h2 class="shared-h">' + (restored ? '🎟️ ' + t("tk_restored_h") : '📥 ' + t("tk_shared_h")) + '</h2>' +
+    '<p class="muted pad-x">' + t(restored ? "tk_restored_note" : "tk_shared_note") + '</p>' +
     '<div class="ticket-list" role="list">' + list.map((x) => ticketCard(x, x.code, false)).join("") + '</div>' +
     '<p class="share-status" role="status" hidden></p>' +
     '<div class="pad-x"><button type="button" class="link-btn" id="tk-shared-clear">' + t("tk_shared_remove") + '</button></div>' +
