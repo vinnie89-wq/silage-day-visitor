@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     The tickets email – sent automatically when someone registers
+     ---------------------------------------------------------
+     NOT LIVE YET: this needs Firebase's pay-as-you-go plan and an
+     email service (team decision, January 2027). Until then the app
+     has the free "Email my tickets to myself" button.
+
+     How it will work: when a registration is saved, a Firebase
+     Cloud Function fills in this template and sends it, using the
+     "Trigger Email" extension. The {{ }} bits are filled in:
+       {{lang}} {{appUrl}} {{restoreUrl}} {{code}} {{breakdown}}
+       {{#each tickets}} {{name}} {{type}} {{number}} {{state}} {{qr}} {{/each}}
+       {{w.xxx}}   the words, from js/translations.js (em_…, tk_…),
+                   already in the visitor's language with the key
+                   facts (date, times, venue) filled in
+       {{{ }}}     three brackets = allowed to contain links
+     To see it with sample data:  node emails/preview.js
+     (writes emails/preview-en.html and preview-cy.html – open them
+     in a browser).
+
+     Why it looks old-fashioned inside: email apps (Gmail, Outlook,
+     Apple Mail) ignore most modern web layout, so emails are built
+     with tables and the styles written on each element. Keep it
+     that way when editing.
+     ========================================================= -->
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<title>{{w.subject}}</title>
+</head>
+<body style="margin:0; padding:0; background:#fbf8ee;">
+<!-- The first words email apps show in the inbox list (hidden in the email itself) -->
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">{{w.preheader}}</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fbf8ee;">
+<tr><td align="center" style="padding:16px 8px;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; background:#ffffff; border:1px solid #e2dcc4; border-radius:14px; overflow:hidden; font-family:Barlow, 'Helvetica Neue', Arial, sans-serif; color:#2a1e12;">
+
+  <!-- Logo -->
+  <tr><td align="center" style="background:#f6efcf; border-bottom:4px solid #3a2614; padding:18px 16px 14px;">
+    <img src="{{appUrl}}images/logo.png" width="220" alt="{{w.title}}" style="display:block; width:220px; max-width:70%; height:auto; border:0;">
+  </td></tr>
+
+  <!-- Photo -->
+  <tr><td style="padding:0;">
+    <img src="{{appUrl}}images/home-hero.jpg" width="600" alt="" style="display:block; width:100%; height:auto; border:0;">
+  </td></tr>
+
+  <!-- Hello -->
+  <tr><td style="padding:22px 24px 6px;">
+    <h1 style="margin:0 0 8px; font-family:'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size:30px; line-height:1.15; color:#2c4a1c;">{{w.hello}}</h1>
+    <p style="margin:0; font-size:16px; line-height:1.5;">{{w.intro}}</p>
+  </td></tr>
+
+  <!-- When and where -->
+  <tr><td style="padding:16px 24px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#2c4a1c; border-radius:12px;">
+      <tr><td style="padding:16px 18px; color:#f6efcf; font-size:16px; line-height:1.45;">
+        <div style="font-family:'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size:24px; font-weight:700; color:#f5c518;">{{w.date}}</div>
+        <div style="font-weight:700; color:#ffffff;">{{w.openTimes}}</div>
+        <div>{{w.where}}</div>
+        <div style="padding-top:8px;"><a href="{{appUrl}}getting-here.html" style="color:#f5c518; font-weight:700;">{{w.directions}} &rarr;</a></div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Group code and the big button -->
+  <tr><td style="padding:18px 24px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f6efcf; border:2px dashed #3a2614; border-radius:12px;">
+      <tr><td align="center" style="padding:14px 16px;">
+        <div style="font-size:14px; color:#6b6250; font-weight:700; text-transform:uppercase; letter-spacing:1px;">{{w.groupCode}}</div>
+        <div style="font-family:'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size:40px; font-weight:800; letter-spacing:4px; color:#2a1e12;">{{code}}</div>
+        <div style="font-size:15px; color:#6b6250;">{{breakdown}}</div>
+      </td></tr>
+    </table>
+  </td></tr>
+  <tr><td align="center" style="padding:18px 24px 4px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td align="center" style="background:#2c4a1c; border-radius:10px;">
+        <a href="{{restoreUrl}}" style="display:inline-block; padding:15px 34px; font-size:18px; font-weight:700; color:#ffffff; text-decoration:none;">{{w.openBtn}}</a>
+      </td>
+    </tr></table>
+    <p style="margin:8px 0 0; font-size:14px; color:#6b6250;">{{w.openNote}}</p>
+  </td></tr>
+
+  <!-- The tickets: one per person -->
+  <tr><td style="padding:18px 24px 0;">
+    <h2 style="margin:0 0 10px; font-family:'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size:24px; color:#2c4a1c;">{{w.ticketsH}}</h2>
+    {{#each tickets}}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:2px solid #3a2614; border-radius:12px; margin:0 0 10px;">
+      <tr>
+        <td width="128" valign="middle" style="padding:10px;">
+          <img src="{{qr}}" width="108" height="108" alt="QR {{number}}" style="display:block; width:108px; height:108px; border:0;">
+        </td>
+        <td valign="middle" style="padding:10px 14px 10px 4px;">
+          <div style="font-family:'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size:22px; font-weight:700; line-height:1.15;">{{name}}</div>
+          <div style="font-size:14px; color:#6b6250;">{{type}}</div>
+          <div style="font-size:17px; font-weight:700; letter-spacing:1px; padding-top:6px;">{{number}}</div>
+          <div style="font-size:14px; font-weight:700; color:#8a5300;">{{state}}</div>
+        </td>
+      </tr>
+    </table>
+    {{/each}}
+  </td></tr>
+
+  <!-- At the gate -->
+  <tr><td style="padding:12px 24px 0;">
+    <h2 style="margin:0 0 6px; font-family:'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size:24px; color:#2c4a1c;">{{w.gateH}}</h2>
+    <p style="margin:0 0 6px; font-size:16px; line-height:1.5;">{{w.payAtGate}}</p>
+    <p style="margin:0; font-size:16px; line-height:1.5;">{{w.gate}}</p>
+  </td></tr>
+
+  <!-- Safety (never optional) -->
+  <tr><td style="padding:18px 24px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff4c2; border:2px solid #111111; border-radius:12px;">
+      <tr><td style="padding:14px 16px;">
+        <div style="font-family:'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-size:22px; font-weight:700; color:#111111;">&#9888; {{w.safetyH}}</div>
+        <p style="margin:4px 0 12px; font-size:16px; line-height:1.5; color:#111111;">{{w.safety}}</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="background:#f5c518; border-radius:8px;">
+            <a href="{{appUrl}}safety.html" style="display:inline-block; padding:10px 18px; font-size:16px; font-weight:700; color:#111111; text-decoration:none;">{{w.safetyBtn}}</a>
+          </td>
+        </tr></table>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td style="padding:22px 24px 22px;">
+    <p style="margin:0 0 8px; font-size:15px; font-weight:700; color:#2c4a1c;">{{{w.aid}}}</p>
+    <p style="margin:0 0 8px; font-size:13px; line-height:1.5; color:#6b6250;">{{w.privacy}}</p>
+    <p style="margin:0; font-size:13px; line-height:1.5; color:#6b6250;">{{w.why}}</p>
+  </td></tr>
+
+</table>
+
+</td></tr>
+</table>
+</body>
+</html>
