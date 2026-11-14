@@ -16,11 +16,15 @@
    If you add a new page, add it to PAGES below.
    ========================================================= */
 
-const CACHE = "silageday-v4";
+const CACHE = "silageday-v5";
 const PAGES = [
   "./", "index.html", "tickets.html", "timetable.html", "safety.html",
   "map.html", "photos.html", "getting-here.html", "news.html", "raffle.html", "sponsors.html",
-  "images/logo.png", "images/site-map.svg", "images/icon-192.png", "manifest.webmanifest"
+  "images/logo.png", "images/site-map.svg", "images/icon-192.png", "manifest.webmanifest",
+  // The app's own fonts, saved up front so it looks right with no signal.
+  // (The Easy-read font is saved the first time someone switches it on.)
+  "fonts/barlow-400.woff", "fonts/barlow-600.woff", "fonts/barlow-700.woff",
+  "fonts/barlow-condensed-700.woff", "fonts/barlow-condensed-800.woff"
 ];
 
 self.addEventListener("install", (event) => {

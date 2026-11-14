@@ -3,6 +3,28 @@
    One stylesheet shared by every page.
    ========================================================= */
 
+/* ---------- 0. Our own fonts ----------
+   The font files live in the fonts/ folder of this app, instead of
+   being fetched from Google each time. That means:
+   • the offline helper (sw.js) keeps a copy on the phone, so the app
+     looks right even with no signal in the field;
+   • nothing is sent to Google when a visitor opens the app.
+   The files are trimmed to the letters English and Welsh need
+   (including ŵ ŷ ẁ ẃ ẅ ỳ), which keeps them small.
+   Licence: SIL Open Font License – see fonts/OFL-*.txt.
+   "font-display: swap" = show the text straight away in a standby
+   font, then switch when ours has loaded. */
+@font-face { font-family: "Barlow"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/barlow-400.woff") format("woff"); }
+@font-face { font-family: "Barlow"; font-weight: 600; font-style: normal; font-display: swap; src: url("../fonts/barlow-600.woff") format("woff"); }
+@font-face { font-family: "Barlow"; font-weight: 700; font-style: normal; font-display: swap; src: url("../fonts/barlow-700.woff") format("woff"); }
+@font-face { font-family: "Barlow Condensed"; font-weight: 700; font-style: normal; font-display: swap; src: url("../fonts/barlow-condensed-700.woff") format("woff"); }
+@font-face { font-family: "Barlow Condensed"; font-weight: 800; font-style: normal; font-display: swap; src: url("../fonts/barlow-condensed-800.woff") format("woff"); }
+/* Easy-read font. The browser only downloads it if the Easy-read
+   option is switched on. This is the newer "Next" version, because
+   the original has no ŵ or ŷ, so Welsh words came out in two fonts. */
+@font-face { font-family: "Atkinson Hyperlegible Next"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/atkinson-hyperlegible-next-400.woff") format("woff"); }
+@font-face { font-family: "Atkinson Hyperlegible Next"; font-weight: 700; font-style: normal; font-display: swap; src: url("../fonts/atkinson-hyperlegible-next-700.woff") format("woff"); }
+
 /* ---------- 1. Colours and fonts ----------
    These "custom properties" (variables) hold the colours and
    fonts in one place. Change a value here and it changes
@@ -65,11 +87,11 @@ html { font-size: 100%; }              /* Normal: 16px */
 html.text-large { font-size: 112.5%; } /* Large: 18px */
 html.text-xl { font-size: 125%; }      /* Extra large: 20px */
 
-/* Easy-read font – Atkinson Hyperlegible, with more space between
+/* Easy-read font – Atkinson Hyperlegible Next, with more space between
    letters, words and lines (like the prototype's easy-read). */
 html.easy-read {
-  --font: "Atkinson Hyperlegible", Verdana, sans-serif;
-  --head: "Atkinson Hyperlegible", Verdana, sans-serif;
+  --font: "Atkinson Hyperlegible Next", Verdana, sans-serif;
+  --head: "Atkinson Hyperlegible Next", Verdana, sans-serif;
 }
 html.easy-read body { letter-spacing: 0.03em; word-spacing: 0.08em; line-height: 1.7; }
 html.easy-read h1, html.easy-read h2, html.easy-read h3 { letter-spacing: 0.01em; line-height: 1.3; }

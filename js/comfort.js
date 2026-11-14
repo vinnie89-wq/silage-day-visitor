@@ -4,7 +4,7 @@
    Choices that make the app easier to use (laid out as in the prototype):
      • Calm visuals  – softer colours, nothing moving or flashing
      • Larger text   – Normal, Large or Extra large
-     • Easy-read text – Atkinson Hyperlegible with extra spacing
+     • Easy-read text – Atkinson Hyperlegible Next with extra spacing
      • Language       – Cymraeg / English (moved here from the header)
 
    How it works:
