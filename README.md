@@ -31,6 +31,7 @@ see are exactly what the browser gets. The look matches the design prototype in
 | `js/app.js` | The small interactive bits: the "days to go" countdown, "Live now" labels on the timetable on the day, and the map zoom buttons. |
 | `images/logo.png` | The Silage Day logo. |
 | `images/site-map.svg` | The site plan. |
+| `fonts/` | The app's own fonts (Barlow, and Atkinson Hyperlegible Next for Easy-read), trimmed to English and Welsh letters so they're small. Kept here so they work offline. Free to use under the licence files in the same folder. |
 | `.nojekyll` | An empty file that tells GitHub Pages to serve the files exactly as they are. |
 
 ## Looking at it on your computer
@@ -93,7 +94,7 @@ A button in the header on every page opens three options, saved on the device:
 - **Larger text** – Normal, Large or Extra large. Every text size in
   `css/style.css` is in `rem` (a share of one root size), so they all grow
   together while the layout keeps fitting the phone.
-- **Easy-read font** – Atkinson Hyperlegible with extra spacing between
+- **Easy-read font** – Atkinson Hyperlegible Next with extra spacing between
   letters, words and lines.
 
 The settings are applied in the `<head>` (as classes on `<html>`: `calm`,
