@@ -15,12 +15,13 @@
   <title data-i18n="title_home">Pembrokeshire Silage Day 2027</title>
   <meta name="theme-color" content="#2c4a1c">
   <link rel="icon" href="images/logo.png">
-  <link rel="stylesheet" href="css/style.css?v=24">
-  <script src="js/translations.js?v=24"></script>
-  <script src="js/facts.js?v=24"></script>
-  <script src="js/language.js?v=24"></script>
-  <script src="js/comfort.js?v=24"></script>
-  <script src="js/first-visit.js?v=24"></script>
+  <link rel="stylesheet" href="css/style.css?v=25">
+  <script src="js/translations.js?v=25"></script>
+  <script src="js/facts.js?v=25"></script>
+  <script src="js/language.js?v=25"></script>
+  <script src="js/comfort.js?v=25"></script>
+  <script src="js/first-visit.js?v=25"></script>
+  <script src="js/safety-panel.js?v=25"></script>
 </head>
 <body>
 <div class="app">
@@ -32,7 +33,7 @@
       <p class="header-date" data-i18n="header_date"></p>
       <div class="header-buttons">
         <button type="button" class="comfort-btn" id="comfort-btn" aria-haspopup="dialog" aria-expanded="false" data-i18n="comfort_btn"></button>
-        <a class="safety-btn" href="safety.html" data-i18n="safety_btn"></a>
+        <a class="safety-btn" id="safety-btn" href="safety.html" data-i18n="safety_btn"></a>
       </div>
     </div>
   </header>
@@ -53,6 +54,19 @@
         <div id="countdown-text"></div>
       </div>
     </div>
+
+    <!-- Shortcut tiles to the other pages, straight under the banner.
+         Tickets is full width, so "Register free" stands out.
+         (Safety isn't here: it's the yellow button at the top of every page.) -->
+    <nav class="tiles" data-i18n-attr="aria-label:quick_label">
+      <a class="tile tile-tickets" href="tickets.html"><span class="icon" aria-hidden="true">🎟️</span><b data-i18n="nav_tickets"></b><small data-i18n="tile_tickets"></small></a>
+      <a class="tile" href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><b data-i18n="nav_timetable"></b><small data-i18n="tile_timetable"></small></a>
+      <a class="tile" href="map.html"><span class="icon" aria-hidden="true">🗺️</span><b data-i18n="tile_map_b"></b><small data-i18n="tile_map"></small></a>
+      <a class="tile" href="photos.html"><span class="icon" aria-hidden="true">📷</span><b data-i18n="nav_photos"></b><small data-i18n="tile_photos"></small></a>
+      <a class="tile" href="raffle.html"><span class="icon" aria-hidden="true">🎁</span><b data-i18n="nav_raffle"></b><small data-i18n="tile_raffle"></small></a>
+      <a class="tile" href="news.html"><span class="icon" aria-hidden="true">📣</span><b data-i18n="news_h"></b><small data-i18n="tile_news"></small></a>
+      <a class="tile" href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><b data-i18n="nav_getting"></b><small data-i18n="tile_getting"></small></a>
+    </nav>
 
     <!-- "Add to your Home Screen" tip (js/install.js) – only shown when it can help -->
     <section class="card install-tip" id="install-tip" hidden></section>
@@ -80,17 +94,6 @@
       </dl>
     </section>
 
-    <!-- Shortcut tiles to the other pages -->
-    <nav class="tiles" data-i18n-attr="aria-label:quick_label">
-      <a class="tile tile-tickets" href="tickets.html"><span class="icon" aria-hidden="true">🎟️</span><b data-i18n="nav_tickets"></b><small data-i18n="tile_tickets"></small></a>
-      <a class="tile" href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><b data-i18n="nav_timetable"></b><small data-i18n="tile_timetable"></small></a>
-      <a class="tile" href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><b data-i18n="nav_safety"></b><small data-i18n="tile_safety"></small></a>
-      <a class="tile" href="map.html"><span class="icon" aria-hidden="true">🗺️</span><b data-i18n="tile_map_b"></b><small data-i18n="tile_map"></small></a>
-      <a class="tile" href="photos.html"><span class="icon" aria-hidden="true">📷</span><b data-i18n="nav_photos"></b><small data-i18n="tile_photos"></small></a>
-      <a class="tile" href="raffle.html"><span class="icon" aria-hidden="true">🎁</span><b data-i18n="nav_raffle"></b><small data-i18n="tile_raffle"></small></a>
-      <a class="tile" href="news.html"><span class="icon" aria-hidden="true">📣</span><b data-i18n="news_h"></b><small data-i18n="tile_news"></small></a>
-      <a class="tile" href="getting-here.html"><span class="icon" aria-hidden="true">🚗</span><b data-i18n="nav_getting"></b><small data-i18n="tile_getting"></small></a>
-    </nav>
 
     <!-- Our sponsors (js/sponsors.js) – hidden until there are some -->
     <section class="card sponsors-home" id="sponsors-home" hidden></section>
@@ -115,20 +118,20 @@
       <li><a href="index.html" aria-current="page"><span class="icon" aria-hidden="true">🏠</span><span class="label" data-i18n="nav_home"></span></a></li>
       <li><a href="tickets.html"><span class="icon" aria-hidden="true">🎟️</span><span class="label" data-i18n="nav_tickets"></span></a></li>
       <li><a href="timetable.html"><span class="icon" aria-hidden="true">🕒</span><span class="label" data-i18n="nav_timetable"></span></a></li>
-      <li><a href="safety.html"><span class="icon" aria-hidden="true">⚠️</span><span class="label" data-i18n="nav_safety"></span></a></li>
+      <li><a href="news.html"><span class="icon" aria-hidden="true">📣</span><span class="label" data-i18n="nav_news"></span></a></li>
       <li><a href="map.html"><span class="icon" aria-hidden="true">🗺️</span><span class="label" data-i18n="nav_map"></span></a></li>
       <li><a href="photos.html"><span class="icon" aria-hidden="true">📷</span><span class="label" data-i18n="nav_photos"></span></a></li>
     </ul>
   </nav>
 </div>
-<script src="js/programme.js?v=24"></script>
-<script src="js/app.js?v=24"></script>
-<script src="js/firebase-config.js?v=24"></script>
-<script src="js/firebase.js?v=24"></script>
-<script src="js/prices.js?v=24"></script>
-<script src="js/news.js?v=24"></script>
-<script src="js/raffle.js?v=24"></script>
-<script src="js/sponsors.js?v=24"></script>
-<script src="js/install.js?v=24"></script>
+<script src="js/programme.js?v=25"></script>
+<script src="js/app.js?v=25"></script>
+<script src="js/firebase-config.js?v=25"></script>
+<script src="js/firebase.js?v=25"></script>
+<script src="js/prices.js?v=25"></script>
+<script src="js/news.js?v=25"></script>
+<script src="js/raffle.js?v=25"></script>
+<script src="js/sponsors.js?v=25"></script>
+<script src="js/install.js?v=25"></script>
 </body>
 </html>

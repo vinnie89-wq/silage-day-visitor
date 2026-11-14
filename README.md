@@ -27,6 +27,7 @@ see are exactly what the browser gets. The look matches the design prototype in
 | `js/language.js` | Remembers the visitor's language, shows the first-visit welcome screen, fills each page with the right words, and runs the header language switch. |
 | `js/first-visit.js` | Runs the first-visit steps in order on every page – language choice, then the safety rules pop-up, then the app – and remembers that the rules were accepted. |
 | `js/comfort.js` | The 🌿 Comfort settings: remembers the visitor's choices, applies them before the page is drawn, builds the settings panel and the one-off offer after the safety rules. |
+| `js/safety-panel.js` | The yellow **Safety** button in the header: opens a pop-up with the lost-child / emergency steps, the safety rules and the quiet-area info. If the script fails, the button still links to `safety.html`. |
 | `css/style.css` | How everything looks: colours, fonts, cards, the header and the bottom nav. Shared by every page. |
 | `js/app.js` | The small interactive bits: the "days to go" countdown, "Live now" labels on the timetable on the day, and the map zoom buttons. |
 | `images/logo.png` | The Silage Day logo. |
