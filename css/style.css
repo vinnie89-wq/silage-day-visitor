@@ -287,6 +287,23 @@ main { padding: 4px 0 8px; }
 .btn.red { background: var(--red); }
 
 /* ---------- 5. Home page ---------- */
+/* Banner: photo on top, countdown joined on underneath, as one rounded block */
+.hero {
+  margin: 14px 16px;
+  border-radius: 14px;
+  overflow: hidden;            /* clips the photo to the rounded corners */
+  background: var(--green);    /* shows while the photo loads */
+}
+.hero-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;        /* keeps its space, so nothing jumps as it loads */
+  object-fit: cover;
+}
+.hero .countdown { margin: 0; border-radius: 0; }
+/* Calm mode: soften the photo's colours, like the map */
+html.calm .hero-photo { filter: saturate(0.55) brightness(1.05); }
 .countdown {
   margin: 14px 16px;
   background: var(--green);
@@ -755,9 +772,16 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     align-items: start;
   }
   main > .page-title, main > .page-intro, main > .visually-hidden,
-  main > .countdown, main > .tiles, main > .lightbox,
+  main > .countdown, main > .hero, main > .tiles, main > .lightbox,
   main > .map-tools, main > .map-box, main > .map-message { grid-column: 1 / -1; }
   .page-intro { max-width: 70ch; }
+
+  /* Home: on wide screens the photo and countdown sit side by side,
+     so the photo isn't stretched bigger than it really is (it would go blurry) */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .hero .countdown { padding: 24px 32px; }
+  .hero .countdown b { font-size: 4.5rem; }
+  .hero .countdown div { font-size: 1.25rem; }
 
   /* Home: all the shortcut tiles in one row */
   .tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }

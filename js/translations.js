@@ -34,6 +34,9 @@ const TRANSLATIONS = {
 
   /* ---------- On every page ---------- */
   logo_alt:        { en: "Pembrokeshire Silage Day – home", cy: "Diwrnod Silwair Sir Benfro – hafan" },
+  // Home page banner photo (images/home-hero.jpg) – read out by screen readers
+  hero_alt:        { en: "A red tractor and a vintage forage harvester cutting grass for silage at Silage Day",
+                     cy: "Tractor coch a hen gynaeafwr porthiant yn torri gwair ar gyfer silwair yn y Diwrnod Silwair" },
   header_date:     { en: "A Day of Grass!<br><span>{dateShort}<br>{opens} – {closes}</span>",
                      cy: "Diwrnod o Borfa!<br><span>{dateShort}<br>{opens} – {closes}</span>" },
   // The header switch shows the OTHER language, so it's written in that language

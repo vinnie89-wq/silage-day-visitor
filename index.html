@@ -15,12 +15,12 @@
   <title data-i18n="title_home">Pembrokeshire Silage Day 2027</title>
   <meta name="theme-color" content="#2c4a1c">
   <link rel="icon" href="images/logo.png">
-  <link rel="stylesheet" href="css/style.css?v=23">
-  <script src="js/translations.js?v=23"></script>
-  <script src="js/facts.js?v=23"></script>
-  <script src="js/language.js?v=23"></script>
-  <script src="js/comfort.js?v=23"></script>
-  <script src="js/first-visit.js?v=23"></script>
+  <link rel="stylesheet" href="css/style.css?v=24">
+  <script src="js/translations.js?v=24"></script>
+  <script src="js/facts.js?v=24"></script>
+  <script src="js/language.js?v=24"></script>
+  <script src="js/comfort.js?v=24"></script>
+  <script src="js/first-visit.js?v=24"></script>
 </head>
 <body>
 <div class="app">
@@ -41,10 +41,17 @@
   <main>
     <h1 class="visually-hidden" data-i18n="title_home"></h1>
 
-    <!-- Countdown: app.js fills in the number of days and the words -->
-    <div class="countdown" id="countdown">
-      <b id="days-left">–</b>
-      <div id="countdown-text"></div>
+    <!-- Banner: a photo of the machines, with the countdown joined on underneath.
+         To change the photo: replace images/home-hero.jpg with another wide
+         picture (about 16:9, at least 720 pixels wide), then change ?v=24 on
+         the line below to a new number so phones fetch the new picture. -->
+    <div class="hero">
+      <img class="hero-photo" src="images/home-hero.jpg?v=24" alt="" data-i18n-attr="alt:hero_alt" width="720" height="405">
+      <!-- Countdown: app.js fills in the number of days and the words -->
+      <div class="countdown" id="countdown">
+        <b id="days-left">–</b>
+        <div id="countdown-text"></div>
+      </div>
     </div>
 
     <!-- "Add to your Home Screen" tip (js/install.js) – only shown when it can help -->
@@ -114,14 +121,14 @@
     </ul>
   </nav>
 </div>
-<script src="js/programme.js?v=23"></script>
-<script src="js/app.js?v=23"></script>
-<script src="js/firebase-config.js?v=23"></script>
-<script src="js/firebase.js?v=23"></script>
-<script src="js/prices.js?v=23"></script>
-<script src="js/news.js?v=23"></script>
-<script src="js/raffle.js?v=23"></script>
-<script src="js/sponsors.js?v=23"></script>
-<script src="js/install.js?v=23"></script>
+<script src="js/programme.js?v=24"></script>
+<script src="js/app.js?v=24"></script>
+<script src="js/firebase-config.js?v=24"></script>
+<script src="js/firebase.js?v=24"></script>
+<script src="js/prices.js?v=24"></script>
+<script src="js/news.js?v=24"></script>
+<script src="js/raffle.js?v=24"></script>
+<script src="js/sponsors.js?v=24"></script>
+<script src="js/install.js?v=24"></script>
 </body>
 </html>
