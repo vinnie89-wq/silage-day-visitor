@@ -386,6 +386,30 @@ const TRANSLATIONS = {
   tk_part_paid_note: { en: "The others can pay when they arrive – just show their ticket at the gate.",
                      cy: "Gall y lleill dalu pan fyddan nhw'n cyrraedd – dangoswch eu tocyn wrth y gât." },
 
+  /* ---------- The automatic tickets email (emails/tickets-email.html) ----------
+     Sent by Firebase when someone registers (once the team switches it on).
+     Plain words only – no HTML – because emails are fussy. */
+  em_subject:      { en: "Your Silage Day tickets – group {code}", cy: "Eich tocynnau Diwrnod Silwair – grŵp {code}" },
+  em_preheader:    { en: "Your tickets for Pembrokeshire Silage Day, {dateShort}. Keep this email – it's your backup.",
+                     cy: "Eich tocynnau ar gyfer Diwrnod Silwair Sir Benfro, {dateShort}. Cadwch yr e-bost hwn – dyma'ch copi wrth gefn." },
+  em_hello:        { en: "You're registered, {name}!", cy: "Rydych chi wedi cofrestru, {name}!" },
+  em_intro:        { en: "Thanks for registering for Pembrokeshire Silage Day. Your tickets are below – keep this email as your backup.",
+                     cy: "Diolch am gofrestru ar gyfer Diwrnod Silwair Sir Benfro. Mae eich tocynnau isod – cadwch yr e-bost hwn fel copi wrth gefn." },
+  em_open_times:   { en: "Gates open {opens} – {closes}", cy: "Gatiau ar agor {opens} – {closes}" },
+  em_directions:   { en: "Directions and parking", cy: "Cyfarwyddiadau a pharcio" },
+  em_open_btn:     { en: "Open my tickets", cy: "Agor fy nhocynnau" },
+  em_open_note:    { en: "Tickets gone from your phone? This button brings them back.", cy: "Tocynnau wedi diflannu o'ch ffôn? Mae'r botwm hwn yn dod â nhw'n ôl." },
+  em_gate_h:       { en: "At the gate", cy: "Wrth y gât" },
+  em_gate:         { en: "Show your tickets – on your phone, as a picture or in this email – or just give your name or group code.",
+                     cy: "Dangoswch eich tocynnau – ar eich ffôn, fel llun neu yn yr e-bost hwn – neu rhowch eich enw neu god y grŵp." },
+  em_safety_h:     { en: "Before you go in", cy: "Cyn i chi fynd i mewn" },
+  em_safety:       { en: "Working farm machinery is big, fast and loud. Please read the safety rules before the day – the app will ask you to accept them.",
+                     cy: "Mae peiriannau fferm sy'n gweithio yn fawr, yn gyflym ac yn swnllyd. Darllenwch y rheolau diogelwch cyn y diwrnod – bydd yr ap yn gofyn i chi eu derbyn." },
+  em_safety_btn:   { en: "Read the safety rules", cy: "Darllen y rheolau diogelwch" },
+  em_aid:          { en: "In aid of {charities}", cy: "Er budd {charities}" },
+  em_why:          { en: "You're getting this email because you registered for tickets in the Pembrokeshire Silage Day app.",
+                     cy: "Rydych chi'n cael yr e-bost hwn oherwydd i chi gofrestru am docynnau yn ap Diwrnod Silwair Sir Benfro." },
+
   /* ---------- Email my tickets to myself (backup email) ---------- */
   tk_mail_btn:     { en: "Email my tickets to myself", cy: "E-bostio fy nhocynnau ataf fy hun" },
   tk_mail_hint:    { en: "Opens your email app with a backup already written to {email} – just press Send. If your tickets ever disappear from this phone, the link in that email brings them back.",
