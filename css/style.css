@@ -69,6 +69,17 @@ html.calm {
   --alert-bg: #f3eedb;
   --alert-soft: #f7f3e6;
 }
+/* Calm-mode icons (js/calm-icons.js puts an outline drawing next to
+   each emoji): show the emoji normally, the drawing in calm mode.
+   The drawings use the text colour around them ("currentColor"). */
+/* the pair always takes the colour and size of the words around it */
+span.emo-pair.emo-pair { color: inherit; font-size: inherit; margin: 0; } /* doubled class = wins over rules like ".live-list span" */
+.emo-pair .lu { display: none; width: 1em; height: 1em; vertical-align: -0.125em; }
+html.calm .emo-pair .emo { display: none; }
+html.calm .emo-pair .lu { display: inline-block; }
+html.calm .tile .icon, html.calm .expect .icon { color: var(--green); }
+html.calm .tile.tile-tickets .icon { color: var(--cream); }
+
 /* …and nothing moves */
 html.calm *, html.calm *::before, html.calm *::after {
   animation: none !important;
@@ -422,7 +433,7 @@ html.calm .hero-photo { filter: saturate(0.55) brightness(1.05); }
 
 /* ---------- 8. Site map ---------- */
 .map-tools { display: flex; gap: 8px; align-items: center; padding: 0 16px 10px; }
-.map-tools span { color: var(--muted); font-size: 0.8125rem; margin-right: auto; }
+.map-tools > span { color: var(--muted); font-size: 0.8125rem; margin-right: auto; } /* just the "100%" label */
 .map-tools button {
   width: 40px; height: 40px;
   border-radius: 10px; border: 1px solid var(--edge);
