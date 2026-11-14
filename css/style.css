@@ -174,11 +174,15 @@ img { max-width: 100%; }
 /* Turns blue (like the prototype) when any comfort setting is on */
 .comfort-btn.is-on { background: #2a6fb0; color: #fff; }
 
-/* Safety button – white with green text, under the Comfort button (as in the prototype) */
+/* Safety button – the same size as Comfort, but bright safety yellow with
+   black text so it stands out (black on this yellow is over 12:1 contrast,
+   easy to read in sunshine). It opens the Safety pop-up (js/safety-panel.js). */
+.header-buttons { align-items: stretch; } /* both buttons the same width */
+.comfort-btn, .safety-btn { text-align: center; }
 .safety-btn {
-  border: 1px solid var(--edge);
-  background: #fff;
-  color: var(--green);
+  border: 0;
+  background: var(--yellow);
+  color: #111;
   border-radius: 8px;
   padding: 6px 10px;
   font: 700 0.8125rem var(--font);
@@ -354,6 +358,15 @@ html.calm .hero-photo { filter: saturate(0.55) brightness(1.05); }
 .tile .icon { font-size: 1.625rem; display: block; }
 .tile b { display: block; font: 700 1.1875rem var(--head); color: var(--green); margin-top: 4px; }
 .tile small { color: var(--muted); font-size: 0.8125rem; }
+/* Tickets: full width and green, so "Register free" stands out */
+.tile.tile-tickets {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--green); border-color: var(--green); color: var(--cream);
+}
+.tile.tile-tickets .icon { font-size: 1.875rem; }
+.tile.tile-tickets b { color: #fff; margin-top: 0; }
+.tile.tile-tickets small { color: var(--cream); font-size: 0.875rem; }
 
 /* Simple two-column "label: value" facts list */
 .facts { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
@@ -573,6 +586,15 @@ html.calm .hero-photo { filter: saturate(0.55) brightness(1.05); }
   border: 1px solid var(--edge); background: var(--light); color: var(--ink);
   font-size: 1.5rem; line-height: 1; cursor: pointer;
 }
+
+/* The Safety pop-up (js/safety-panel.js): three parts, divided by lines */
+.safety-part { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.safety-part:last-child { border-bottom: 0; padding-bottom: 0; }
+.safety-part h3 { font-size: 1.375rem; margin: 0 0 6px; color: var(--green); }
+.safety-part p { margin: 0 0 8px; }
+.alert-part { margin-top: 12px; padding: 14px; border: 2px solid var(--red); border-radius: 14px; }
+.alert-part h3 { color: var(--red); }
+.safety-sheet .rules li::before { border: 2px solid #111; }
 
 /* One option = title, one-line explanation, control */
 .option { padding: 14px 0; border-bottom: 1px solid var(--line); }

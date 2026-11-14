@@ -50,6 +50,7 @@ const TRANSLATIONS = {
   nav_home:        { en: "Home", cy: "Hafan" },
   nav_timetable:   { en: "Timetable", cy: "Amserlen" },
   nav_safety:      { en: "Safety", cy: "Diogelwch" },
+  nav_news:        { en: "News", cy: "Newyddion" },
   nav_map:         { en: "Map", cy: "Map" },
   nav_getting:     { en: "Getting here", cy: "Cyrraedd yma" },
   footer:          { en: "Pembrokeshire Silage Day · {dateLong}",
