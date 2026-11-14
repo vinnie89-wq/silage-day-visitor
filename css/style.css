@@ -805,8 +805,9 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .hero .countdown b { font-size: 4.5rem; }
   .hero .countdown div { font-size: 1.25rem; }
 
-  /* Home: all the shortcut tiles in one row */
-  .tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  /* Home: Tickets, Raffle and Getting here side by side in one row */
+  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tile.tile-tickets { grid-column: auto; }
 
   /* Timetable: the list down the left, notes on the right */
   main:has(#timetable) > .timetable { grid-column: 1; grid-row: 3 / span 3; }
